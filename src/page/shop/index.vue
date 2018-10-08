@@ -11,12 +11,36 @@
       </section>
     </head-top>
     <section class="food-head-container">
-      <div class="food-classification">
-        <span class="classification-item" @click="chooseClassification('classification')">
+      <div :class="['food-category', {'choose-type': contentShow == 'category'}]" @click="chooseClassification('category')">
+        <span class="classification-item">
           {{textTitle}}
         </span>
         <transition>
-          <section class="food-classification-content" v-show="contentShow == 'classification'">
+          <section class="food-category-content" v-show="contentShow == 'category'">
+            <ul>
+              <li class="category-li-left" v-for="(item, index) in foodCategory" :key="index">
+                <section>
+                  <img :src="getImgPath(item.image_url)">
+                  <span class="category-name">{{item.name}}</span>
+                </section>
+                <section>
+                  <span class="category-count">{{item.count}}</span>
+                  <svg width="8" height="8" xmlns="http://www.w3.org/2000/svg" version="1.1" class="category_arrow" >
+                    <path d="M0 0 L6 4 L0 8"  stroke="#bbb" stroke-width="1" fill="none"/>
+                  </svg>
+                </section>
+              </li>
+            </ul>
+            <ul>
+              <section class="category-li-right">
+                  <url>
+                    <li class="sub_categories" v-for="(item, index) in sub_categories">
+                      <span>item.name</span>
+                      <span>item.count</span>
+                    </li>
+                  </url>
+              </section>
+            </ul>
           </section>
         </transition>
       </div>
@@ -28,37 +52,37 @@
         <transition name="showlist">
           <section class="food-sort-content" v-show="contentShow == 'sort'">
             <ul>
-              <li class="sort-item">
+              <li class="sort-item" @click="sort(4)">
                 <svg>
                   <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#default"></use>
                 </svg>
                 <span>智能排序</span>
               </li>
-              <li class="sort-item">
+              <li class="sort-item" @click="sort(5)">
                 <svg>
                   <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#distance"></use>
                 </svg>
                 <span>距离最近</span>
               </li>
-              <li class="sort-item">
+              <li class="sort-item" @click="sort(6)">
                 <svg>
                   <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#hot"></use>
                 </svg>
                 <span>销量最高</span>
               </li>
-              <li class="sort-item">
+              <li class="sort-item" @click="sort(1)">
                 <svg>
                   <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#price"></use>
                 </svg>
                 <span>起送价最低</span>
               </li>
-              <li class="sort-item">
+              <li class="sort-item" @click="sort(2)">
                 <svg>
                   <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#speed"></use>
                 </svg>
                 <span>配送速度最快</span>
               </li>
-              <li class="sort-item">
+              <li class="sort-item" @click="sort(3)">
                 <svg>
                   <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rating"></use>
                 </svg>
@@ -85,17 +109,21 @@ export default {
       restaurantsList: [],
       textTitle: '',
       contentShow: '',
-      typeFlag: ''
+      typeFlag: '',
+      latitude: '',
+      longitude: '',
+      urlRestaurantBase: 'https://elm.cangdu.org/shopping/restaurants',
+      foodCategory: []
     }
   },
   mounted: function () {
     var self = this
     var geohash = this.$route.query.geohash
     this.textTitle = this.$route.query.title
-    var urlRestaurantBase = 'https://elm.cangdu.org/shopping/restaurants'
-    var latitude = geohash.split(',')[0]
-    var longitude = geohash.split(',')[1]
-    var urlRestaurant = urlRestaurantBase + '?latitude=' + latitude + '&longitude=' + longitude
+    this.latitude = geohash.split(',')[0]
+    this.longitude = geohash.split(',')[1]
+    var order_by = '4'
+    var urlRestaurant = this.urlRestaurantBase + '?latitude=' + this.latitude + '&longitude=' + this.longitude + '&order_by=' + order_by
     axios.get(urlRestaurant)
       .then(function (response) {
         if (response.status === 200) {
@@ -105,12 +133,46 @@ export default {
       })
   },
   methods: {
+    getImgPath: function (path) {
+      if (!path) {
+        return '//elm.cangdu.org/img/default.jpg'
+      }
+      let suffix = ''
+      if (path.indexOf('jpeg') > -1) {
+        suffix = '.jpeg'
+      } else {
+        suffix = '.png'
+      }
+      let url = '/' + path.substr(0, 1) + '/' + path.substr(1, 2) + '/' + path.substr(3) + suffix;
+      return 'https://fuss10.elemecdn.com' + url
+    },
     chooseClassification: function (type) {
+      let self = this
       if (this.contentShow !== type) {
         this.contentShow = type
       } else {
         this.contentShow = ''
       }
+      if (type === 'category') {
+        let url = 'https://elm.cangdu.org/shopping/v2/restaurant/category' + '?latitude=' + this.latitude + '&longitude=' + this.longitude
+        axios.get(url)
+        .then(function (response) {
+          if (response.status === 200) {
+            console.log(response.data)
+            self.foodCategory = response.data
+          }
+        });
+      }
+    },
+    sort: function (type) {
+      var urlRestaurant = this.urlRestaurantBase + '?latitude=' + this.latitude + '&longitude=' + this.longitude + '&order_by=' + type
+      var self = this
+      axios.get(urlRestaurant)
+        .then(function (response) {
+          if (response.status === 200) {
+            self.restaurantsList = response.data
+          }
+        });
     }
   },
   components: {
@@ -179,6 +241,24 @@ export default {
     width: 100%;
   }
 
+  .food-category-content {
+    background-color: #fff;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    top: 3rem;
+    left:0rem;
+  }
+
+  .food-category-content>ul:first-child {
+    background-color: #f1f1f1;
+  }
+
+  .food-category-content > ul {
+    width: 100%;
+  }
+
   .classification-item {
     line-height: 3rem;
   }
@@ -190,6 +270,19 @@ export default {
   .sort-item {
     display: flex;
     height: 5rem;
+    align-items: center;
+  }
+
+  .category-li-left>section {
+    display: flex;
+    height: 4rem;
+    align-items: center;
+  }
+
+  .category-li-left {
+    display: flex;
+    height: 3rem;
+    justify-content: space-between;
   }
 
   .sort-item>svg {
@@ -198,9 +291,30 @@ export default {
     margin: 0 1.5rem 0 2rem;
   }
 
-  .sort-item>span {
+  .category-li-left img {
+    height: 1.5rem;
+    width: 1.5rem;
+    margin: 0 1rem 0 2rem;
+  }
+
+  .category-count {
+    font-size: 0.8rem;
+    color: #fff;
+    background-color: #ccc;
+    border: 0.25rem solid #ccc;
+    border-radius: 0.5rem;
+    margin-right: 1rem;
+  }
+
+  .category-li-left svg {
+    margin-right: 1rem;
+  }
+
+  .sort-item>span, .category-name {
     line-height: 5rem;
+    font-family: "Microsoft Yahei";
     color: #666;
+    font-size: 1rem;
   }
 
   .showlist-enter-active,
@@ -224,8 +338,8 @@ export default {
   }
 
   .classification-icon {
-      vertical-align: middle;
-      transition: all 0.3s;
-      fill: #666;
-    }
+    vertical-align: middle;
+    transition: all 0.3s;
+    fill: #666;
+  }
 </style>
