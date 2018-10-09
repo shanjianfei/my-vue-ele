@@ -12,7 +12,7 @@
     </head-top>
     <section class="food-head-container">
       <div :class="['food-category', {'choose-type': contentShow == 'category'}]">
-        <div class="classification-item" @click="chooseClassification('category', $event)">
+        <div class="classification-item" @click="chooseClassification('category')">
           <span>
             {{textTitle}}
           </span>
@@ -45,8 +45,8 @@
           </div>
         </transition>
       </div>
-      <div :class="['food-sort', {'choose-type': contentShow == 'sort'}]" @click="chooseClassification('sort', $event)">
-        <div class="classification-item">
+      <div :class="['food-sort', {'choose-type': contentShow == 'sort'}]" >
+        <div class="classification-item" @click="chooseClassification('sort')">
           <span>排序</span>
           <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg" version="1.1" class="classification-icon">
             <polygon points="0,3 10,3 5,8"/>
@@ -107,8 +107,8 @@
           </div>
         </transition>
       </div>
-      <div class="food-filter" :class="['food-select', {'choose-type': contentShow == 'select'}]" @click="chooseClassification('select', $event)">
-        <div class="classification-item">
+      <div class="food-filter" :class="['food-select', {'choose-type': contentShow == 'select'}]">
+        <div class="classification-item" @click="chooseClassification('select')">
           <span>
             筛选
           </span>
@@ -123,26 +123,32 @@
                 <div class="shipping-method-label">
                   <span>配送方式</span>
                 </div>
-                <section class="fengniao">
-                  <svg>
+                <section class="fengniao" @click="selectFengNiao">
+                  <svg v-show="activeFengNiao" class="activity-svg">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
+                  </svg>
+                  <svg v-show="!activeFengNiao">
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#fengniao"></use>
                   </svg>
-                  <span>蜂鸟专送</span>
+                  <span :class="{activity_select:activeFengNiao}">蜂鸟专送</span>
                 </section>
               </div>
               <div class="marketers-property-container">
                 <span class="marketers-property-label">商家属性（可以多选）</span>
                 <ul class="marketers-property">
-                  <li class="marketers-property-li">
-                    <span class="marketers-property-icon">品</span>
-                    <span>品牌商家</span>
+                  <li class="marketers-property-li" v-for="(item, index) in activities" @click="selectActivities(index)">
+                    <svg v-show="activitiesStatus[index].status" class="activity-svg">
+                      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
+                    </svg>
+                    <span class="marketers-property-icon" v-show="!activitiesStatus[index].status" :style="{color: '#' + item.icon_color, borderColor: '#' + item.icon_color}">{{item.icon_name}}</span>
+                    <span :class="{activity_select: activitiesStatus[index].status}">{{item.name}}</span>
                   </li>
                 </ul>
               </div>
             </div>
             <div class="food-select-footer">
-              <button>清空</button>
-              <button>确定</button>
+              <button class="clear" @click="clear">清空</button>
+              <button class="confirm">确定<span v-show="activeActivitiesNum !==0">({{activeActivitiesNum}})</span></button>
             </div>
           </div>
         </transition>
@@ -167,7 +173,11 @@ export default {
       urlRestaurantBase: 'https://elm.cangdu.org/shopping/restaurants',
       foodCategory: [],
       subCategories: [],
-      currentSubCategory: 0
+      currentSubCategory: 0,
+      activities: {}, //商家属性
+      activitiesStatus: [], //保存是否选中商家属性
+      activeFengNiao: false, //是否选中蜂鸟
+      activeActivitiesNum: 0 //一共选了几个商家属性
     }
   },
   computed: {
@@ -177,7 +187,6 @@ export default {
     var self = this
     var geohash = this.$route.query.geohash
     this.textTitle = this.$route.query.title
-    console.log(this.textTitle)
     this.latitude = geohash.split(',')[0]
     this.longitude = geohash.split(',')[1]
     var order_by = '4'
@@ -186,6 +195,16 @@ export default {
       .then(function (response) {
         if (response.status === 200) {
           self.restaurantsList = response.data
+        }
+      })
+    let urlActivity = 'https://elm.cangdu.org/shopping/v1/restaurants/activity_attributes' + '?latitude=' + this.latitude + '&longitude=' + this.longitude
+    axios.get(urlActivity)
+      .then(function (response) {
+        if (response.status === 200) {
+          self.activities = response.data
+          self.activities.forEach(function(item, index) {
+            self.activitiesStatus[index] = {status: false, id: item.id}
+          })
         }
       })
   },
@@ -203,7 +222,7 @@ export default {
       let url = '/' + path.substr(0, 1) + '/' + path.substr(1, 2) + '/' + path.substr(3) + suffix;
       return 'https://fuss10.elemecdn.com' + url
     },
-    chooseClassification: function (type, event) {
+    chooseClassification: function (type) {
       let self = this
       if (this.contentShow !== type) {
         this.contentShow = type
@@ -253,6 +272,25 @@ export default {
             console.log(self.restaurantsList)
           }
         })
+    },
+    selectActivities: function (index) {
+      this.activitiesStatus[index].status = !this.activitiesStatus[index].status
+      if (this.activitiesStatus[index].status) {
+        this.activeActivitiesNum++
+      } else {
+        this.activeActivitiesNum--
+      }
+    },
+    selectFengNiao: function () {
+      this.activeFengNiao = !this.activeFengNiao
+    },
+    clear: function () {
+      let self = this
+      this.activitiesStatus.forEach(function (item, index) {
+        self.activitiesStatus[index].status = false
+      })
+      this.activeFengNiao = false
+      this.activeActivitiesNum = 0
     }
   },
   components: {
@@ -262,6 +300,10 @@ export default {
 }
 </script>
 <style>
+  span {
+    font-family: "Mircsoft Yahei"
+  }
+
   .head-goback {
     left: 0.4rem;
     width: 1.2rem;
@@ -310,7 +352,8 @@ export default {
   .food-head-container>div {
     width: 100%;
     text-align: center;
-    font: 1.1rem "Mircsoft Yahei"
+    font: 1.1rem "Mircsoft Yahei";
+    border: 0.1rem solid #f1f1f1;
   }
 
   .food-sort-content {
@@ -458,6 +501,7 @@ export default {
     width: 100%;
     top: 3rem;
     left:0rem;
+    padding-top: 1.5rem;
   }
 
   .shipping-method {
@@ -471,11 +515,13 @@ export default {
 
   .fengniao {
     display: flex;
-    height: 2rem;
+    height: 3rem;
     width: 8rem;
     justify-content: center;
-    align-content: center;
+    align-items: center;
     border: 0.1rem solid #eee;
+    border-radius: 0.5rem;
+    
   }
 
   .marketers-property-label {
@@ -498,7 +544,9 @@ export default {
     height: 3rem;
     width: 8rem;
     align-items: center;
-    justify-content: center;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
   }
 
   .marketers-property-icon {
@@ -508,21 +556,52 @@ export default {
     width: 2.2rem;
     text-align: center;
     margin-right: 0.5rem;
+    margin-left: 0.5rem;
+    border-radius: 0.5rem;
+    line-height: 1.8rem;
   }
 
-  .marketers-property-li > span:nth-child(2) {
+
+  .activity-svg {
+    height: 2.2rem;
+    width: 2.2rem;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+  }
+
+  .marketers-property-li > span:nth-child(3) {
     line-height: 3rem;
   }
 
   .food-select-footer {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 1.5rem;
   }
 
   .food-select-footer > button{
     width: 100%;
     margin-right: 1rem;
     margin-left: 1rem;
-    height: 3rem;
+    height: 4rem;
+    border-radius: 0.5rem;
+    border: 0.1rem solid #ccc;
+    font-size: 1.6rem;
+  }
+
+  .options {
+    font-size: 0.8rem;
+  }
+
+  .clear {
+    background-color: #fff;
+  }
+
+  .confirm {
+    background-color: #56d176;
+  }
+
+  .activity_select {
+    color: #3190e8;
   }
 </style>
