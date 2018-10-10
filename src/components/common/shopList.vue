@@ -44,6 +44,9 @@ export default {
     }
   },
   props: ['restaurantsList'],
+  mounted: function () {
+    console.log(this.restaurantsList)
+  },
   methods: {
     schedule: function (supports) {
       if (supports) {

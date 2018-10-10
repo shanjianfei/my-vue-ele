@@ -33,7 +33,7 @@ export default new Router({
       component: shop
     },
     {
-      path: 'shopDetail',
+      path: '/shopDetail',
       name: 'shopDetail',
       component: shopDetail
     }
