@@ -117,21 +117,26 @@
           </svg>
         </div>
         <transition name="select">
-          <div class="food-select-content">
+          <div class="food-select-content" v-show="contentShow == 'select'">
             <div class="options">
-              <div class="shipping-method">
+              <div class="shipping-method-container">
                 <div class="shipping-method-label">
                   <span>配送方式</span>
                 </div>
-                <section class="fengniao" @click="selectFengNiao">
-                  <svg v-show="activeFengNiao" class="activity-svg">
-                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
-                  </svg>
-                  <svg v-show="!activeFengNiao">
-                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#fengniao"></use>
-                  </svg>
-                  <span :class="{activity_select:activeFengNiao}">蜂鸟专送</span>
-                </section>
+                <ul>
+                  <li class="shipping-method-li" v-for="(item, index) in shippingMethods" @click="selectShippingMethods(index)">
+                    <svg v-show="shippingMethodsStatus[index].status" class="activity-svg">
+                      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
+                    </svg>
+                    <svg v-if="!shippingMethodsStatus[index].status && item.id===1">
+                      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#fengniao"></use>
+                    </svg>
+                    <svg v-else-if="!shippingMethodsStatus[index].status && item.id!==1">
+                      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#default"></use>
+                    </svg>
+                    <span :style="{color: '#' + item.color}">{{item.text}}</span>
+                  </li>
+                </ul>
               </div>
               <div class="marketers-property-container">
                 <span class="marketers-property-label">商家属性（可以多选）</span>
@@ -148,7 +153,7 @@
             </div>
             <div class="food-select-footer">
               <button class="clear" @click="clear">清空</button>
-              <button class="confirm">确定<span v-show="activeActivitiesNum !==0">({{activeActivitiesNum}})</span></button>
+              <button class="confirm" @click="filter">确定<span v-show="activeActivitiesNum !==0">({{activeActivitiesNum}})</span></button>
             </div>
           </div>
         </transition>
@@ -158,9 +163,11 @@
   </div>
 </template>
 <script>
+import Vue from 'vue'
 import headTop from '@/components/head/head'
 import shopList from '@/components/common/shopList'
 import axios from 'axios'
+import {getShopList, getShippingMethod} from '@/service/getData'
 export default {
   data () {
     return {
@@ -176,8 +183,9 @@ export default {
       currentSubCategory: 0,
       activities: {}, //商家属性
       activitiesStatus: [], //保存是否选中商家属性
-      activeFengNiao: false, //是否选中蜂鸟
-      activeActivitiesNum: 0 //一共选了几个商家属性
+      shippingMethodsStatus: [], //一共选了几种配送方式
+      activeActivitiesNum: 0, //一共选了几个商家属性
+      shippingMethods: [] //配送方式
     }
   },
   computed: {
@@ -189,6 +197,12 @@ export default {
     this.textTitle = this.$route.query.title
     this.latitude = geohash.split(',')[0]
     this.longitude = geohash.split(',')[1]
+    getShippingMethod(this.latitude, this.longitude).then(function(data) {
+      self.shippingMethods = data
+      self.shippingMethods.forEach(function (item, index) {
+        self.shippingMethodsStatus[index] = {id: item.id, status: false}
+      })
+    })
     var order_by = '4'
     var urlRestaurant = this.urlRestaurantBase + '?latitude=' + this.latitude + '&longitude=' + this.longitude + '&order_by=' + order_by
     axios.get(urlRestaurant)
@@ -234,7 +248,6 @@ export default {
         axios.get(url)
         .then(function (response) {
           if (response.status === 200) {
-            console.log(response.data)
             self.foodCategory = response.data
             self.subCategories = response.data[0].sub_categories
             self.currentSubCategory = 0
@@ -251,16 +264,13 @@ export default {
             self.restaurantsList = response.data
           }
         })
+      this.contentShow = ''
     },
     changeSubCategories: function (item, index) {
       this.subCategories = item.sub_categories
       this.currentSubCategory = index
     },
-    changeCurrentCategory: function () {
-
-    },
     getSubCategoryShops: function (id, name) {
-      console.log(id)
       this.contentShow = ''
       this.textTitle = name
       let url = 'https://elm.cangdu.org/shopping/restaurants?latitude=' + this.latitude + '&longitude=' + this.longitude + '&restaurant_category_ids[]=' + id
@@ -269,20 +279,23 @@ export default {
         .then(function (response) {
           if (response.status === 200) {
             self.restaurantsList = response.data
-            console.log(self.restaurantsList)
           }
         })
     },
     selectActivities: function (index) {
-      this.activitiesStatus[index].status = !this.activitiesStatus[index].status
+      let newValue = this.activitiesStatus[index]
+      newValue.status = !newValue.status
+      Vue.set(this.activitiesStatus, index, newValue)
       if (this.activitiesStatus[index].status) {
         this.activeActivitiesNum++
       } else {
         this.activeActivitiesNum--
       }
     },
-    selectFengNiao: function () {
-      this.activeFengNiao = !this.activeFengNiao
+    selectShippingMethods: function (index) {
+      let newValue = this.shippingMethodsStatus[index]
+      newValue.status = !newValue.status
+      Vue.set(this.shippingMethodsStatus, index, newValue)
     },
     clear: function () {
       let self = this
@@ -291,6 +304,20 @@ export default {
       })
       this.activeFengNiao = false
       this.activeActivitiesNum = 0
+    },
+    filter: function () {
+      let self = this
+      let delivery_mode = []
+      this.shippingMethodsStatus.forEach(function (item, index) {
+        if (item.status) {
+          delivery_mode.push(item.id)
+        }
+      })
+      let support_ids = this.activitiesStatus
+      getShopList(this.latitude, this.longitude, 0, '', '', '', delivery_mode, support_ids).then(function(data) {
+        self.restaurantsList = data
+      })
+      this.contentShow = ''
     }
   },
   components: {
@@ -490,9 +517,20 @@ export default {
     border-bottom: 0.1rem solid #ccc;
   }
 
-  .shipping-method svg {
+  .shipping-method-container svg {
     height: 1.6rem;
     width: 1.6rem;
+  }
+
+  .shipping-method-li {
+    list-style: none;
+    display: flex;
+    height: 3rem;
+    width: 8rem;
+    justify-content: center;
+    align-items: center;
+    border: 0.1rem solid #eee;
+    border-radius: 0.5rem;
   }
 
   .food-select-content {
@@ -504,7 +542,7 @@ export default {
     padding-top: 1.5rem;
   }
 
-  .shipping-method {
+  .shipping-method-container {
     padding-left: 2rem;
     margin-bottom: 1rem;
   }
