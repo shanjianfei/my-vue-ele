@@ -124,7 +124,7 @@
                   <span>配送方式</span>
                 </div>
                 <ul>
-                  <li class="shipping-method-li" v-for="(item, index) in shippingMethods" @click="selectShippingMethods(index)">
+                  <li class="shipping-method-li" v-for="(item, index) in shippingMethods" @click="selectShippingMethods(index)" :key="index">
                     <svg v-show="shippingMethodsStatus[index].status" class="activity-svg">
                       <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
                     </svg>
@@ -141,7 +141,7 @@
               <div class="marketers-property-container">
                 <span class="marketers-property-label">商家属性（可以多选）</span>
                 <ul class="marketers-property">
-                  <li class="marketers-property-li" v-for="(item, index) in activities" @click="selectActivities(index)">
+                  <li class="marketers-property-li" v-for="(item, index) in activities" @click="selectActivities(index)" :key="index">
                     <svg v-show="activitiesStatus[index].status" class="activity-svg">
                       <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
                     </svg>
@@ -181,11 +181,11 @@ export default {
       foodCategory: [],
       subCategories: [],
       currentSubCategory: 0,
-      activities: {}, //商家属性
-      activitiesStatus: [], //保存是否选中商家属性
-      shippingMethodsStatus: [], //一共选了几种配送方式
-      activeActivitiesNum: 0, //一共选了几个商家属性
-      shippingMethods: [] //配送方式
+      activities: {}, // 商家属性
+      activitiesStatus: [], // 保存是否选中商家属性
+      shippingMethodsStatus: [], // 一共选了几种配送方式
+      activeActivitiesNum: 0, // 一共选了几个商家属性
+      shippingMethods: [] // 配送方式
     }
   },
   computed: {
@@ -197,14 +197,14 @@ export default {
     this.textTitle = this.$route.query.title
     this.latitude = geohash.split(',')[0]
     this.longitude = geohash.split(',')[1]
-    getShippingMethod(this.latitude, this.longitude).then(function(data) {
+    getShippingMethod(this.latitude, this.longitude).then(function (data) {
       self.shippingMethods = data
       self.shippingMethods.forEach(function (item, index) {
         self.shippingMethodsStatus[index] = {id: item.id, status: false}
       })
     })
-    var order_by = '4'
-    var urlRestaurant = this.urlRestaurantBase + '?latitude=' + this.latitude + '&longitude=' + this.longitude + '&order_by=' + order_by
+    var orderBy = '4'
+    var urlRestaurant = this.urlRestaurantBase + '?latitude=' + this.latitude + '&longitude=' + this.longitude + '&order_by=' + orderBy
     axios.get(urlRestaurant)
       .then(function (response) {
         if (response.status === 200) {
@@ -216,7 +216,7 @@ export default {
       .then(function (response) {
         if (response.status === 200) {
           self.activities = response.data
-          self.activities.forEach(function(item, index) {
+          self.activities.forEach(function (item, index) {
             self.activitiesStatus[index] = {status: false, id: item.id}
           })
         }
@@ -233,7 +233,7 @@ export default {
       } else {
         suffix = '.png'
       }
-      let url = '/' + path.substr(0, 1) + '/' + path.substr(1, 2) + '/' + path.substr(3) + suffix;
+      let url = '/' + path.substr(0, 1) + '/' + path.substr(1, 2) + '/' + path.substr(3) + suffix
       return 'https://fuss10.elemecdn.com' + url
     },
     chooseClassification: function (type) {
@@ -246,13 +246,13 @@ export default {
       if (type === 'category') {
         let url = 'https://elm.cangdu.org/shopping/v2/restaurant/category' + '?latitude=' + this.latitude + '&longitude=' + this.longitude
         axios.get(url)
-        .then(function (response) {
-          if (response.status === 200) {
-            self.foodCategory = response.data
-            self.subCategories = response.data[0].sub_categories
-            self.currentSubCategory = 0
-          }
-        })
+          .then(function (response) {
+            if (response.status === 200) {
+              self.foodCategory = response.data
+              self.subCategories = response.data[0].sub_categories
+              self.currentSubCategory = 0
+            }
+          })
       }
     },
     sort: function (type) {
@@ -307,14 +307,14 @@ export default {
     },
     filter: function () {
       let self = this
-      let delivery_mode = []
+      let deliveryMode = []
       this.shippingMethodsStatus.forEach(function (item, index) {
         if (item.status) {
-          delivery_mode.push(item.id)
+          deliveryMode.push(item.id)
         }
       })
-      let support_ids = this.activitiesStatus
-      getShopList(this.latitude, this.longitude, 0, '', '', '', delivery_mode, support_ids).then(function(data) {
+      let supportIds = this.activitiesStatus
+      getShopList(this.latitude, this.longitude, 0, '', '', '', deliveryMode, supportIds).then(function (data) {
         self.restaurantsList = data
       })
       this.contentShow = ''
@@ -559,7 +559,6 @@ export default {
     align-items: center;
     border: 0.1rem solid #eee;
     border-radius: 0.5rem;
-    
   }
 
   .marketers-property-label {
@@ -598,7 +597,6 @@ export default {
     border-radius: 0.5rem;
     line-height: 1.8rem;
   }
-
 
   .activity-svg {
     height: 2.2rem;

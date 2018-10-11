@@ -13,26 +13,26 @@ import navLeft from './children/navLeft'
 import foodList from './children/foodList'
 import {getFoodMenu} from '@/service/getData'
 export default {
-  data() {
+  data () {
     return {
-       foodMenu: [],
-       food: {}
+      foodMenu: [],
+      food: {}
     }
   },
   components: {headTop, navLeft, foodList},
   mounted: function () {
     let self = this
     let id = this.$route.query.id
-    getFoodMenu(1).then(function(data) {
+    getFoodMenu(id).then(function (data) {
       self.foodMenu = data
-      self.food = data[0].foods
-      console.log(1)
+      self.food = data[0]
+      console.log(self.food)
     })
   },
   methods: {
     changeFoodMenu: function (msg) {
-      console.log(msg)
-      this.food = msg
+      this.food = msg.food
+      console.log(this.food)
     }
   }
 }

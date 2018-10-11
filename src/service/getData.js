@@ -1,12 +1,10 @@
-const baseUrl = "https://elm.cangdu.org/v1/cities?type=guess"
+import axios from 'axios'
 
-import axios from "axios"
-
-export const getShopList = (latitude, longitude, offset, restaurant_category_id = '', restaurant_category_ids = '', order_by = '', delivery_mode = '', support_ids = []) => {
-  let supportStr = '';
-  support_ids.forEach(item => {
+export const getShopList = (latitude, longitude, offset, restaurantCategoryId = '', restaurantCategoryIds = '', orderBy = '', deliveryMode = '', supportIds = []) => {
+  let supportStr = ''
+  supportIds.forEach(item => {
     if (item.status) {
-      supportStr += '&support_ids[]=' + item.id;
+      supportStr += '&support_ids[]=' + item.id
     }
   })
   let data = {
@@ -16,11 +14,11 @@ export const getShopList = (latitude, longitude, offset, restaurant_category_id 
     limit: '20',
     'extras[]': 'activities',
     keyword: '',
-    restaurant_category_id,
-    'restaurant_category_ids[]': restaurant_category_ids,
-    order_by,
-    'delivery_mode[]': delivery_mode + supportStr
-  };
+    restaurantCategoryId,
+    'restaurant_category_ids[]': restaurantCategoryIds,
+    orderBy,
+    'delivery_mode[]': deliveryMode + supportStr
+  }
 
   let query = '?'
   Object.keys(data).forEach(function (item, index) {
@@ -30,15 +28,15 @@ export const getShopList = (latitude, longitude, offset, restaurant_category_id 
   let url = 'https://elm.cangdu.org/shopping/restaurants'
   url += query
   console.log(url)
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     axios.get(url)
-    .then(function (response) {
-      if (response.status === 200) {
-        resolve(response.data)
-      } else {
-        resolve([])
-      }
-    })
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        } else {
+          resolve([])
+        }
+      })
   })
 }
 
@@ -47,22 +45,28 @@ export const getShippingMethod = (latitude, longitude) => {
   url = url + '?latitude=' + latitude + '&longitude=' + longitude
   return new Promise(function (resolve, reject) {
     axios.get(url)
-    .then(function (response) {
-      if (response.status === 200) {
-        resolve(response.data)
-      }
-    })
-  })
-}
-
-export const getFoodMenu = (restaurant_id) => {
-  let url = 'https://elm.cangdu.org/shopping/v2/menu?restaurant_id=' + restaurant_id
-  return new Promise(function(resolve, reject) {
-    axios.get(url)
-      .then(function(response) {
+      .then(function (response) {
         if (response.status === 200) {
           resolve(response.data)
         }
       })
   })
+}
+
+export const getFoodMenu = (restaurantId) => {
+  let url = 'https://elm.cangdu.org/shopping/v2/menu?restaurant_id=' + restaurantId
+  return new Promise(function (resolve, reject) {
+    axios.get(url)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  })
+}
+
+export const getImageUrl = (imagePath) => {
+  let imageBaseUrl = 'https://elm.cangdu.org/img/'
+  let imageUrl = imageBaseUrl + imagePath
+  return imageUrl
 }
