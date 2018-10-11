@@ -3,7 +3,7 @@
     <head-top></head-top>
     <section class="menu-food-container">
       <nav-left :foodMenu="foodMenu" @changeFoodMenu="changeFoodMenu"></nav-left>
-      <food-list :food="food"></food-list>
+      <!-- <food-list :food="food"></food-list> -->
     </section>
   </div>
 </template>
@@ -38,8 +38,13 @@ export default {
 }
 </script>
 <style>
+  html {
+    height: 100%;
+  }
+
   .menu-food-container {
     display: flex;
     flex-direction: row;
+    width: 100%;
   }
 </style>

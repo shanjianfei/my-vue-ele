@@ -6,8 +6,14 @@
         <span>{{food.description}}</span>
       </header>
       <li class="food-li" v-for="(item, index) in food.foods" :key="index">
-        <div class="new-product" :style="{'border-right-color': '#' + item.activ}"></div>
-        <div class="new-product-text"><span>aaa</span></div>
+        <div class="food-attributes">
+          <div v-for="(attr, index) in item.attributes" :key="index">
+            <span class="attr-new-backbround" v-if="attr.icon_name === '新'" :style="{'border-right-color': '#' + attr.icon_color}"></span>
+            <span class="attr-new" v-if="attr.icon_name === '新'">新品</span>
+            <span class="food-recommendation" v-if="attr.icon_name === '招牌'" :style="{'border-color': '#' + attr.icon_color, color: '#' + attr.icon_color}">招牌</span>
+          </div>
+          
+        </div>
         <div class="food-icon">
           <img :src="getImageUrl(item.image_path)">
         </div>
@@ -18,17 +24,24 @@
           <p class="food-activity" v-if="item.activity">
             <span :style="{'border-color': '#' + item.activity.icon_color, color: '#' + item.activity.image_text_color}">{{item.activity.image_text}}</span>
           </p>
-          <p class="price">
-            <span>￥</span>
-            <span>{{item.specfoods[0].price}}</span>
+          <p class="food-footer">
+            <span class="price">
+              <span>￥</span>
+              <span>{{item.specfoods[0].price}}</span>
+            </span>
+            <span class="add-food">
+              <svg class="add-food">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-add"></use>
+              </svg>
+            </span>
           </p>
         </div>
-        <div class="food-right">
+ <!--        <div class="food-right">
+          <div></div>
+          <span>{{item.attributes}}</span>
           <span>拍照</span>
-          <svg class="add-food">
-            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-add"></use>
-          </svg>
-        </div>
+          
+        </div> -->
       </li>
     </ul>
   </div>
@@ -61,12 +74,20 @@ export default {
     font-size: 1.5rem;
     margin-right: 0.5rem;
   }
+  
+  .food-list-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
 
   .food-list-container ul {
     padding-left: 0;
+    width: 100%;
   }
 
   .food-li {
+    width: 100%;
     list-style: none;
     padding-left: 1rem;
     padding-top: 1.5rem;
@@ -77,13 +98,15 @@ export default {
     position: relative;
   }
 
-  .new-product {
+  .attr-new-backbround {
     position: absolute;
     top: -1.6rem;
     left: -1.6rem;
     border-width: 1.6rem;
     border-style: solid;
-    border-color: transparent blue transparent transparent;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
     transform:rotate(45deg);
     -ms-transform:rotate(45deg); /* Internet Explorer */
     -moz-transform:rotate(45deg); /* Firefox */
@@ -91,7 +114,10 @@ export default {
     -o-transform:rotate(45deg); /* Opera */
   }
 
-  .new-product-text {
+  .attr-new {
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #fff;
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -111,6 +137,10 @@ export default {
     height: 4.2rem;
     width: 4.2rem;
     padding-right: 1rem;
+  }
+
+  .food-description {
+    width: 100%;
   }
 
   .food-description > p {
@@ -163,15 +193,22 @@ export default {
     height: 1.8rem;
     width: 1.8rem;
     fill: #3190e8;
+    margin-right: 2rem;
   }
 
-  .food-icon {
-    flex-grow: 2;
+  .food-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
-  .food-description {
-    flex-grow: 1;
-  }
-  .food-right {
-    flex-grow: 4;
+
+  .food-recommendation {
+    position: absolute;
+    top: 1rem;
+    right: 2.2rem;
+    font-size: 0.6rem;
+    border: 0.07rem solid;
+    border-radius: 0.55rem;
+    padding: 0.15rem;
   }
 </style>
