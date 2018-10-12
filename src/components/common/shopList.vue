@@ -1,7 +1,7 @@
 <template>
   <div class="restaurants-list">
     <ul>
-      <router-link tag="li" v-for="(item, index) in restaurantsList" :key="index" :to="{path: '/shopDetail', query: {id: item.id}}">
+      <router-link tag="li" v-for="(item, index) in restaurantsList" :key="index" :to="{path: '/shopDetail', query: {id: item.id, imagePath: item.image_path, shopInfo: item}}">
         <section>
           <img class="shop-img" :src="imageBaseUrl + item.image_path">
         </section>

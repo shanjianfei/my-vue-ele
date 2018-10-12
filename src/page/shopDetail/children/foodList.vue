@@ -36,12 +36,6 @@
             </span>
           </p>
         </div>
- <!--        <div class="food-right">
-          <div></div>
-          <span>{{item.attributes}}</span>
-          <span>拍照</span>
-          
-        </div> -->
       </li>
     </ul>
   </div>
@@ -79,6 +73,8 @@ export default {
     display: flex;
     flex-direction: row;
     width: 100%;
+    height: 100%;
+    overflow: auto;
   }
 
   .food-list-container ul {

@@ -1,11 +1,11 @@
 <template>
-  <section class="nav-left-container">
+  <div class="nav-left-container">
     <ul>
       <li class="food-menu-li" :class="{activeMenu: index===currentMenu}" v-for="(item, index) in foodMenu" @click="changeFoodMenu(item, index)" :key="index">
         <span>{{item.name}}</span>
       </li>
     </ul>
-  </section>
+  </div>
 </template>
 <script>
 export default {
@@ -26,13 +26,10 @@ export default {
 }
 </script>
 <style>
-::-webkit-scrollbar  
- {  
- width: 0px;  }
   .nav-left-container {
     width: 15rem;
-    overflow-y: auto;
-    overflow: hidden;
+    overflow: auto;
+    height: 100%;
   }
 
   .nav-left-container ul {
