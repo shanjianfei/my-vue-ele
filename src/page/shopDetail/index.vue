@@ -1,31 +1,39 @@
 <template>
   <div class="shop-detail-container">
-    <head-top :imagePath="getImageUrl(imagePath)"></head-top>
-    <section class="menu-food-container">
+    <head-top :imagePath="getImageUrl(imagePath)" @currentOption="changeCurrentComponent"></head-top>
+    <section class="menu-food-container" v-show="currentComponent.product">
       <nav-left :foodMenu="foodMenu" @changeFoodMenu="changeFoodMenu"></nav-left>
       <food-list :food="food"></food-list>
     </section>
+    <evaluate :assessmentTags="assessmentTags" :restaurantId="$route.query.id" v-show="currentComponent.evaluate"></evaluate>
   </div>
 </template>
 <script>
 import headTop from './children/header'
 import navLeft from './children/navLeft'
 import foodList from './children/foodList'
-import {getFoodMenu, getImageUrl} from '@/service/getData'
+import evaluate from './children/evaluate'
+import {getFoodMenu, getImageUrl, getRatingsTags, getAssessmentInfo} from '@/service/getData'
 export default {
   data () {
     return {
       foodMenu: [],
       food: {},
-      imagePath: ''
+      imagePath: '',
+      assessmentTags: [],
+      currentComponent: {product: true, evaluate: false}
     }
   },
-  components: {headTop, navLeft, foodList},
+  components: {headTop, navLeft, foodList, evaluate},
   mounted: function () {
     let self = this
-    let id = this.$route.query.id
+    let restaurantId = this.$route.query.id
     this.imagePath = this.$route.query.imagePath
-    getFoodMenu(id).then(function (data) {
+    getRatingsTags(restaurantId).then(function (data) {
+      self.assessmentTags = data
+      console.log(data)
+    })
+    getFoodMenu(restaurantId).then(function (data) {
       self.foodMenu = data
       self.food = data[0]
       console.log(self.food)
@@ -35,6 +43,15 @@ export default {
     changeFoodMenu: function (msg) {
       this.food = msg.food
       console.log(this.food)
+    },
+    changeCurrentComponent: function (msg) {
+      if (msg.current === 'product') {
+        this.currentComponent.product = true
+        this.currentComponent.evaluate = false
+      } else {
+        this.currentComponent.product = false
+        this.currentComponent.evaluate = true
+      }
     },
     getImageUrl: function (imagePath) {
       return getImageUrl(imagePath)

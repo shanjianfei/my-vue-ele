@@ -21,14 +21,14 @@
         </section>
       </div>
     </div>
-    <div class="product-evaluate">
-      <router-link :to="{path: '/'}" tag="li">
-        <span class="head-top-title">商品</span>
-      </router-link>
-      <router-link :to="{path: '/', query: {geohash, id}}" tag="li">
-        <span class="head-top-title">评价</span>
-      </router-link>
-    </div>
+    <ul class="product-evaluate">
+      <li @click="changeProductEvaluat('product')" :class="{'current-li': currentLi === 'product'}">
+        <span>商品</span>
+      </li>
+      <li @click="changeProductEvaluat('evaluate')" :class="{'current-li': currentLi === 'evaluate'}">
+        <span>评价</span>
+      </li>
+    </ul>
   </div>
 </template>
 <script>
@@ -36,12 +36,19 @@ export default {
   data () {
     return {
       restaurantId: '',
-      shopInfo: {}
+      shopInfo: {},
+      currentLi: 'product'
     }
   },
   props: ['geohash', 'id', 'imagePath'],
   mounted: function () {
     this.shopInfo = this.$route.query.shopInfo
+  },
+  methods: {
+    changeProductEvaluat: function (option) {
+      this.$emit('currentOption', {current: option})
+      this.currentLi = option
+    }
   }
 }
 </script>
@@ -126,6 +133,10 @@ export default {
     justify-content: space-between;
     background-color: #fff;
     height: 6rem;
+    z-index: 10;
+    position: relative;
+    padding: 0;
+    margin: 0;
   }
 
   .product-evaluate > li {
@@ -133,12 +144,12 @@ export default {
     width: 100%;
     height: 3rem;
     text-align: center;
+    line-height: 3rem;
+    font-size: 1.3rem;
+    padding: 0.5rem;
   }
 
-  .head-top-title {
-    font-size: 1.3rem;
-    line-height: 3rem;
-    padding: 0.5rem;
+  .current-li > span {
     color: #3190e8;
     border-bottom: 0.3rem solid #3190e8;
   }

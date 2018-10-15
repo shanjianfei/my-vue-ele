@@ -24,7 +24,6 @@ export default {
     position: relative;
     width: 2.5rem;
     height: 1rem;
-    z-index: -1;
   }
 
   .star-container {
