@@ -35,27 +35,29 @@
     <section class="user-assessment-container">
       <ul class="user-assessment-ul">
         <li v-for="(item, index) in assessmentInfo" :key="index">
-          <ul class="user-info-ul">
-            <li>
-              <img :src="getImageUrlByCdn(item.avatar)">
-            </li>
-            <li>
-              <span>{{item.username}}</span>
-            </li>
-            <li>
-              <span>{{item.rated_at}}</span>
-            </li>
-          </ul>
-          <ul class="food-img-ul">
-            <li v-for="(item_rating, index_rating) in item.item_ratings" :key="index_rating" v-if="item_rating.image_hash">
-              <img :src="getImageUrlByCdn(item_rating.image_hash)">
-            </li>
-          </ul>
-          <ul class="food-name-ul">
-            <li v-for="(item_rating, index_rating) in item.item_ratings" :key="index_rating">
-              <span>{{item_rating.food_name}}</span>
-            </li>
-          </ul>
+          <img :src="getImageUrlByCdn(item.avatar)">
+          <section>
+            <header class="user-info">
+              <section>
+                <p>{{item.username}}</p>
+                <p>
+                  <rating-star :rating="item.rating_star"></rating-star>
+                  <span>{{item.time_spent_desc}}</span>
+                </p>
+              </section>
+              <div>{{item.rated_at}}</div>
+            </header>
+            <ul class="food-img-ul">
+              <li v-for="(item_rating, index_rating) in item.item_ratings" :key="index_rating" v-if="item_rating.image_hash">
+                <img :src="getImageUrlByCdn(item_rating.image_hash)">
+              </li>
+            </ul>
+            <ul class="food-name-ul">
+              <li v-for="(item_rating, index_rating) in item.item_ratings" :key="index_rating">
+                <span>{{item_rating.food_name}}</span>
+              </li>
+            </ul>
+          </section>
         </li>
       </ul>
     </section>
@@ -108,8 +110,57 @@ export default {
 }
 </script>
 <style>
+  .user-assessment-ul {
+    margin-left: 1.5rem;
+  }
+
+  .user-assessment-ul > li {
+    display: flex;
+  }
+
+  .user-assessment-ul > li > section {
+    margin-left: 1rem;
+    width: 100%;
+  }
+
+  .user-assessment-ul > li > img:first-child {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 1.5rem;
+  }
+
+  .user-info {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .user-info > section > p:nth-child(2) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .user-info > div {
+    font-size: 0.8rem;
+    color: #999;
+    margin-right: 1.2rem;
+  }
+
+
+
   .shop-info-container {
     margin-top: 0.1rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding-bottom: 5rem;
+    overflow: auto;
+  }
+
+  .shop-info-container > section {
+    flex-shrink: 0;
   }
   .comprehensive-assessment {
     display: flex;
@@ -186,18 +237,6 @@ export default {
   ul {
     margin: 0;
     padding: 0;
-    margin-left: 1rem;
-  }
-
-  .user-info-ul {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  .user-info-ul > li:first-child > img {
-    width: 2rem;
-    height: 2rem;
   }
 
   .food-img-ul {
@@ -211,15 +250,21 @@ export default {
     margin-right: 0.5rem;
   }
 
+  .user-info-ul > li:nth-child(3) {
+    position: absolute;
+    right: 0.5rem;
+  }
+
   .food-img-ul img {
-    width: 3rem;
-    height: 3rem;
+    width: 5rem;
+    height: 5rem;
   }
 
   .food-name-ul {
     margin-bottom: 1rem;
     display: flex;
     flex-direction: row;
+    margin-top: 1rem;
   }
 
   .food-name-ul span {
@@ -228,6 +273,11 @@ export default {
     text-overflow : ellipsis;
     white-space:nowrap;
     overflow: hidden;
+    color: #999;
+    border: 0.05rem solid #999;
+    margin-right: 0.3rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
   }
 
   .user-assessment-container {

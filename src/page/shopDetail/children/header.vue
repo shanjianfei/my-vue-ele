@@ -155,9 +155,10 @@ export default {
   }
 
   .shop-detail-header-container {
-    height: 20rem;
+    flex-shrink: 0;
+    height: 13rem;
     position: relative;
-    z-index: 20;
+    z-index: 11;
     overflow: hidden;
     display: flex;
     flex-direction: column;

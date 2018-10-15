@@ -70,8 +70,6 @@ export default {
   }
   
   .food-list-container {
-    display: flex;
-    flex-direction: row;
     width: 100%;
     height: 100%;
     overflow: auto;
