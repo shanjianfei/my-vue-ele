@@ -12,7 +12,6 @@
             <span class="attr-new" v-if="attr.icon_name === '新'">新品</span>
             <span class="food-recommendation" v-if="attr.icon_name === '招牌'" :style="{'border-color': '#' + attr.icon_color, color: '#' + attr.icon_color}">招牌</span>
           </div>
-          
         </div>
         <div class="food-icon">
           <img :src="getImageUrl(item.image_path)">
@@ -20,7 +19,7 @@
         <div class="food-description">
           <p>{{item.name}}</p>
           <p>{{item.description}}</p>
-          <p>月售{{item.month_sales}}&nbsp&nbsp&nbsp好评率{{item.satisfy_rate}}%</p>
+          <p>月售{{item.month_sales}}&nbsp;&nbsp;&nbsp;好评率{{item.satisfy_rate}}%</p>
           <p class="food-activity" v-if="item.activity">
             <span :style="{'border-color': '#' + item.activity.icon_color, color: '#' + item.activity.image_text_color}">{{item.activity.image_text}}</span>
           </p>
@@ -29,8 +28,13 @@
               <span>￥</span>
               <span>{{item.specfoods[0].price}}</span>
             </span>
-            <span class="add-food">
-              <svg class="add-food">
+            <span>
+              <svg class="remove-food" @click="removeFood(item.item_id)">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-minus"></use>
+              </svg>
+              <span class="food-num" v-if="item.item_id in dishes">{{dishes[item.item_id]}}</span>
+              <span class="food-num" v-else>0</span>
+              <svg class="add-food" @click="addFood(item.item_id)">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-add"></use>
               </svg>
             </span>
@@ -42,18 +46,34 @@
 </template>
 <script>
 import {getImageUrl} from '@/service/getData'
+import {mapState, mapMutations} from 'vuex'
 export default {
   data () {
     return {
 
     }
   },
+  computed: mapState(['dishes']),
   mounted: function () {
+    console.log(this.food.foods)
   },
   props: ['food'],
   methods: {
+    ...mapMutations({
+      add: 'incrementNumberDishes',
+      decreate: 'decrementNumberDishes'
+    }),
+    ...mapMutations(['updateDishes']),
     getImageUrl: function (path) {
       return getImageUrl(path)
+    },
+    addFood: function (itemId) {
+      this.updateDishes({name: 'item', itemId: itemId, flag: 1})
+      this.add()
+    },
+    removeFood: function (itemId) {
+      this.updateDishes({name: 'item', itemId: itemId, flag: 0})
+      this.decreate()
     }
   }
 }
@@ -63,12 +83,13 @@ export default {
     height: 4rem;
     padding-left: 1rem;
   }
+
   .food-header > span:nth-child(1) {
     font-weight: bold;
     font-size: 1.5rem;
     margin-right: 0.5rem;
   }
-  
+
   .food-list-container {
     width: 100%;
     height: 100%;
@@ -81,13 +102,9 @@ export default {
   }
 
   .food-li {
-    width: 100%;
-    list-style: none;
-    padding-left: 1rem;
-    padding-top: 1.5rem;
+    padding: 1rem;
     display: flex;
     flex-direction: row;
-    background-color: #fff;
     border-bottom: 0.1rem solid #ebebeb;
     position: relative;
   }
@@ -190,6 +207,24 @@ export default {
     margin-right: 2rem;
   }
 
+  .food-num {
+    display: inline-block;
+    text-align: center;
+    width: 1.8rem;
+    font-size: 1.3rem;
+  }
+
+  .remove-food {
+    height: 1.8rem;
+    width: 1.8rem;
+    fill: #3190e8;
+  }
+
+  .food-footer > span:nth-child(2) {
+    display: flex;
+    align-items: center;
+  }
+
   .food-footer {
     display: flex;
     flex-direction: row;
@@ -199,7 +234,7 @@ export default {
   .food-recommendation {
     position: absolute;
     top: 1rem;
-    right: 2.2rem;
+    right: 3.2rem;
     font-size: 0.6rem;
     border: 0.07rem solid;
     border-radius: 0.55rem;

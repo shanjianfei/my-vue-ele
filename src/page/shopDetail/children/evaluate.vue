@@ -71,10 +71,10 @@ export default {
     return {
       assessmentInfo: [],
       foodScore: 0,
-      compareRating : 0,
+      compareRating: 0,
       serviceScore: 0,
       overallScore: 0,
-      deliverTime: 0,
+      deliverTime: 0
     }
   },
   props: ['assessmentTags', 'restaurantId'],
@@ -82,18 +82,17 @@ export default {
     let self = this
     if (this.restaurantId !== 0) {
       getAssessmentInfo(this.restaurantId).then(function (data) {
-       self.assessmentInfo = data
-       console.log(222)
-       console.log(data)
+        self.assessmentInfo = data
+        console.log(222)
+        console.log(data)
       })
       getScore(this.restaurantId).then(function (data) {
-       self. compareRating = data.compare_rating.toFixed(3) * 100
-       self.foodScore = data.food_score.toFixed(1)
-       self.serviceScore = data.service_score.toFixed(1)
-       self.overallScore = data.overall_score.toFixed(1)
-       self.deliverTime = data.deliver_time
+        self.compareRating = data.compare_rating.toFixed(3) * 100
+        self.foodScore = data.food_score.toFixed(1)
+        self.serviceScore = data.service_score.toFixed(1)
+        self.overallScore = data.overall_score.toFixed(1)
+        self.deliverTime = data.deliver_time
       })
-      
     }
   },
   methods: {
@@ -146,8 +145,6 @@ export default {
     margin-right: 1.2rem;
   }
 
-
-
   .shop-info-container {
     margin-top: 0.1rem;
     position: relative;
@@ -155,7 +152,6 @@ export default {
     flex-direction: column;
     height: 100%;
     width: 100%;
-    padding-bottom: 5rem;
     overflow: auto;
   }
 
@@ -182,6 +178,7 @@ export default {
 
   .comprehensive-assessment > section:nth-child(1) > p:nth-child(3) {
     font-size: 0.7rem;
+    color: #999;
   }
 
   .comprehensive-assessment > section:nth-child(2) > p:first-child {
@@ -208,11 +205,7 @@ export default {
 
   .comprehensive-assessment > section:nth-child(2) > p:nth-child(3) > span:nth-child(2) {
     font-size: 0.7rem;
-  }
-
-  .shop-info-container {
-    height: 100%;
-    padding-bottom: 5rem;
+    color: #999;
   }
 
   .assessment-tags {

@@ -4,6 +4,7 @@
     <section class="menu-food-container" v-show="currentComponent.product">
       <nav-left :foodMenu="foodMenu" @changeFoodMenu="changeFoodMenu"></nav-left>
       <food-list :food="food"></food-list>
+      <buy-cart></buy-cart>
     </section>
     <evaluate :assessmentTags="assessmentTags" :restaurantId="$route.query.id" v-show="currentComponent.evaluate"></evaluate>
   </div>
@@ -13,7 +14,8 @@ import headTop from './children/header'
 import navLeft from './children/navLeft'
 import foodList from './children/foodList'
 import evaluate from './children/evaluate'
-import {getFoodMenu, getImageUrl, getRatingsTags, getAssessmentInfo} from '@/service/getData'
+import buyCart from './children/buyCart'
+import {getFoodMenu, getImageUrl, getRatingsTags} from '@/service/getData'
 export default {
   data () {
     return {
@@ -24,7 +26,7 @@ export default {
       currentComponent: {product: true, evaluate: false}
     }
   },
-  components: {headTop, navLeft, foodList, evaluate},
+  components: {headTop, navLeft, foodList, evaluate, buyCart},
   mounted: function () {
     let self = this
     let restaurantId = this.$route.query.id
@@ -73,5 +75,7 @@ export default {
     flex-direction: row;
     height: 100%;
     width: 100%;
+    padding-bottom: 4rem;
+    position: relative;
   }
 </style>
