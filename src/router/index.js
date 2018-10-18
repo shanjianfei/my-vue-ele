@@ -9,6 +9,7 @@ const shopsGuide = r => require.ensure([], require => r(require('../page/shopsGu
 // const ratingStar = r => require.ensure([], require => r(require('../components/common/ratingStar')), 'ratingStar')
 const shop = r => require.ensure([], require => r(require('../page/shop')), 'shop')
 const shopDetail = r => require.ensure([], require => r(require('../page/shopDetail')), 'shopDetail')
+const order = r => require.ensure([], require => r(require('../page/order')), 'order')
 
 export default new Router({
   routes: [
@@ -36,6 +37,11 @@ export default new Router({
       path: '/shopDetail',
       name: 'shopDetail',
       component: shopDetail
+    },
+    {
+      path: '/order',
+      name: 'order',
+      component: order
     }
   ]
 })

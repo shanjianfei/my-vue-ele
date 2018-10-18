@@ -127,3 +127,15 @@ export const getScore = (restaurantId) => {
       })
   })
 }
+
+export const getRestaurantDetailInfo = (restaurantId) => {
+  let url = 'https://elm.cangdu.org/shopping/restaurant/' + restaurantId
+  return new Promise(function (resolve, reject) {
+    axios.get(url)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  })
+}

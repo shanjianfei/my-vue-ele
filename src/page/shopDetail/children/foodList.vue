@@ -29,12 +29,12 @@
               <span>{{item.specfoods[0].price}}</span>
             </span>
             <span>
-              <svg class="remove-food" @click="removeFood(item.item_id)">
+              <svg class="remove-food" @click="removeFood(item.item_id, item.specfoods[0].price)">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-minus"></use>
               </svg>
-              <span class="food-num" v-if="item.item_id in dishes">{{dishes[item.item_id]}}</span>
+              <span class="food-num" v-if="item.item_id in dishes">{{dishes[item.item_id].numberDishes}}</span>
               <span class="food-num" v-else>0</span>
-              <svg class="add-food" @click="addFood(item.item_id)">
+              <svg class="add-food" @click="addFood(item.item_id, item.specfoods[0].price)">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-add"></use>
               </svg>
             </span>
@@ -59,21 +59,15 @@ export default {
   },
   props: ['food'],
   methods: {
-    ...mapMutations({
-      add: 'incrementNumberDishes',
-      decreate: 'decrementNumberDishes'
-    }),
     ...mapMutations(['updateDishes']),
     getImageUrl: function (path) {
       return getImageUrl(path)
     },
-    addFood: function (itemId) {
-      this.updateDishes({name: 'item', itemId: itemId, flag: 1})
-      this.add()
+    addFood: function (itemId, unitPrice) {
+      this.updateDishes({name: 'item', itemId: itemId, unitPrice: unitPrice, flag: 1})
     },
-    removeFood: function (itemId) {
-      this.updateDishes({name: 'item', itemId: itemId, flag: 0})
-      this.decreate()
+    removeFood: function (itemId, unitPrice) {
+      this.updateDishes({name: 'item', itemId: itemId, unitPrice: unitPrice, flag: 0})
     }
   }
 }

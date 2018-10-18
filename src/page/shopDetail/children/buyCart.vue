@@ -12,21 +12,59 @@
         <p class="delivery-fee">配送费￥{{deliveryFee}}</p>
       </div>
     </section>
-    <span class="pay">还差￥20起送</span>
+    <span class="pay" v-if="distanceOrderAmount > 0">还差￥{{distanceOrderAmount}}起送</span>
+    <router-link class="pay pay-active" @click="" to="/order" v-else>去下单</router-link>
   </div>
 </template>
 <script>
 import {mapState} from 'vuex'
+import {getRestaurantDetailInfo} from '@/service/getData'
 export default {
   data () {
     return {
-      deliveryFee: 0,
-      totalPrice: 0
+      restaurantId: 0, // 商家的id
+      deliveryFee: 0, // 配送费
+      floatMinimumOrderAmount: 0, // 最低起送费
+      numberDishes: 0 // 一共点了几分菜品
+      // distanceOrderAmount: 0 
     }
   },
-  computed: mapState([
-    'numberDishes'
-  ])
+  computed: {
+    ...mapState({
+      dishes: state => state.dishes, 
+      totalPrice: state => state.totalPrice // 点餐费用
+    }),
+    // 距离最低起送费相差金额
+    distanceOrderAmount: function () {
+      return  this.floatMinimumOrderAmount - this.totalPrice
+    }
+  },
+  mounted: function () {
+    this.restaurantId = this.$route.query.id
+    let self = this
+    getRestaurantDetailInfo(this.restaurantId)
+      .then(function (data) {
+        self.deliveryFee = data.float_delivery_fee
+        self.floatMinimumOrderAmount = data.float_minimum_order_amount
+      })
+
+    for(let id in this.dishes) {
+      this.numberDishes += this.dishes[id].numberDishes
+    }
+  },
+  methods: {
+  },
+  watch: {
+    dishes: {
+      handler(newValue, oldValue) {
+        this.numberDishes = 0
+        for(let id in this.dishes) {
+          this.numberDishes += newValue[id].numberDishes
+        }
+      },
+      deep: true
+    }
+  }
   // props: ['deliveryFee', 'totalPrice', 'numberDishes']
 }
 </script>
@@ -90,5 +128,9 @@ export default {
     background-color: #535356;
     color: #fff;
     text-align: center;
+  }
+
+  .pay-active {
+    background-color: #4cd964;
   }
 </style>
