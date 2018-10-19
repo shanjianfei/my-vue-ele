@@ -10,12 +10,13 @@
   </div>
 </template>
 <script>
+import {mapState, mapMutations} from 'vuex'
 import headTop from './children/header'
 import navLeft from './children/navLeft'
 import foodList from './children/foodList'
 import evaluate from './children/evaluate'
 import buyCart from './children/buyCart'
-import {getFoodMenu, getImageUrl, getRatingsTags} from '@/service/getData'
+import {getFoodMenu, getImageUrl, getRatingsTags, getRestaurantDetailInfo} from '@/service/getData'
 export default {
   data () {
     return {
@@ -23,25 +24,35 @@ export default {
       food: {},
       imagePath: '',
       assessmentTags: [],
-      currentComponent: {product: true, evaluate: false}
+      currentComponent: {product: true, evaluate: false} // 商品和评价标签切换
     }
   },
   components: {headTop, navLeft, foodList, evaluate, buyCart},
   mounted: function () {
     let self = this
-    let restaurantId = this.$route.query.id
-    this.imagePath = this.$route.query.imagePath
+    let restaurantId = this.$route.query.shopInfo.id
+    this.imagePath = this.$route.query.shopInfo.image_path
+    let deliveryReachTime = this.$route.query.shopInfo.delivery_reach_time
+    getRestaurantDetailInfo(restaurantId)
+      .then(function (data) {
+        if (!('status' in data && data.status === 0)) {
+          data.delivery_reach_time = deliveryReachTime
+          self.setRestaurantInfo(data)
+        }  
+      })
     getRatingsTags(restaurantId).then(function (data) {
       self.assessmentTags = data
-      console.log(data)
     })
     getFoodMenu(restaurantId).then(function (data) {
       self.foodMenu = data
       self.food = data[0]
-      console.log(self.food)
     })
   },
+  computed: mapState(['currentRestaurantDetailInfo']),
   methods: {
+    ...mapMutations({
+      setRestaurantInfo: 'updateCurrentRestaurantDetailInfo'
+    }),
     changeFoodMenu: function (msg) {
       this.food = msg.food
       console.log(this.food)

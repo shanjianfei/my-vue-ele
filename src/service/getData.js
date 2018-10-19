@@ -27,7 +27,6 @@ export const getShopList = (latitude, longitude, offset, restaurantCategoryId = 
   query = query.slice(0, -1)
   let url = 'https://elm.cangdu.org/shopping/restaurants'
   url += query
-  console.log(url)
   return new Promise(function (resolve, reject) {
     axios.get(url)
       .then(function (response) {
@@ -105,8 +104,6 @@ export const getAssessmentInfo = (restaurantId, tagName, offset, limit) => {
   return new Promise(function (resolve, reject) {
     axios.get(url)
       .then(function (response) {
-        console.log(100)
-        console.log(response)
         if (response.status === 200) {
           resolve(response.data)
         }
@@ -119,8 +116,6 @@ export const getScore = (restaurantId) => {
   return new Promise(function (resolve, reject) {
     axios.get(url)
       .then(function (response) {
-        console.log(101)
-        console.log(response)
         if (response.status === 200) {
           resolve(response.data)
         }
@@ -138,4 +133,8 @@ export const getRestaurantDetailInfo = (restaurantId) => {
         }
       })
   })
+}
+
+export const addToCart = (restaurantId, geohash, entities) => {
+
 }

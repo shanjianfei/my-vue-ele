@@ -14,3 +14,8 @@ export default {
   }
 }
 </script>
+<style>
+  #id {
+    height: 100%;
+  }
+</style>

@@ -44,9 +44,6 @@ export default {
     }
   },
   props: ['restaurantsList'],
-  mounted: function () {
-    console.log(this.restaurantsList)
-  },
   methods: {
     schedule: function (supports) {
       if (supports) {
@@ -66,10 +63,8 @@ export default {
 </script>
 <style>
   .restaurants-list ul, h4 {
-    padding-left: 0.6rem;
-    padding-top: 0;
-    margin-top: 0;
-    margin-bottom: 0;
+    padding: 0;
+    padding: 0;
   }
 
   .restaurants-list li {
@@ -79,8 +74,8 @@ export default {
   .restaurants-list>ul>li {
     display: flex;
     flex-direction: row;
-    margin-top: 2rem;
-    margin-right: 1.5rem;
+    padding: 2rem 1.5rem;
+    border-bottom: 0.1rem solid #f1f1f1;
   }
 
   .shop-info {

@@ -13,7 +13,7 @@
       </div>
     </section>
     <span class="pay" v-if="distanceOrderAmount > 0">还差￥{{distanceOrderAmount}}起送</span>
-    <router-link class="pay pay-active" @click="" to="/order" v-else>去下单</router-link>
+    <router-link class="pay pay-active" @click="" :to="{path: '/order', query: {restaurantId}}" v-else>去下单</router-link>
   </div>
 </template>
 <script>

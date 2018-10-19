@@ -18,5 +18,9 @@
     width: 100%;
     height: 2.8rem;
     z-index: 1000;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
   }
 </style>

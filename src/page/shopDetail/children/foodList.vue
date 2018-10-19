@@ -29,12 +29,12 @@
               <span>{{item.specfoods[0].price}}</span>
             </span>
             <span>
-              <svg class="remove-food" @click="removeFood(item.item_id, item.specfoods[0].price)">
+              <svg class="remove-food" @click="removeFood(restaurantId, item)">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-minus"></use>
               </svg>
-              <span class="food-num" v-if="item.item_id in dishes">{{dishes[item.item_id].numberDishes}}</span>
+              <span class="food-num" v-if="numberDishes[item.item_id]">{{numberDishes[item.item_id]}}</span>
               <span class="food-num" v-else>0</span>
-              <svg class="add-food" @click="addFood(item.item_id, item.specfoods[0].price)">
+              <svg class="add-food" @click="addFood(restaurantId, item)">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-add"></use>
               </svg>
             </span>
@@ -50,12 +50,17 @@ import {mapState, mapMutations} from 'vuex'
 export default {
   data () {
     return {
-
+      restaurantId: null,
+      numberDishes: {}
     }
   },
-  computed: mapState(['dishes']),
+  computed: {
+    ...mapState({
+      dishes: state => state.dishes
+    }),
+  },
   mounted: function () {
-    console.log(this.food.foods)
+    this.restaurantId = this.$route.query.id
   },
   props: ['food'],
   methods: {
@@ -63,11 +68,25 @@ export default {
     getImageUrl: function (path) {
       return getImageUrl(path)
     },
-    addFood: function (itemId, unitPrice) {
-      this.updateDishes({name: 'item', itemId: itemId, unitPrice: unitPrice, flag: 1})
+    addFood: function (restaurantId, item) {
+      this.updateDishes({restaurantId: restaurantId, item: item, flag: 1})
     },
-    removeFood: function (itemId, unitPrice) {
-      this.updateDishes({name: 'item', itemId: itemId, unitPrice: unitPrice, flag: 0})
+    removeFood: function (restaurantId, item) {
+      this.updateDishes({restaurantId: restaurantId, item: item, flag: 0})
+    },
+    setNumberDishes: function () {
+      let foods = this.dishes[this.restaurantId]
+      for (let i in foods) {
+        this.$set(this.numberDishes, foods[i].item_id, foods[i].numberDishes)
+      }
+    }
+  },
+  watch: {
+    dishes: {
+      handler(newValue, oldValue) {
+        this.setNumberDishes()
+      },
+      deep: true
     }
   }
 }
@@ -91,15 +110,16 @@ export default {
   }
 
   .food-list-container ul {
-    padding-left: 0;
+    padding: 0;
+    margin: 0;
     width: 100%;
   }
 
   .food-li {
-    padding: 1rem;
+    padding: 1rem 0.5rem;
     display: flex;
     flex-direction: row;
-    border-bottom: 0.1rem solid #ebebeb;
+    border-bottom: 0.1rem solid #f1f1f1;
     position: relative;
   }
 

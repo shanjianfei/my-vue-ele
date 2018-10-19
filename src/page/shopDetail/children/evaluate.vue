@@ -83,8 +83,6 @@ export default {
     if (this.restaurantId !== 0) {
       getAssessmentInfo(this.restaurantId).then(function (data) {
         self.assessmentInfo = data
-        console.log(222)
-        console.log(data)
       })
       getScore(this.restaurantId).then(function (data) {
         self.compareRating = data.compare_rating.toFixed(3) * 100
