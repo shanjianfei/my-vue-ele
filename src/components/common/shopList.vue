@@ -64,7 +64,7 @@ export default {
 <style>
   .restaurants-list ul, h4 {
     padding: 0;
-    padding: 0;
+    margin: 0;
   }
 
   .restaurants-list li {
@@ -74,21 +74,22 @@ export default {
   .restaurants-list>ul>li {
     display: flex;
     flex-direction: row;
-    padding: 2rem 1.5rem;
+    padding: 1.3rem 0.8rem;
     border-bottom: 0.1rem solid #f1f1f1;
   }
 
   .shop-info {
     width: 100%;
+    margin-left: 1rem;
   }
 
   .shop-info>ul>li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
   }
 
   .shop-img {
-    width: 4rem;
-    height: 4rem;
+    width: 5rem;
+    height: 5rem;
   }
 
   .evaluation {
