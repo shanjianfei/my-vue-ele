@@ -13,7 +13,7 @@
       </div>
     </section>
     <span class="pay" v-if="distanceOrderAmount > 0">还差￥{{distanceOrderAmount}}起送</span>
-    <router-link class="pay pay-active" @click="" :to="{path: '/order', query: {restaurantId}}" v-else>去下单</router-link>
+    <router-link class="pay pay-active" :to="{path: '/order', query: {restaurantId}}" v-else>去下单</router-link>
   </div>
 </template>
 <script>
@@ -25,42 +25,49 @@ export default {
       restaurantId: 0, // 商家的id
       deliveryFee: 0, // 配送费
       floatMinimumOrderAmount: 0, // 最低起送费
-      numberDishes: 0 // 一共点了几分菜品
-      // distanceOrderAmount: 0 
+      numberDishes: 0, // 一共点了几分菜品
+      totalPrice: 0 // 本家店总的点餐费用
     }
   },
   computed: {
     ...mapState({
-      dishes: state => state.dishes, 
-      totalPrice: state => state.totalPrice // 点餐费用
+      dishes: state => state.dishes,
     }),
     // 距离最低起送费相差金额
     distanceOrderAmount: function () {
-      return  this.floatMinimumOrderAmount - this.totalPrice
+      return this.floatMinimumOrderAmount - this.totalPrice
     }
   },
   mounted: function () {
     this.restaurantId = this.$route.query.id
     let self = this
+    this.getNumberDishes(this.dishes)
     getRestaurantDetailInfo(this.restaurantId)
       .then(function (data) {
         self.deliveryFee = data.float_delivery_fee
         self.floatMinimumOrderAmount = data.float_minimum_order_amount
       })
-
-    for(let id in this.dishes) {
-      this.numberDishes += this.dishes[id].numberDishes
-    }
   },
   methods: {
+    getNumberDishes (dishes) {
+      for (let i in dishes) {
+        if (i == this.restaurantId) {
+          this.numberDishes = 0
+          this.totalPrice = 0
+          for (let j in dishes[i]) {
+            console.log(dishes[i])
+            this.numberDishes += dishes[i][j].numberDishes
+            this.totalPrice += (dishes[i][j].specfoods[0].price * dishes[i][j].numberDishes)
+          }
+          
+        }
+      }
+    }
   },
   watch: {
     dishes: {
-      handler(newValue, oldValue) {
-        this.numberDishes = 0
-        for(let id in this.dishes) {
-          this.numberDishes += newValue[id].numberDishes
-        }
+      handler (newValue, oldValue) {
+        this.getNumberDishes(newValue)
       },
       deep: true
     }

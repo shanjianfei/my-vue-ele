@@ -1,6 +1,6 @@
 <template>
   <div class="shop-detail-header-container">
-    <img :src="imagePath">
+    <img :src="getImageUrl(shopInfo.image_path)">
     <div class="head-top">
       <div class="head-top-back-icon" @click="$router.go(-1)">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
@@ -13,7 +13,7 @@
         </svg>
       </div>
       <div class="shop-introduction">
-        <img :src="imagePath">
+        <img :src="getImageUrl(shopInfo.image_path)">
         <section>
           <p>{{shopInfo.name}}</p>
           <p>商家配送／{{shopInfo.order_lead_time}}分钟送达／配送费¥{{shopInfo.float_delivery_fee}}</p>
@@ -32,22 +32,31 @@
   </div>
 </template>
 <script>
+import {mapState} from 'vuex'
+import {getImageUrl} from '@/service/getData'
 export default {
   data () {
     return {
       restaurantId: '',
-      shopInfo: {},
       currentLi: 'product'
     }
   },
-  props: ['geohash', 'id', 'imagePath'],
+  computed: {
+    ...mapState({
+      shopInfo: state => state.currentRestaurantDetailInfo
+    })
+  },
   mounted: function () {
-    this.shopInfo = this.$route.query.shopInfo
+    console.log(this.currentRestaurantDetailInfo)
+    console.log(this.currentRestaurantDetailInfo.image_path)
   },
   methods: {
     changeProductEvaluat: function (option) {
       this.$emit('currentOption', {current: option})
       this.currentLi = option
+    },
+    getImageUrl: function (imagePath) {
+      return getImageUrl(imagePath)
     }
   }
 }

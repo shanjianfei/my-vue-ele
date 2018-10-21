@@ -2,8 +2,8 @@
   <div class="food-list-container">
     <ul>
       <header class="food-header">
-        <span>{{food.name}}</span>
-        <span>{{food.description}}</span>
+        <span>{{currentRestaurantDetailInfo.name}}</span>
+        <span>{{currentRestaurantDetailInfo.description}}</span>
       </header>
       <li class="food-li" v-for="(item, index) in food.foods" :key="index">
         <div class="food-attributes">
@@ -45,22 +45,26 @@
   </div>
 </template>
 <script>
-import {getImageUrl} from '@/service/getData'
+import {getImageUrl, getRestaurantDetailInfo, getFoodMenu} from '@/service/getData'
 import {mapState, mapMutations} from 'vuex'
 export default {
   data () {
     return {
       restaurantId: null,
-      numberDishes: {}
+      numberDishes: {},
     }
   },
   computed: {
     ...mapState({
-      dishes: state => state.dishes
+      dishes: state => state.dishes,
+      currentRestaurantDetailInfo: state => state.currentRestaurantDetailInfo
     }),
   },
   mounted: function () {
+    let self = this
     this.restaurantId = this.$route.query.id
+    console.log(100)
+    console.log(this.currentRestaurantDetailInfo)
   },
   props: ['food'],
   methods: {

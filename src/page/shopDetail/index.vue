@@ -1,6 +1,6 @@
 <template>
   <div class="shop-detail-container">
-    <head-top :imagePath="getImageUrl(imagePath)" @currentOption="changeCurrentComponent"></head-top>
+    <head-top @currentOption="changeCurrentComponent"></head-top>
     <section class="menu-food-container" v-show="currentComponent.product">
       <nav-left :foodMenu="foodMenu" @changeFoodMenu="changeFoodMenu"></nav-left>
       <food-list :food="food"></food-list>
@@ -28,18 +28,24 @@ export default {
     }
   },
   components: {headTop, navLeft, foodList, evaluate, buyCart},
-  mounted: function () {
+  created: function () {
     let self = this
-    let restaurantId = this.$route.query.shopInfo.id
-    this.imagePath = this.$route.query.shopInfo.image_path
-    let deliveryReachTime = this.$route.query.shopInfo.delivery_reach_time
+    let restaurantId = this.$route.query.id
     getRestaurantDetailInfo(restaurantId)
       .then(function (data) {
         if (!('status' in data && data.status === 0)) {
-          data.delivery_reach_time = deliveryReachTime
+          // data.delivery_reach_time = deliveryReachTime
+          // self.$store.commit('setRestaurantInfo', data)
           self.setRestaurantInfo(data)
-        }  
+          console.log(self.currentRestaurantDetailInfo)
+        }
       })
+  },
+  mounted: function () {
+    let self = this
+    let restaurantId = this.$route.query.id
+    this.imagePath = this.$route.query.shopInfo.image_path
+    let deliveryReachTime = this.$route.query.shopInfo.delivery_reach_time
     getRatingsTags(restaurantId).then(function (data) {
       self.assessmentTags = data
     })
@@ -55,7 +61,6 @@ export default {
     }),
     changeFoodMenu: function (msg) {
       this.food = msg.food
-      console.log(this.food)
     },
     changeCurrentComponent: function (msg) {
       if (msg.current === 'product') {
