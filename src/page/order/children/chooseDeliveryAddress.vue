@@ -1,13 +1,19 @@
 <template>
-  <div>
+  <div class="choose-delivery-address">
     <head-top class="header">
       <section slot="head-goback" class="head-goback" @click="$router.go(-1)">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
           <polyline points="12,18 4,9 12,0" style="fill:none;stroke:rgb(255,255,255);stroke-width:2"/>
         </svg>
       </section>
-      <span class="point-title" slot="point-title">确认订单</span>
+      <span class="point-title" slot="point-title">选择地址</span>
     </head-top>
+    <div class="cda-add-address">
+      <span>
+        <img src="@/images/add_address.png">
+        <span>新增收货地址</span>
+      </span>
+    </div>
   </div>
 </template>
 <script>

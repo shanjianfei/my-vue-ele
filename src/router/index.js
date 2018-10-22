@@ -10,6 +10,7 @@ const shopsGuide = r => require.ensure([], require => r(require('../page/shopsGu
 const shop = r => require.ensure([], require => r(require('../page/shop')), 'shop')
 const shopDetail = r => require.ensure([], require => r(require('../page/shopDetail')), 'shopDetail')
 const order = r => require.ensure([], require => r(require('../page/order')), 'order')
+const chooseDeliveryAddress = r => require.ensure([], require => r(require('../page/order/children/chooseDeliveryAddress')), 'chooseDeliveryAddress')
 
 export default new Router({
   routes: [
@@ -42,6 +43,12 @@ export default new Router({
       path: '/order',
       name: 'order',
       component: order
+    },
+    {
+      path: '/chooseDeliveryAddress',
+      name: 'chooseDeliveryAddress',
+      component: chooseDeliveryAddress
     }
+
   ]
 })

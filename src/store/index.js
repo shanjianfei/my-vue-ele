@@ -9,24 +9,24 @@ const state = {
   // {restaurantId: [{id:1, specfoods:[]}]}
 }
 
-function deepCopy(o) {
+function deepCopy (o) {
   if (o instanceof Array) {
-    var n = [];
+    var n = []
     for (var i = 0; i < o.length; ++i) {
-        n[i] = deepCopy(o[i]);
+        n[i] = deepCopy(o[i])
     }
-    return n;
+    return n
   } else if (o instanceof Function) {
-    var n = new Function("return " + o.toString())();
+    var n = new Function("return " + o.toString())()
     return n
   } else if (o instanceof Object) {
     var n = {}
     for (var i in o) {
-        n[i] = deepCopy(o[i]);
+        n[i] = deepCopy(o[i])
     }
-    return n;
+    return n
   } else {
-    return o;
+    return o
   }
 }
 

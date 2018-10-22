@@ -113,12 +113,6 @@ export default {
     overflow: auto;
   }
 
-  .food-list-container ul {
-    padding: 0;
-    margin: 0;
-    width: 100%;
-  }
-
   .food-li {
     padding: 1rem 0.5rem;
     display: flex;

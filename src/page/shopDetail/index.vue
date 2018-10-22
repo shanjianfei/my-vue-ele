@@ -45,7 +45,7 @@ export default {
     let self = this
     let restaurantId = this.$route.query.id
     this.imagePath = this.$route.query.shopInfo.image_path
-    let deliveryReachTime = this.$route.query.shopInfo.delivery_reach_time
+    // let deliveryReachTime = this.$route.query.shopInfo.delivery_reach_time
     getRatingsTags(restaurantId).then(function (data) {
       self.assessmentTags = data
     })
