@@ -8,17 +8,20 @@
       </section>
       <span class="point-title" slot="point-title">选择地址</span>
     </head-top>
-    <div class="cda-add-address">
-      <span>
-        <img src="@/images/add_address.png">
-        <span>新增收货地址</span>
-      </span>
+    <div class="cda-add-address" @click="addNewAddress">
+      <img class="add-icon" src="@/images/add_address.png">
+      <span>新增收货地址</span>
     </div>
   </div>
 </template>
 <script>
 import headTop from '@/components/head/head'
 export default {
+  methods: {
+    addNewAddress: function () {
+
+    }
+  },
   components: {headTop}
 }
 </script>
@@ -42,5 +45,25 @@ export default {
     transform: translate(-50%, -50%);
     color: #fff;
     font-size: 1.5rem;
+  }
+
+  .cda-add-address {
+    position: fixed;
+    bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .add-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 1rem;
+  }
+
+  .cda-add-address > span {
+    font-size: 1.3rem;
+    color: #3190e8;
   }
 </style>

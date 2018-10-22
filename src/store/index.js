@@ -5,24 +5,23 @@ Vue.use(Vuex)
 
 const state = {
   currentRestaurantDetailInfo: {},
-  dishes: {}, // {1: {unitPrice: 10, numberDishes: 2}}, unitPrice是单价， numberDishe是点了几份
-  // {restaurantId: [{id:1, specfoods:[]}]}
+  dishes: {} // {restaurantId: [{id:1, specfoods:[]}]}
 }
 
 function deepCopy (o) {
   if (o instanceof Array) {
-    var n = []
-    for (var i = 0; i < o.length; ++i) {
-        n[i] = deepCopy(o[i])
+    let n = []
+    for (let i = 0; i < o.length; ++i) {
+      n[i] = deepCopy(o[i])
     }
     return n
   } else if (o instanceof Function) {
-    var n = new Function("return " + o.toString())()
+    let n = new Function('return ' + o.toString())()
     return n
   } else if (o instanceof Object) {
-    var n = {}
-    for (var i in o) {
-        n[i] = deepCopy(o[i])
+    let n = {}
+    for (let i in o) {
+      n[i] = deepCopy(o[i])
     }
     return n
   } else {
@@ -58,7 +57,7 @@ const mutations = {
           let value = food.item
           value.numberDishes = 1
           foods.push(value)
-          }
+        }
       }
     } else if (flag === 0) {
       if (restaurantId in state.dishes) {
@@ -66,7 +65,7 @@ const mutations = {
           if (foodId === foods[i].item_id) {
             let value = deepCopy(foods[i])
             let _n = value.numberDishes
-            value.numberDishes = _n > 0? (_n - 1): 0
+            value.numberDishes = _n > 0 ? (_n - 1) : 0
             Vue.set(foods, i, value)
             break
           }

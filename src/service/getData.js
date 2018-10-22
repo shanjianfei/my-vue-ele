@@ -135,7 +135,6 @@ export const getRestaurantDetailInfo = (restaurantId) => {
   })
 }
 
-// 
 export const addToCart = (restaurantId, geohash, entities) => {
   let url = 'https://elm.cangdu.org/v1/carts/checkout'
   return new Promise(function (resolve, reject) {
@@ -144,10 +143,10 @@ export const addToCart = (restaurantId, geohash, entities) => {
       geohash: geohash,
       entities: entities
     })
-    .then(function (response) {
-      if (response.status === 200) {
-        resolve(response.data)
-      }
-    })
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
   })
 }

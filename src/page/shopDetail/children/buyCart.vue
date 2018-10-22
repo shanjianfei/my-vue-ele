@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     ...mapState({
-      dishes: state => state.dishes,
+      dishes: state => state.dishes
     }),
     // 距离最低起送费相差金额
     distanceOrderAmount: function () {
@@ -51,7 +51,7 @@ export default {
   methods: {
     getNumberDishes (dishes) {
       for (let i in dishes) {
-        if (i == this.restaurantId) {
+        if (i === this.restaurantId) {
           this.numberDishes = 0
           this.totalPrice = 0
           for (let j in dishes[i]) {
@@ -59,7 +59,6 @@ export default {
             this.numberDishes += dishes[i][j].numberDishes
             this.totalPrice += (dishes[i][j].specfoods[0].price * dishes[i][j].numberDishes)
           }
-          
         }
       }
     }

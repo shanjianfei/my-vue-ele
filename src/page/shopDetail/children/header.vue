@@ -46,10 +46,6 @@ export default {
       shopInfo: state => state.currentRestaurantDetailInfo
     })
   },
-  mounted: function () {
-    console.log(this.currentRestaurantDetailInfo)
-    console.log(this.currentRestaurantDetailInfo.image_path)
-  },
   methods: {
     changeProductEvaluat: function (option) {
       this.$emit('currentOption', {current: option})

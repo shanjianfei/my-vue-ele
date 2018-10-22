@@ -9,7 +9,7 @@
       </section>
       <span class="point-title" slot="point-title">确认订单</span>
     </head-top>
-    <section class="order-container">
+    <section class="order-container" v-if="checkData">
       <router-link to="/chooseDeliveryAddress" class="add-delivery-address-container">
         <section>
           <svg data-v-4e0d5034="" class="location_icon">
@@ -49,14 +49,14 @@
           <span>{{shopInfo.name}}</span>
         </header>
         <ul class="food-list-ul">
-          <li class="food-list-li" v-for="(item, index) in dishes[shopInfo.id]" :key="index">
+          <li class="food-list-li" v-for="item in dishes[shopInfo.id]" :key="item.restaurant_id">
             <span class="food-name">{{item.name}}</span>
             <section class="num-price-container">
               <span>x {{item.numberDishes}}</span>
               <span>￥{{item.specfoods[0].price}}</span>
             </section>
           </li>
-          <li class="food-list-li" v-for="(item, index) in checkData.cart.extra" :key="index">
+          <li class="food-list-li" v-for="(item, index) in checkData.cart.extra" :key="index + 'food'">
             <span>{{item.name}}</span>
             <span>￥{{item.price}}</span>
           </li>
@@ -98,14 +98,14 @@
         </section>
       </section>
     </section>
-    <div class="order-footer">
+    <div class="order-footer" v-if="checkData">
       <span>待支付￥{{checkData.cart.total}}</span>
       <router-link to="/a">确认下单</router-link>
     </div>
   </div>
 </template>
 <script>
-import {mapState} from  'vuex'
+import {mapState} from 'vuex'
 import headTop from '@/components/head/head'
 import {getImageUrl, addToCart} from '@/service/getData'
 export default {
@@ -126,28 +126,24 @@ export default {
     let restaurantId = this.shopInfo.id
     let geohash = this.shopInfo.latitude + ',' + this.shopInfo.longitude
     let entities = []
-    for (let i in this.dishes) {
-      if (i == restaurantId) {
-        for (let j in this.dishes[i]) {
-          let foodInfo = {attrs:[],extra:{}}
-          foodInfo.id = this.dishes[i][j].item_id
-          foodInfo.name = this.dishes[i][j].name
-          foodInfo.packing_fee = this.dishes[i][j].specfoods[0].packing_fee
-          foodInfo.price = this.dishes[i][j].specfoods[0].price
-          foodInfo.quantity = this.dishes[i][j].numberDishes
-          foodInfo.sku_id = this.dishes[i][j].specfoods[0].sku_id
-          foodInfo.specs = this.dishes[i][j].specfoods[0].specs
-          foodInfo.stock = this.dishes[i][j].specfoods[0].stock
-          entities.push([foodInfo])
-        }
-        break
+    if (restaurantId in this.dishes) {
+      for (let i in this.dishes[restaurantId]) {
+        let foodInfo = {attrs: [], extra: {}}
+        foodInfo.id = this.dishes[restaurantId][i].item_id
+        foodInfo.name = this.dishes[restaurantId][i].name
+        foodInfo.packing_fee = this.dishes[restaurantId][i].specfoods[0].packing_fee
+        foodInfo.price = this.dishes[restaurantId][i].specfoods[0].price
+        foodInfo.quantity = this.dishes[restaurantId][i].numberDishes
+        foodInfo.sku_id = this.dishes[restaurantId][i].specfoods[0].sku_id
+        foodInfo.specs = this.dishes[restaurantId][i].specfoods[0].specs
+        foodInfo.stock = this.dishes[restaurantId][i].specfoods[0].stock
+        entities.push([foodInfo])
       }
     }
     addToCart(restaurantId, geohash, entities)
-    .then(function (data) {
-      self.checkData = data
-      console.log(data)
-    })
+      .then(function (data) {
+        self.checkData = data
+      })
   },
   methods: {
     getImageUrl: function (imagePath) {

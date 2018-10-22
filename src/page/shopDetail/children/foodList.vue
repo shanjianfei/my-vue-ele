@@ -45,26 +45,23 @@
   </div>
 </template>
 <script>
-import {getImageUrl, getRestaurantDetailInfo, getFoodMenu} from '@/service/getData'
+import {getImageUrl} from '@/service/getData'
 import {mapState, mapMutations} from 'vuex'
 export default {
   data () {
     return {
       restaurantId: null,
-      numberDishes: {},
+      numberDishes: {}
     }
   },
   computed: {
     ...mapState({
       dishes: state => state.dishes,
       currentRestaurantDetailInfo: state => state.currentRestaurantDetailInfo
-    }),
+    })
   },
   mounted: function () {
-    let self = this
     this.restaurantId = this.$route.query.id
-    console.log(100)
-    console.log(this.currentRestaurantDetailInfo)
   },
   props: ['food'],
   methods: {
@@ -87,7 +84,7 @@ export default {
   },
   watch: {
     dishes: {
-      handler(newValue, oldValue) {
+      handler () {
         this.setNumberDishes()
       },
       deep: true
