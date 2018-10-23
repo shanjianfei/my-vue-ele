@@ -19,7 +19,7 @@ import headTop from '@/components/head/head'
 export default {
   methods: {
     addNewAddress: function () {
-
+      this.$router.push('/addAddress')
     }
   },
   components: {headTop}
