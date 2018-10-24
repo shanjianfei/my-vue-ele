@@ -13,17 +13,17 @@
         <span class="contact-left">联系人</span>
         <span class="contact-right name-sex">
           <p class="contact-name">
-            <input class="contact-input" type="text" name="contact-name" placeholder="你的名字">
+            <input class="contact-input" type="text" name="contact-name" placeholder="你的名字" v-model="username">
           </p>
           <p class="contact-sex">
-            <input type="radio" name="contact-sex" value="1">先生
-            <input type="radio" name="contact-sex" value="0">女士
+            <input type="radio" name="contact-sex" v-model="sex" value="1">先生
+            <input type="radio" name="contact-sex" v-model="sex" value="0">女士
           </p>
         </span>
       </p>
       <p class="contact contact-tel">
         <span class="contact-left">联系电话</span>
-        <input class="contact-right contact-input" type="text" name="contact-tel" placeholder="你的手机号码">
+        <input class="contact-right contact-input" type="text" name="contact-tel" placeholder="你的手机号码" v-model="telNum">
       </p>
       <p class="contact delivery-address">
         <span class="contact-left">送餐地址</span>
@@ -34,15 +34,24 @@
       </p>
       <p class="contact">
         <span class="contact-left">标签</span>
-        <input class="contact-right contact-input" type="text" placeholder="无/家/学校/公司">
+        <input class="contact-right contact-input" type="text" placeholder="无/家/学校/公司" v-model="address">
       </p>
     </div>
-    <button class="contact-submit">确定</button>
+    <div class="contact-submit">确定</div>
   </div>
 </template>
 <script>
 import headTop from '@/components/head/head'
 export default {
+  data () {
+    return {
+      username: null,
+      sex: 1,
+      telNum: null,
+      address: null
+
+    }
+  },
   components: {headTop}
 }
 </script>
@@ -102,5 +111,16 @@ export default {
 
   .search-contact-address {
     height: 2rem;
+  }
+
+  .contact-submit {
+    line-height: 3rem;
+    color: #fff;
+    border-radius: 0.5rem;
+    border: 0;
+    background-color: #4cd964;
+    margin: 0 1rem;
+    margin-top: 1rem;
+    text-align: center;
   }
 </style>
