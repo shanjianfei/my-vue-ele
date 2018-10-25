@@ -95,7 +95,6 @@ export default {
   .contact-right {
     flex: 7;
   }
-  
   .contact-input{
     border: 0;
     outline: none;
@@ -103,7 +102,6 @@ export default {
     width: 100%;
     padding: 0;
   }
-  
   .contact-sex, .contact-address {
     padding: 0.5rem 0;
     border-top: 0.05rem solid #f1f1f1;
