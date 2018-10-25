@@ -51,11 +51,10 @@ export default {
   methods: {
     getNumberDishes (dishes) {
       for (let i in dishes) {
-        if (i === this.restaurantId) {
+        if (parseInt(i) === this.restaurantId) {
           this.numberDishes = 0
           this.totalPrice = 0
           for (let j in dishes[i]) {
-            console.log(dishes[i])
             this.numberDishes += dishes[i][j].numberDishes
             this.totalPrice += (dishes[i][j].specfoods[0].price * dishes[i][j].numberDishes)
           }

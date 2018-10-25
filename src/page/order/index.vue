@@ -142,7 +142,11 @@ export default {
     }
     addToCart(restaurantId, geohash, entities)
       .then(function (data) {
-        self.checkData = data
+        if (!('status' in data && data.status === 0)) {
+          self.checkData = data
+        }  
+        console.log(1)
+        console.log(data)
       })
   },
   methods: {

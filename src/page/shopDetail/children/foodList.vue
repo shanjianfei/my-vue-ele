@@ -70,6 +70,7 @@ export default {
       return getImageUrl(path)
     },
     addFood: function (restaurantId, item) {
+      console.log(item)
       this.updateDishes({restaurantId: restaurantId, item: item, flag: 1})
     },
     removeFood: function (restaurantId, item) {
