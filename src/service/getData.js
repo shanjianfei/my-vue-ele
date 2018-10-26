@@ -150,3 +150,13 @@ export const addToCart = (restaurantId, geohash, entities) => {
       })
   })
 }
+
+export const searchAddress = (keyword, type ) => {
+  let url = 'https://elm.cangdu.org/v1/pois?keyword=' + keyword + '&type=' + type
+  return new Promise(function (resolve, reject) {
+    axios.get(url)
+      .then(function (response) {
+        resolve(response.data)
+      })
+  })
+}

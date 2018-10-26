@@ -144,9 +144,7 @@ export default {
       .then(function (data) {
         if (!('status' in data && data.status === 0)) {
           self.checkData = data
-        }  
-        console.log(1)
-        console.log(data)
+        }
       })
   },
   methods: {

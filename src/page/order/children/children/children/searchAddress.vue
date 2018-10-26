@@ -9,21 +9,42 @@
       <span class="point-title" slot="point-title">搜索</span>
     </head-top>
     <div class="search-container">
-      <input class="search-address-input" type="text" name="search-address" placeholder="请输入小区/写字楼/学校等">
-      <button class="search-address-button">搜索</button>
+      <input class="search-address-input" type="text" name="search-address" placeholder="请输入小区/写字楼/学校等" v-model="keyword">
+      <button class="search-address-button" @click="search">搜索</button>
+    </div>
+    <div class="search-results"></div>
+    <div class="search-tips">
+      <p>找不到地址？</p>
+      <p>尝试输入小区、写字楼或学校名</p>
+      <p>详细地址（如门牌号等）可稍后输入哦</p>
     </div>
   </div>
 </template>
 <script>
 import headTop from '@/components/head/head'
+import {searchAddress} from '@/service/getData'
 export default {
   data () {
-    return {}
+    return {
+      keyword: ''
+    }
+  },
+  methods: {
+    search: function () {
+      searchAddress(this.keyword, 'nearby')
+        .then(function (data) {
+          console.log(data)
+        })
+    }
   },
   components: {headTop}
 }
 </script>
 <style>
+  .search-address {
+    height: 100%;
+    background-color: #fff;
+  }
   .head-goback {
     left: 0.4rem;
     width: 1.2rem;
@@ -46,11 +67,37 @@ export default {
   .search-container {
     display: flex;
     flex-direction: row;
+    padding-top: 4rem;
+    height: 3rem;
   }
   .search-address-input {
-    flex: 7;
+    flex: 8;
+    font-size: 1.2rem;
+    margin: 0 1rem;
+    border-radius: 0.5rem;
+    border: 0;
+    background-color: #f1f1f1;
   }
   .search-address-button {
-    flex: 3;
+    flex: 2;
+    margin-right: 1rem;
+    border-radius: 0.5rem;
+    border: 0;
+    background-color: #3190e8;
+    font-size: 1.2rem;
+    color: #fff;
+  }
+  .search-tips {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%
+  }
+  .search-tips > p {
+    color: #aaa;
   }
 </style>
