@@ -3,7 +3,7 @@ import Vue from 'vue'
 
 Vue.use(Vuex)
 
-const state = {
+const stateShopDetail = {
   currentRestaurantDetailInfo: {},
   dishes: {} // {restaurantId: [{id:1, specfoods:[]}]}
 }
@@ -29,7 +29,7 @@ function deepCopy (o) {
   }
 }
 
-const mutations = {
+const mutationsShopDetail = {
   updateDishes (state, food) {
     let restaurantId = food.restaurantId
     let foodId = food.item.item_id
@@ -78,7 +78,27 @@ const mutations = {
   }
 }
 
+const shopDetail = {
+  state: stateShopDetail,
+  mutations: mutationsShopDetail
+}
+
+const addAddress = {
+  state: {
+    deliveryAddress: null
+  },
+  mutations: {
+    updateDeliveryAddress: function (state, deliveryAddress) {
+      state.deliveryAddress = deliveryAddress
+      console.log(state)
+      console.log(1)
+    }
+  }
+}
+
 export default new Vuex.Store({
-  state,
-  mutations
+  modules: {
+    shopDetail: shopDetail,
+    addAddress: addAddress
+  }
 })

@@ -12,8 +12,15 @@
       <input class="search-address-input" type="text" name="search-address" placeholder="请输入小区/写字楼/学校等" v-model="keyword">
       <button class="search-address-button" @click="search">搜索</button>
     </div>
-    <div class="search-results"></div>
-    <div class="search-tips">
+    <div class="search-results" v-if="searchResults">
+      <ul class="search-results-ul">
+        <li class="search-results-li" v-for="(item, index) in searchResults" :key="index" @click="chooseDeliveryAddress(item)">
+          <p>{{item.name}}</p>
+          <p>{{item.address}}</p>
+        </li>
+      </ul>
+    </div>
+    <div class="search-tips" v-if="!searchResults">
       <p>找不到地址？</p>
       <p>尝试输入小区、写字楼或学校名</p>
       <p>详细地址（如门牌号等）可稍后输入哦</p>
@@ -23,17 +30,26 @@
 <script>
 import headTop from '@/components/head/head'
 import {searchAddress} from '@/service/getData'
+import {mapState, mapMutations} from 'vuex'
 export default {
   data () {
     return {
-      keyword: ''
+      keyword: '',
+      searchResults: null
     }
   },
+  computed: mapState({
+    deliveryAddress: state => state.addAddress.deliveryAddress
+  }),
   methods: {
+    ...mapMutations({
+      chooseDeliveryAddress: 'updateDeliveryAddress'
+    }),
     search: function () {
+      let self = this
       searchAddress(this.keyword, 'nearby')
         .then(function (data) {
-          console.log(data)
+          self.searchResults = data
         })
     }
   },
@@ -77,6 +93,8 @@ export default {
     border-radius: 0.5rem;
     border: 0;
     background-color: #f1f1f1;
+    color: #999;
+    padding: 0 0.5rem;
   }
   .search-address-button {
     flex: 2;
@@ -99,5 +117,16 @@ export default {
   }
   .search-tips > p {
     color: #aaa;
+  }
+  .search-results-li {
+    padding: 1rem;
+    border-bottom: 0.1rem solid #f1f1f1;
+  }
+  .search-results-li > p:first-child {
+    color: #555;
+    font-size: 1.2rem;
+  }
+  .search-results-li > p:last-child {
+    color: #999;
   }
 </style>

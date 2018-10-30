@@ -37,7 +37,7 @@
         <input class="contact-right contact-input" type="text" placeholder="无/家/学校/公司" v-model="address">
       </p>
     </div>
-    <div class="contact-submit">确定s</div>
+    <div class="contact-submit">确定</div>
   </div>
 </template>
 <script>
