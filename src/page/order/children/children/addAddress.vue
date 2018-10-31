@@ -28,7 +28,10 @@
       <p class="contact delivery-address">
         <span class="contact-left">送餐地址</span>
         <span class="contact-right">
-          <router-link class="search-contact-address" to="/searchAddress" tag="div">小区/写字楼/学校等</router-link>
+          <router-link class="search-contact-address" to="/searchAddress" tag="div">
+            <span v-if="deliveryAddress">{{deliveryAddress.name}}</span>
+            <span v-else>小区/写字楼/学校等</span>
+          </router-link>
           <input class="contact-input contact-address" type="text" name="contact-address" placeholder="详细地址（如门牌号等）">
         </span>
       </p>
@@ -42,6 +45,7 @@
 </template>
 <script>
 import headTop from '@/components/head/head'
+import {mapState} from 'vuex'
 export default {
   data () {
     return {
@@ -52,6 +56,9 @@ export default {
 
     }
   },
+  computed: mapState({
+    deliveryAddress: state => state.addAddress.deliveryAddress
+  }),
   components: {headTop}
 }
 </script>

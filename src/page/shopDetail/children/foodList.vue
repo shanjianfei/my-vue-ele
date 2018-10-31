@@ -56,8 +56,8 @@ export default {
   },
   computed: {
     ...mapState({
-      dishes: state => state.dishes,
-      currentRestaurantDetailInfo: state => state.currentRestaurantDetailInfo
+      dishes: state => state.shopDetail.dishes,
+      currentRestaurantDetailInfo: state => state.shopDetail.currentRestaurantDetailInfo
     })
   },
   mounted: function () {

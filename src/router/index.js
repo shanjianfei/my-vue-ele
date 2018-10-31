@@ -13,6 +13,8 @@ const order = r => require.ensure([], require => r(require('../page/order')), 'o
 const chooseDeliveryAddress = r => require.ensure([], require => r(require('../page/order/children/chooseDeliveryAddress')), 'chooseDeliveryAddress')
 const addAddress = r => require.ensure([], require => r(require('../page/order/children/children/addAddress')), 'addAddress')
 const searchAddress = r => require.ensure([], require => r(require('../page/order/children/children/children/searchAddress')), 'searchAddress')
+const orderComments = r => require.ensure([], require => r(require('../page/order/children/orderComments')), 'orderComments')
+const login = r => require.ensure([], require => r(require('../page/login')), 'login')
 
 export default new Router({
   routes: [
@@ -60,6 +62,16 @@ export default new Router({
       path: '/searchAddress',
       name: 'searchAddress',
       component: searchAddress
+    },
+    {
+      path: '/orderComments',
+      name: 'orderComments',
+      component: orderComments
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
     }
   ]
 })

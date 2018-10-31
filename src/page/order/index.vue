@@ -75,7 +75,7 @@
       </section>
       <section class="order-content-footer">
         <section class="order-remarks">
-          <span>订单备注</span>
+          <router-link :to="{path: '/orderComments', query: checkData.cart.id}" tag="span">订单备注</router-link>
           <span class="order-remarks-right">
             <span>口味、偏好等</span>
             <span>
@@ -117,8 +117,8 @@ export default {
   },
   computed: {
     ...mapState({
-      shopInfo: state => state.currentRestaurantDetailInfo,
-      dishes: state => state.dishes
+      shopInfo: state => state.shopDetail.currentRestaurantDetailInfo,
+      dishes: state => state.shopDetail.dishes
     })
   },
   mounted: function () {
@@ -144,12 +144,17 @@ export default {
       .then(function (data) {
         if (!('status' in data && data.status === 0)) {
           self.checkData = data
+          console.log(1)
+          console.log(data)
         }
       })
   },
   methods: {
     getImageUrl: function (imagePath) {
       return getImageUrl(imagePath)
+    },
+    fillOrderNotes: function () {
+
     }
   },
   components: {headTop}

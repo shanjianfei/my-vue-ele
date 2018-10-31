@@ -14,7 +14,7 @@
     </div>
     <div class="search-results" v-if="searchResults">
       <ul class="search-results-ul">
-        <li class="search-results-li" v-for="(item, index) in searchResults" :key="index" @click="chooseDeliveryAddress(item)">
+        <li class="search-results-li" v-for="(item, index) in searchResults" :key="index" @click="choose(item)">
           <p>{{item.name}}</p>
           <p>{{item.address}}</p>
         </li>
@@ -51,6 +51,10 @@ export default {
         .then(function (data) {
           self.searchResults = data
         })
+    },
+    choose: function (item) {
+      this.chooseDeliveryAddress(item)
+      this.$router.go(-1)
     }
   },
   components: {headTop}

@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     ...mapState({
-      dishes: state => state.dishes
+      dishes: state => state.shopDetail.dishes
     }),
     // 距离最低起送费相差金额
     distanceOrderAmount: function () {
@@ -39,7 +39,7 @@ export default {
     }
   },
   mounted: function () {
-    this.restaurantId = this.$route.query.id
+    this.restaurantId = parseInt(this.$route.query.id)
     let self = this
     this.getNumberDishes(this.dishes)
     getRestaurantDetailInfo(this.restaurantId)
@@ -51,10 +51,14 @@ export default {
   methods: {
     getNumberDishes (dishes) {
       for (let i in dishes) {
+        console.log('bcd')
+        console.log(i)
+        console.log(this.restaurantId)
         if (parseInt(i) === this.restaurantId) {
           this.numberDishes = 0
           this.totalPrice = 0
           for (let j in dishes[i]) {
+            console.log('abc')
             this.numberDishes += dishes[i][j].numberDishes
             this.totalPrice += (dishes[i][j].specfoods[0].price * dishes[i][j].numberDishes)
           }

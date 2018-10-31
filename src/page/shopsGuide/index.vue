@@ -64,7 +64,6 @@ export default {
             foodArr[j] = resArr.splice(0, 8)
           }
           self.foodsRecommand = foodArr
-          console.log(foodArr)
         }
       })
       .then(function () {
@@ -82,7 +81,6 @@ export default {
       .then(function (response) {
         if (response.status === 200) {
           self.restaurantsList = response.data
-          console.log(response.data)
         }
       })
   },

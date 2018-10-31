@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     ...mapState({
-      shopInfo: state => state.currentRestaurantDetailInfo
+      shopInfo: state => state.shopDetail.currentRestaurantDetailInfo
     })
   },
   methods: {

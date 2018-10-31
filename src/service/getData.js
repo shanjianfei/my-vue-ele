@@ -151,12 +151,35 @@ export const addToCart = (restaurantId, geohash, entities) => {
   })
 }
 
-export const searchAddress = (keyword, type ) => {
+export const searchAddress = (keyword, type) => {
   let url = 'https://elm.cangdu.org/v1/pois?keyword=' + keyword + '&type=' + type
   return new Promise(function (resolve, reject) {
     axios.get(url)
       .then(function (response) {
         resolve(response.data)
+      })
+  })
+}
+
+export const getRemarks = cartId => {
+  let url = 'https://elm.cangdu.org/v1/carts/' + cartId + '/remarks'
+  return new Promise(function (resolve, reject) {
+    axios.get(url)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  })
+}
+
+export const getCaptcha = () => {
+  return new Promise(function (resolve, reject) {
+    axios.post(url)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
       })
   })
 }

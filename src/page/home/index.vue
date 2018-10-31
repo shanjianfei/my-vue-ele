@@ -2,7 +2,7 @@
   <div>
     <head-top>
       <span slot="logo" class="head_logo">ele.me</span>
-      <span slot="login" class="head_login">注册|登录</span>
+      <span slot="login" class="head_login" @click="login">注册|登录</span>
     </head-top>
     <div class="city_nav">
       <div class="city_tip">
@@ -90,7 +90,9 @@ export default {
     }
   },
   methods: {
-
+    login: function () {
+      this.$router.push('/login')
+    }
   },
   components: {
     headTop

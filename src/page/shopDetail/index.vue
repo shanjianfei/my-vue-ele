@@ -34,10 +34,7 @@ export default {
     getRestaurantDetailInfo(restaurantId)
       .then(function (data) {
         if (!('status' in data && data.status === 0)) {
-          // data.delivery_reach_time = deliveryReachTime
-          // self.$store.commit('setRestaurantInfo', data)
           self.setRestaurantInfo(data)
-          console.log(self.currentRestaurantDetailInfo)
         }
       })
   },
@@ -45,7 +42,6 @@ export default {
     let self = this
     let restaurantId = this.$route.query.id
     this.imagePath = this.$route.query.shopInfo.image_path
-    // let deliveryReachTime = this.$route.query.shopInfo.delivery_reach_time
     getRatingsTags(restaurantId).then(function (data) {
       self.assessmentTags = data
     })
@@ -54,7 +50,9 @@ export default {
       self.food = data[0]
     })
   },
-  computed: mapState(['currentRestaurantDetailInfo']),
+  computed: mapState({
+    currentRestaurantDetailInfo: state => state.shopDetail.currentRestaurantDetailInfo
+  }),
   methods: {
     ...mapMutations({
       setRestaurantInfo: 'updateCurrentRestaurantDetailInfo'
