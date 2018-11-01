@@ -1,7 +1,7 @@
 <template>
   <div class="shops-guide">
     <head-top class="header">
-      <router-link slot="head-search" class="head-search" to="/abc">
+      <router-link slot="head-search" class="head-search" :to="'/search/' + geohash">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
           <circle cx="8" cy="8" r="7" stroke="rgb(255,255,255)" stroke-width="1" fill="none"/>
           <line x1="14" y1="14" x2="20" y2="20" style="stroke:rgb(255,255,255);stroke-width:2"/>
@@ -46,11 +46,12 @@ export default {
       foodsRecommandBaseUrl: 'https://fuss10.elemecdn.com',
       foodsRecommand: [],
       pointTitle: '',
-      restaurantsList: []
+      restaurantsList: [],
+      geohash: ''
     }
   },
   mounted: function () {
-    var geohash = this.$route.query.geohash
+    this.geohash = this.$route.query.geohash
     this.pointTitle = this.$route.query.name
     var urlRecommand = 'https://elm.cangdu.org/v2/index_entry'
     var self = this
@@ -74,8 +75,8 @@ export default {
       })
     // 获取 shops
     var urlRestaurantBase = 'https://elm.cangdu.org/shopping/restaurants'
-    var latitude = geohash.split(',')[0]
-    var longitude = geohash.split(',')[1]
+    var latitude = this.geohash.split(',')[0]
+    var longitude = this.geohash.split(',')[1]
     var urlRestaurant = urlRestaurantBase + '?latitude=' + latitude + '&longitude=' + longitude
     axios.get(urlRestaurant)
       .then(function (response) {

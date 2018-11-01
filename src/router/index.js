@@ -15,6 +15,7 @@ const addAddress = r => require.ensure([], require => r(require('../page/order/c
 const searchAddress = r => require.ensure([], require => r(require('../page/order/children/children/children/searchAddress')), 'searchAddress')
 const orderComments = r => require.ensure([], require => r(require('../page/order/children/orderComments')), 'orderComments')
 const login = r => require.ensure([], require => r(require('../page/login')), 'login')
+const search = r => require.ensure([], require => r(require('../page/search')), 'search')
 
 export default new Router({
   routes: [
@@ -72,6 +73,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: login
+    },
+    {
+      path: '/search/:geohash',
+      name: 'search',
+      component: search
     }
   ]
 })

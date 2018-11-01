@@ -183,3 +183,15 @@ export const getCaptcha = () => {
       })
   })
 }
+
+export const searchRestaurants = (geohash, key) => {
+  let url = 'https://elm.cangdu.org/v4/restaurants?extras[]=restaurant_activity&geohash=' + geohash + '&keyword=' + key
+  return new Promise(function (resolve, reject) {
+    axios.get(url)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  })
+}
