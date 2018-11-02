@@ -32,6 +32,7 @@
       </div>
     </div>
     <shop-list :restaurantsList="restaurantsList"></shop-list>
+    <footer-guild></footer-guild>
   </div>
 </template>
 <script>
@@ -40,6 +41,7 @@ import Swiper from 'swiper'
 import 'swiper/dist/css/swiper.min.css'
 import headTop from '@/components/head/head'
 import shopList from '@/components/common/shopList'
+import footerGuild from '@/components/footer/footer'
 export default {
   data () {
     return {
@@ -89,7 +91,8 @@ export default {
   },
   components: {
     headTop,
-    shopList
+    shopList,
+    footerGuild
   }
 }
 </script>

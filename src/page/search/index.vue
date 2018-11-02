@@ -9,10 +9,10 @@
       <span class="point-title" slot="point-title">搜索</span>
     </head-top>
     <div class="search-form">
-      <input type="text" name="search" placeholder="请输入商家或美食名称" v-model="inputValue">
-      <input type="submit" name="submit" value="submit" @click="search">
+      <input type="search" name="search" placeholder="请输入商家或美食名称" v-model="inputValue">
+      <input type="submit" name="submit" value="submit" @click="search('')">
     </div>
-    <div class="search-results" v-if="inputValue">
+    <div class="search-results" v-if="showSearchResults">
       <ul class="search-results-ul" v-if="searchResults.length">
         <li class="search-results-li" v-for="(item, index) in searchResults" :key="index">
           <p>{{item.name}}</p>
@@ -22,39 +22,62 @@
       <div class="search-tips" v-else>很抱歉！无搜索结果</div>
     </div>
     <div class="search-history" v-else-if="searchHistory.length">
-      <div class="search-history-title">搜索历史</div>
       <ul class="search-history-ul">
-        <li class="search-history-li"></li>
+        <header class="search-history-title">搜索历史</header>
+        <li class="search-history-li" v-for="(item, index) in searchHistory" :key="index" @click="search(item)">
+          {{item}}
+        </li>
+        <li class="clear-history" @click="clearHistory">清空历史记录</li>
       </ul>
     </div>
+    <footer-guide></footer-guide>
   </div>
 </template>
 <script>
 import headTop from '@/components/head/head'
+import footerGuide from '@/components/footer/footer'
 import {searchRestaurants} from '@/service/getData'
-import {setStore, getStore} from '@/commonApi/localStorage'
+import {setStore, getStore, removeItem} from '@/commonApi/localStorage'
 export default {
   data () {
     return {
       geohash: '',
       inputValue: '',
       searchResults: [],
-      searchHistory: []
+      searchHistory: [],
+      showSearchResults: false
     }
   },
   mounted: function () {
     this.geohash = this.$route.params.geohash
+    let storeSearchHistory = JSON.parse(getStore('searchHistory'))
+    if (storeSearchHistory) {
+      this.searchHistory = storeSearchHistory
+    }
   },
   methods: {
-    search: function () {
-      let storeSearchHistory = getStore('searchHistory')
-      if (!storeSearchHistory) {
-        setStore('searchHistory', this.inputValue)
+    search: function (key) {
+      if (!key && !this.inputValue) return
+      this.showSearchResults = true
+      if (!key) {
+        let storeSearchHistory = getStore('searchHistory')
+        if (!storeSearchHistory) {
+          setStore('searchHistory', JSON.stringify([this.inputValue]))
+          this.searchHistory = [this.inputValue]
+        } else {
+          let storeData = JSON.parse(storeSearchHistory)
+          if (storeData.indexOf(this.inputValue) === -1) {
+            storeData.push(this.inputValue)
+            setStore('searchHistory', JSON.stringify(storeData))
+          }
+          this.searchHistory = storeData
+        }
+        key = this.inputValue
       } else {
-        console.log(storeSearchHistory)
+        this.inputValue = key
       }
       let self = this
-      searchRestaurants(this.geohash, this.inputValue)
+      searchRestaurants(this.geohash, key)
         .then(function (data) {
           if ('type' in data && data.type === 'ERROR_DATA') {
             self.searchRestaurants = []
@@ -62,9 +85,20 @@ export default {
             self.searchRestaurants = data
           }
         })
+    },
+    clearHistory: function () {
+      this.searchHistory = []
+      removeItem('searchHistory')
     }
   },
-  components: {headTop}
+  components: {headTop, footerGuide},
+  watch: {
+    inputValue: function (newValue) {
+      if (!newValue) {
+        this.showSearchResults = false
+      }
+    }
+  }
 }
 </script>
 <style>
@@ -109,7 +143,7 @@ export default {
     flex: 7;
     border: 0.05rem solid #e1e1e1;
     background-color: #f2f2f2;
-    padding-left: 0.25rem;
+    padding: 0 0.5rem;
   }
   .search-form > input:last-child {
     background-color: #3190e8;
@@ -139,5 +173,17 @@ export default {
   .search-tips {
     margin: 1rem 0;
     font-size: 1.3rem;
+  }
+  .search-history-li, .clear-history, .search-history-title {
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  .search-history-li {
+    border-bottom: 0.05rem solid #f1f1f1;
+  }
+  .clear-history {
+    text-align: center;
+    color: #3190e8;
   }
 </style>

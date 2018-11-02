@@ -97,6 +97,14 @@ const addAddress = {
 }
 
 export default new Vuex.Store({
+  state: {
+    geohash: ''
+  },
+  mutations: {
+    updateGeohash: function (state, geohash) {
+      state.geohash = geohash
+    }
+  },
   modules: {
     shopDetail: shopDetail,
     addAddress: addAddress

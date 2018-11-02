@@ -47,6 +47,7 @@
 <script>
 import headTop from '@/components/head/head'
 import axios from 'axios'
+import {setStore} from '@/commonApi/localStorage'
 export default {
   data () {
     return {
@@ -85,14 +86,12 @@ export default {
               self.searchNoneResult = true
             } else {
               self.searchList = response.data
-              console.log(111)
-              console.log(self.searchList)
             }
           }
         })
     },
     showShops: function (geohash, name) {
-      console.log(name)
+      setStore('geohash', geohash)
       this.$router.push({path: '/shopsGuide', query: {geohash, name}})
     }
   },
