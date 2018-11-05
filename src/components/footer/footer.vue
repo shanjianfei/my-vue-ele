@@ -38,7 +38,7 @@
         </svg>
         <span>订单</span>
       </router-link>
-      <router-link class="footer-li search" tag="li" to="/abc">
+      <router-link class="footer-li search" tag="li" to="/profile">
         <svg class="icon_style">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="$route.path.indexOf('profile') === -1? '#profile': '#profileActive'"></use>
         </svg>

@@ -195,3 +195,15 @@ export const searchRestaurants = (geohash, key) => {
       })
   })
 }
+
+export const getUserInfo = userId => {
+  let url = 'https://elm.cangdu.org/v1/user?user_id=' + userId
+  return new Promise(function (resolve, reject) {
+    axios.get(url)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  }) 
+}
