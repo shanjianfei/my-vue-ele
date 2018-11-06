@@ -18,6 +18,7 @@ const login = r => require.ensure([], require => r(require('../page/login')), 'l
 const search = r => require.ensure([], require => r(require('../page/search')), 'search')
 const profile = r => require.ensure([] ,require => r(require('../page/profile')), 'profile')
 const membershipCard = r => require.ensure([] ,require => r(require('../page/membershipCard')), 'membershipCard')
+const serviceCenter = r => require.ensure([] ,require => r(require('../page/serviceCenter')), 'serviceCenter')
 
 export default new Router({
   routes: [
@@ -90,6 +91,11 @@ export default new Router({
       path: '/membershipCard',
       name: 'membershipCard',
       component: membershipCard
+    },
+    {
+      path: '/serviceCenter',
+      name: 'serviceCenter',
+      component: serviceCenter
     }
   ]
 })

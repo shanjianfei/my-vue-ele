@@ -102,11 +102,13 @@
       <span>待支付￥{{checkData.cart.total}}</span>
       <router-link to="/a">确认下单</router-link>
     </div>
+    <footer-guide></footer-guide>
   </div>
 </template>
 <script>
 import {mapState} from 'vuex'
 import headTop from '@/components/head/head'
+import footerGuide from '@/components/footer/footer'
 import {getImageUrl, addToCart} from '@/service/getData'
 export default {
   data () {
@@ -144,8 +146,6 @@ export default {
       .then(function (data) {
         if (!('status' in data && data.status === 0)) {
           self.checkData = data
-          console.log(1)
-          console.log(data)
         }
       })
   },
@@ -157,7 +157,7 @@ export default {
 
     }
   },
-  components: {headTop}
+  components: {headTop, footerGuide}
 }
 </script>
 <style>

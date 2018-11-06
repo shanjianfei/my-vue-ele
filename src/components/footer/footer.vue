@@ -20,25 +20,25 @@
       </defs>
     </svg>
     <ul class="footer-ul">
-      <router-link class="footer-li take-out" tag="li" :to="'/shopsGuide?geohash=' + geohash">
+      <router-link class="footer-li" tag="li" :to="'/shopsGuide?geohash=' + geohash">
         <svg class="icon_style">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="$route.path.indexOf('shopsGuide') === -1? '#msite': '#msiteActive'"></use>
         </svg>
         <span>外卖</span>
       </router-link>
-      <router-link class="footer-li search" tag="li" :to="'/search/' + geohash">
+      <router-link class="footer-li" tag="li" :to="'/search/' + geohash">
         <svg class="icon_style">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="$route.path.indexOf('search') === -1? '#find': '#findActive'"></use>
         </svg>
         <span>搜索</span>
       </router-link>
-      <router-link class="footer-li order" tag="li" to="/order">
+      <router-link class="footer-li" tag="li" to="/order">
         <svg class="icon_style">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="$route.path.indexOf('order') === -1? '#order': '#orderActive'"></use>
         </svg>
         <span>订单</span>
       </router-link>
-      <router-link class="footer-li search" tag="li" to="/profile">
+      <router-link class="footer-li" tag="li" to="/profile">
         <svg class="icon_style">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="$route.path.indexOf('profile') === -1? '#profile': '#profileActive'"></use>
         </svg>

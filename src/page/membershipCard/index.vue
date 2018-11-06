@@ -1,8 +1,7 @@
 <template>
   <div class="membership-card">
     <head-top>
-      <p>s</p>
-      <arrow-left></arrow-left>
+      <arrow-left slot="head-goback"></arrow-left>
       <span class="point-title" slot="point-title">会员中心</span>
     </head-top>
   </div>

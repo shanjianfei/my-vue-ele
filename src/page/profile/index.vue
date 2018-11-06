@@ -74,7 +74,7 @@
         </router-link>
       </section>
       <section>
-        <p class="service-center">
+        <router-link class="service-center" to="/serviceCenter" tag="p">
           <section>
             <svg class="icon-left" fill="#4aa5f0">
               <use data-v-0fc4ab7a="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#service"></use>
@@ -82,7 +82,7 @@
             <span>服务中心</span>
           </section>
           <arrow-right></arrow-right>
-        </p>
+        </router-link>
         <p class="application-download">
           <section>
             <svg class="icon-left" fill="#3cabff">
