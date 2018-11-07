@@ -83,7 +83,7 @@
           </section>
           <arrow-right></arrow-right>
         </router-link>
-        <p class="application-download">
+        <router-link class="application-download" to="/download" tag="p">
           <section>
             <svg class="icon-left" fill="#3cabff">
               <use data-v-0fc4ab7a="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#download"></use>
@@ -91,7 +91,7 @@
             <span>下载饿了么app</span>
           </section>
           <arrow-right></arrow-right>
-        </p>
+        </router-link>
       </section>
     </div>
     <footer-guide></footer-guide>

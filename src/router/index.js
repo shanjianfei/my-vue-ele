@@ -19,6 +19,8 @@ const search = r => require.ensure([], require => r(require('../page/search')), 
 const profile = r => require.ensure([] ,require => r(require('../page/profile')), 'profile')
 const membershipCard = r => require.ensure([] ,require => r(require('../page/membershipCard')), 'membershipCard')
 const serviceCenter = r => require.ensure([] ,require => r(require('../page/serviceCenter')), 'serviceCenter')
+const servceDescription = r => require.ensure([] ,require => r(require('../page/serviceCenter/children/serviceDescription')), 'servceDescription')
+const download = r => require.ensure([] ,require => r(require('../page/download')), 'download')
 
 export default new Router({
   routes: [
@@ -96,6 +98,16 @@ export default new Router({
       path: '/serviceCenter',
       name: 'serviceCenter',
       component: serviceCenter
+    },
+    {
+      path: '/serviceCenter/servceDescription',
+      name: 'servceDescription',
+      component: servceDescription
+    },
+    {
+      path: '/download',
+      name: 'download',
+      component: download
     }
   ]
 })
