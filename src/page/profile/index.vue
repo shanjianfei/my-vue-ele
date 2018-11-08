@@ -25,24 +25,24 @@
 
     <div class="profile-item">
       <section class="profile-info">
-        <section class="amount">
+        <router-link class="amount" to="/balance">
           <p>
             <span>{{balance}}</span>元
           </p>
           <p>我的余额</p>
-        </section>
-        <section class="coupon">
+        </router-link>
+        <router-link class="coupon" to="/coupon">
           <p>
             <span>{{coupon}}</span>个
           </p>
           <p>我的优惠</p>
-        </section>
-        <section class="points">
+        </router-link>
+        <router-link class="points" to="/points">
           <p>
             <span>{{points}}</span>分
           </p>
           <p>我的积分</p>
-        </section>
+        </router-link>
       </section>
       <section>
         <router-link class="order" to="/order" tag="p">
@@ -54,7 +54,7 @@
           </section>
           <arrow-right></arrow-right>
         </router-link>
-        <router-link class="points-mall" to="/abc" tag="p">
+        <a class="points-mall" href="https://activity.m.duiba.com.cn/">
           <section>
             <svg class="icon-left" fill="#fc7b53">
               <use data-v-0fc4ab7a="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#point"></use>
@@ -62,7 +62,7 @@
             <span>积分商城</span>
           </section>
           <arrow-right></arrow-right>
-        </router-link>
+        </a>
         <router-link class="membership-card" to="/membershipCard" tag="p">
           <section>
             <svg class="icon-left" fill="#ffc636">
@@ -187,7 +187,7 @@ export default {
     justify-content: space-between;
     background-color: #fff;
   }
-  .profile-info > section {
+  .profile-info > a {
     width: 100%;
     text-align: center;
     padding: 1rem;
@@ -201,7 +201,7 @@ export default {
     background-color: #fff;
     border-bottom: 0.05rem solid #f1f1f1;
   }
-  .profile-info > section > p {
+  .profile-info > a > p {
     font-size: 1rem;
   }
   .profile-item > section:nth-child(3),  .profile-item > section:nth-child(2){

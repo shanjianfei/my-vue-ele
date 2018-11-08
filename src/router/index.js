@@ -21,6 +21,10 @@ const membershipCard = r => require.ensure([] ,require => r(require('../page/mem
 const serviceCenter = r => require.ensure([] ,require => r(require('../page/serviceCenter')), 'serviceCenter')
 const servceDescription = r => require.ensure([] ,require => r(require('../page/serviceCenter/children/serviceDescription')), 'servceDescription')
 const download = r => require.ensure([] ,require => r(require('../page/download')), 'download')
+const balance = r => require.ensure([] ,require => r(require('../page/balance')), 'balance')
+const balanceDescription = r => require.ensure([] ,require => r(require('../page/balance/children/balanceDescription')), 'balanceDescription')
+const points = r => require.ensure([] ,require => r(require('../page/points')), 'points')
+const pointsDescription = r => require.ensure([] ,require => r(require('../page/points/children/pointsDescription')), 'pointsDescription')
 
 export default new Router({
   routes: [
@@ -108,6 +112,26 @@ export default new Router({
       path: '/download',
       name: 'download',
       component: download
+    },
+    {
+      path: '/balance',
+      name: 'balance',
+      component: balance
+    },
+    {
+      path: '/balance/balanceDescription',
+      name: 'balanceDescription',
+      component: balanceDescription
+    },
+    {
+      path: '/points',
+      name: 'points',
+      component: points
+    },
+    {
+      path: '/points/pointsDescription',
+      name: 'pointsDescription',
+      component: pointsDescription
     }
   ]
 })

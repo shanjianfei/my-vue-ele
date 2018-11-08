@@ -34,13 +34,13 @@ export default {
   }
   .download-page {
     height: 100%;
+    background-color: #fff;
   }
   .download-container{
-    margin-top: 2.8rem;
-    background-color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-top: 2.8rem;
   }
   .ele-logo {
     margin-top: 2rem;

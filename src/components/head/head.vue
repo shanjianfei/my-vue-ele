@@ -2,10 +2,10 @@
   <header id="head-top">
     <slot name="logo"></slot>
     <slot name="head-search"></slot>
-    <slot name="login" class="login"></slot>
+    <slot name="login"></slot>
     <slot name="head-goback"></slot>
-    <slot name="city-name" class="city-name"></slot>
-    <slot name="point-title" class="point-title"></slot>
+    <slot name="city-name"></slot>
+    <slot name="point-title"></slot>
     <slot name="change-city"></slot>
   </header>
 </template>
@@ -22,5 +22,15 @@
     top: 0;
     display: flex;
     justify-content: space-between;
+  }
+.point-title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 1.7rem;
+    font-weight: bold;
   }
 </style>
