@@ -1,0 +1,76 @@
+<template>
+  <div class="exchange-membership-page">
+    <head-top>
+      <arrow-left slot="head-goback"></arrow-left>
+      <span slot="point-title" class="point-title">
+        兑换会员
+      </span>
+    </head-top>
+    <div class="exchange-membership-container">
+      <div>成功兑换后将关联到当前帐号： fsj</div>
+      <input type="text" name="card-number" placeholder="请输入10位卡号">
+      <input type="text" name="card-password" placeholder="请输入6位卡密">
+      <button>兑换</button>
+      <div class="exchange-membership-tips">
+        <h3>——温馨提示——</h3>
+        <p>新兑换的会员服务，权益以「会员说明」为准。</p>
+        <p>月卡：30次减免配送费。</p>
+        <p>季卡：90次减免配送费。</p>
+        <p>年卡：360次减免配送费。</p>
+        <p>＊仅限蜂鸟专送订单，每日最多减免3单，每单最高减免4元（一个月按31天计算）</p>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import headTop from '@/components/head/head'
+import arrowLeft from '@/components/common/arrowLeft'
+export default {
+  data () {
+    return {}
+  },
+  components: {headTop, arrowLeft}
+}
+</script>
+<style>
+  .exchange-membership-container {
+    padding-top: 3rem;
+    text-align: center;
+  }
+  .exchange-membership-container > div:first-child {
+    height: 3rem;
+    line-height: 3rem;
+    text-align: left;
+    padding-left: 1rem;
+  }
+  .exchange-membership-container > input {
+    height: 3rem;
+    width: 100%;
+    padding-left: 1rem;
+    background-color: #fff;
+    border: 0;
+    border-bottom: 0.05rem solid #f1f1f1;
+  }
+  .exchange-membership-container > button {
+    width: 90%;
+    height: 3rem;
+    line-height: 3rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    background-color: #ccc;
+    margin-top: 2rem;
+    border-radius: 0.5rem;
+    border: 0;
+  }
+  .exchange-membership-tips {
+    padding: 1rem 3rem;
+  }
+  .exchange-membership-tips > p, .exchange-membership-tips > h3 {
+    color: #ccc;
+  }
+  .exchange-membership-tips > p {
+    text-align: left;
+  }
+</style>

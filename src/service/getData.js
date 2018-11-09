@@ -205,7 +205,7 @@ export const getUserInfo = userId => {
           resolve(response.data)
         }
       })
-  }) 
+  })
 }
 
 export const getProfileExplain = () => {
@@ -217,5 +217,5 @@ export const getProfileExplain = () => {
           resolve(response.data)
         }
       })
-  }) 
+  })
 }

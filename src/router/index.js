@@ -16,15 +16,16 @@ const searchAddress = r => require.ensure([], require => r(require('../page/orde
 const orderComments = r => require.ensure([], require => r(require('../page/order/children/orderComments')), 'orderComments')
 const login = r => require.ensure([], require => r(require('../page/login')), 'login')
 const search = r => require.ensure([], require => r(require('../page/search')), 'search')
-const profile = r => require.ensure([] ,require => r(require('../page/profile')), 'profile')
-const membershipCard = r => require.ensure([] ,require => r(require('../page/membershipCard')), 'membershipCard')
-const serviceCenter = r => require.ensure([] ,require => r(require('../page/serviceCenter')), 'serviceCenter')
-const servceDescription = r => require.ensure([] ,require => r(require('../page/serviceCenter/children/serviceDescription')), 'servceDescription')
-const download = r => require.ensure([] ,require => r(require('../page/download')), 'download')
-const balance = r => require.ensure([] ,require => r(require('../page/balance')), 'balance')
-const balanceDescription = r => require.ensure([] ,require => r(require('../page/balance/children/balanceDescription')), 'balanceDescription')
-const points = r => require.ensure([] ,require => r(require('../page/points')), 'points')
-const pointsDescription = r => require.ensure([] ,require => r(require('../page/points/children/pointsDescription')), 'pointsDescription')
+const profile = r => require.ensure([], require => r(require('../page/profile')), 'profile')
+const membershipCard = r => require.ensure([], require => r(require('../page/membershipCard')), 'membershipCard')
+const exchangeMembership = r => require.ensure([], require => r(require('../page/membershipCard/children/exchangeMembership')), 'exchangeMembership')
+const serviceCenter = r => require.ensure([], require => r(require('../page/serviceCenter')), 'serviceCenter')
+const servceDescription = r => require.ensure([], require => r(require('../page/serviceCenter/children/serviceDescription')), 'servceDescription')
+const download = r => require.ensure([], require => r(require('../page/download')), 'download')
+const balance = r => require.ensure([], require => r(require('../page/balance')), 'balance')
+const balanceDescription = r => require.ensure([], require => r(require('../page/balance/children/balanceDescription')), 'balanceDescription')
+const points = r => require.ensure([], require => r(require('../page/points')), 'points')
+const pointsDescription = r => require.ensure([], require => r(require('../page/points/children/pointsDescription')), 'pointsDescription')
 
 export default new Router({
   routes: [
@@ -97,6 +98,11 @@ export default new Router({
       path: '/membershipCard',
       name: 'membershipCard',
       component: membershipCard
+    },
+    {
+      path: '/membershipCard/exchangeMembership',
+      name: 'exchangeMembership',
+      component: exchangeMembership
     },
     {
       path: '/serviceCenter',

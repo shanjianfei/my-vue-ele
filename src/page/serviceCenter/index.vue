@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     showContent: function (index) {
-      this.$router.push({path:'/serviceCenter/servceDescription', query:{key: index}})
+      this.$router.push({path: '/serviceCenter/servceDescription', query: {key: index}})
     }
   },
   components: {headTop, arrowLeft, arrowRight}
