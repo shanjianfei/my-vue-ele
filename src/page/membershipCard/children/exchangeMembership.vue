@@ -8,9 +8,9 @@
     </head-top>
     <div class="exchange-membership-container">
       <div>成功兑换后将关联到当前帐号： fsj</div>
-      <input type="text" name="card-number" placeholder="请输入10位卡号">
-      <input type="text" name="card-password" placeholder="请输入6位卡密">
-      <button>兑换</button>
+      <input type="text" name="card-number" placeholder="请输入10位卡号" v-model="cardNumber" maxlength="10">
+      <input type="text" name="card-password" placeholder="请输入6位卡密" v-model="cardPassword" maxlength="6">
+      <button id="submit" disabled="true">兑换</button>
       <div class="exchange-membership-tips">
         <h3>——温馨提示——</h3>
         <p>新兑换的会员服务，权益以「会员说明」为准。</p>
@@ -27,7 +27,40 @@ import headTop from '@/components/head/head'
 import arrowLeft from '@/components/common/arrowLeft'
 export default {
   data () {
-    return {}
+    return {
+      cardNumber: '',
+      cardPassword: ''
+    }
+  },
+  methods: {
+    is10Number: function (str) {
+      let regNum = /^\d{10}$/
+      return regNum.test(str)
+    },
+    is6Number: function (str) {
+      let regNum = /^\d{6}$/
+      return regNum.test(str)
+    }
+  },
+  watch: {
+    cardNumber: function (newVal, oldVal) {
+      if (this.is10Number(newVal) && this.is6Number(this.cardPassword)) {
+        document.getElementById('submit').removeAttribute('disabled')
+        // document.getElementById('submit').setAttribute('background-color', '#4cd964')
+        document.getElementById('submit').style.backgroundColor = '#4cd964'
+      } else {
+        document.getElementById('submit').setAttribute('disabled', true)
+      }
+    },
+    cardPassword: function (newVal, oldVal) {
+      if (this.is6Number(newVal) && this.is10Number(this.cardNumber)) {
+        document.getElementById('submit').removeAttribute('disabled')
+        // document.getElementById('submit').setAttribute('background-color', '#4cd964 !important')
+        document.getElementById('submit').style.backgroundColor = '#4cd964'
+      } else {
+        document.getElementById('submit').setAttribute('disabled', true)
+      }
+    }
   },
   components: {headTop, arrowLeft}
 }
