@@ -12,11 +12,11 @@
       <input class="captcha-input" type="text" name="user" placeholder="账号">
       <input type="password" name="password" placeholder="密码">
       <section class="captcha-container">
-        <input type="text" name="captcha">
+        <input type="text" name="captcha" placeholder="验证码">
         <img class="captcha-img" :src="captchaImg">
-        <span class="change-chaptcha">
+        <span class="change-chaptcha" @click="changeChaptcha">
           <span>看不清</span>
-          <span @click="changeChaptcha">换一张</span>
+          <span>换一张</span>
         </span>
       </section>
     </div>
@@ -49,8 +49,10 @@ export default {
       getCaptcha()
         .then(function (data) {
           self.captchaImg = data.code
-          console.log(data)
         })
+    },
+    changeChaptcha: function () {
+      this.getCaptcha()
     }
   },
   components: {headTop}
@@ -90,15 +92,29 @@ export default {
     padding-left: 1rem;
     font-size: 1rem;
   }
+  .captcha-container > input {
+    width: 100%;
+    flex: 6;
+  }
   .captcha-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
   }
+  .change-img {
+    width: 100%;
+    flex: 2;
+  }
   .change-chaptcha {
     display: flex;
     flex-direction: column;
-    margin-right: 1rem;
+    width: 100%;
+    flex: 2;
+    text-align: center;
+    justify-content: center;
+  }
+  .change-chaptcha > span:last-child {
+    color: #3b95e9;
   }
   .login-submit {
     line-height: 3rem;

@@ -174,6 +174,7 @@ export const getRemarks = cartId => {
 }
 
 export const getCaptcha = () => {
+  let url = 'https://elm.cangdu.org/v1/captchas'
   return new Promise(function (resolve, reject) {
     axios.post(url)
       .then(function (response) {
