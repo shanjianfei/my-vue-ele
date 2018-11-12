@@ -219,3 +219,15 @@ export const getProfileExplain = () => {
       })
   })
 }
+
+export const membershipCard = (userId) => {
+  let url = 'https://elm.cangdu.org/member/v1/users/' + userId + '/delivery_card/physical_card/bind'
+  return new Promise(function (resolve, reject) {
+    axios.get(url)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  })
+}
