@@ -9,10 +9,10 @@
       <span class="point-title" slot="point-title">密码登录</span>
     </head-top>
     <div class="user-password">
-      <input class="captcha-input" type="text" name="user" placeholder="账号">
-      <input type="password" name="password" placeholder="密码">
+      <input class="captcha-input" type="text" name="user" placeholder="账号" v-model="username">
+      <input type="password" name="password" placeholder="密码" v-model="password">
       <section class="captcha-container">
-        <input type="text" name="captcha" placeholder="验证码">
+        <input type="text" name="captcha" placeholder="验证码" v-model="captchaCode">
         <img class="captcha-img" :src="captchaImg">
         <span class="change-chaptcha" @click="changeChaptcha">
           <span>看不清</span>
@@ -24,16 +24,20 @@
       <p>温馨提示：未注册过的账号，登录时将自动注册 </p>
       <p>注册过的用户可凭账号密码登录 </p>
     </div>
-    <div class="login-submit">确定</div>
+    <div class="login-submit" @click="login">确定</div>
   </div>
 </template>
 <script>
 import headTop from '@/components/head/head'
 import {mapState} from 'vuex'
-import {getCaptcha} from '@/service/getData'
+import {getCaptcha, login} from '@/service/getData'
+import {setStore} from '@/commonApi/localStorage'
 export default {
   data () {
     return {
+      username: '',
+      password: '',
+      captchaCode: '',
       captchaImg: ''
     }
   },
@@ -53,6 +57,16 @@ export default {
     },
     changeChaptcha: function () {
       this.getCaptcha()
+    },
+    login: function () {
+      let self = this
+      login(this.username, this.password, this.captchaCode)
+        .then(function (data) {
+          if ('username' in data) {
+            setStore('user_id', data['user_id'])
+            self.$router.go(-1)
+          }
+        })
     }
   },
   components: {headTop}

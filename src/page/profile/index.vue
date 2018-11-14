@@ -15,7 +15,8 @@
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#avatar-default"></use>
         </svg>
         <section>
-          <p>注册/登录</p>
+          <router-link to="/accountInfo" tag="p" v-if="username">{{username}}</router-link>
+          <router-link to="/login" tag="p" v-else>注册/登录</router-link>
           <p v-if="mobile">手机号: {{mobile}}</p>
           <p v-else>暂无绑定手机号</p>
         </section>
@@ -101,27 +102,33 @@
 import headTop from '@/components/head/head'
 import arrowRight from '@/components/common/arrowRight'
 import footerGuide from '@/components/footer/footer'
-import {getUserInfo} from '@/service/getData'
+import {getUserInfo, isLogin} from '@/service/getData'
+import {getStore} from '@/commonApi/localStorage'
 export default {
   data () {
     return {
       balance: 0,
       coupon: 0,
       points: 0,
-      mobile: ''
+      mobile: '',
+      username: ''
     }
   },
   mounted: function () {
     let self = this
-    getUserInfo()
-      .then(function (data) {
-        if (!('status' in data)) {
-          self.balance = data.balance
-          self.coupon = data.gift_amount
-          self.points = data.point
-          self.mobile = data.mobile
-        }
-      })
+    if (isLogin) {
+      let userId = getStore('user_id')
+      getUserInfo()
+        .then(function (data) {
+          if (!('status' in data)) {
+            self.balance = data.balance
+            self.coupon = data.gift_amount
+            self.points = data.point
+            self.mobile = data.mobile
+            self.username = data.username
+          }
+        })
+    }
   },
   components: {headTop, arrowRight, footerGuide}
 }

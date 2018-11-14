@@ -15,6 +15,7 @@ const addAddress = r => require.ensure([], require => r(require('../page/order/c
 const searchAddress = r => require.ensure([], require => r(require('../page/order/children/children/children/searchAddress')), 'searchAddress')
 const orderComments = r => require.ensure([], require => r(require('../page/order/children/orderComments')), 'orderComments')
 const login = r => require.ensure([], require => r(require('../page/login')), 'login')
+const accountInfo = r => require.ensure([], require => r(require('../page/accountInfo')), 'accountInfo')
 const search = r => require.ensure([], require => r(require('../page/search')), 'search')
 const profile = r => require.ensure([], require => r(require('../page/profile')), 'profile')
 const membershipCard = r => require.ensure([], require => r(require('../page/membershipCard')), 'membershipCard')
@@ -83,6 +84,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: login
+    },
+    {
+      path: '/accountInfo',
+      name: 'accountInfo',
+      component: accountInfo
     },
     {
       path: '/search/:geohash',

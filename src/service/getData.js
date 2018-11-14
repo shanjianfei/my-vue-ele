@@ -1,4 +1,15 @@
 import axios from 'axios'
+axios.defaults.withCredentials=true
+
+import {getStore} from '@/commonApi/localStorage'
+
+export const isLogin = () => {
+  let userId = getStore('user_id')
+  if (userId) {
+    return true
+  }
+  return false
+}
 
 export const getShopList = (latitude, longitude, offset, restaurantCategoryId = '', restaurantCategoryIds = '', orderBy = '', deliveryMode = '', supportIds = []) => {
   let supportStr = ''
@@ -225,6 +236,35 @@ export const membershipCard = (userId) => {
   let url = 'https://elm.cangdu.org/member/v1/users/' + userId + '/delivery_card/physical_card/bind'
   return new Promise(function (resolve, reject) {
     axios.get(url)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  })
+}
+
+export const login = (username, password, captcha_code) => {
+  let url = 'https://elm.cangdu.org/v2/login'
+  return new Promise(function (resolve, reject) {
+    axios.post(url, {
+      username,
+      password,
+      captcha_code
+    })
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  })
+}
+
+export const uploadProfilePhoto= (userId, formData) => {
+  let url = 'https://elm.cangdu.org/eus/v1/users/' + userId + '/avatar'
+  // let url = 'https://elm.cangdu.org/v1/addimg/' + type
+  return new Promise(function (resolve, reject) {
+    axios.post(url, formData)
       .then(function (response) {
         if (response.status === 200) {
           resolve(response.data)
