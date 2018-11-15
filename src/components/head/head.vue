@@ -25,21 +25,34 @@
     top: 0;
     display: flex;
     justify-content: space-between;
-    padding: 0 0.5rem;
     box-sizing: border-box;
     align-items: center;
   }
   .point-title {
+    position: absolute;
+    top: 50%;
     color: #fff;
     font-size: 1.2rem;
     font-weight: bold;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   .head-right {
+    position: absolute;
+    top: 50%;
+    right: .5rem;
+    transform: translateY(-50%);
     font-size: 1rem;
     color: #fff;
+    right: .5rem;
   }
   .head-goback {
+    position: absolute;
+    top: 50%;
+    left: .5rem;
+    transform: translateY(-50%);
     width: 1rem;
     height: 1.2rem;
+    left: .5rem;
   }
 </style>

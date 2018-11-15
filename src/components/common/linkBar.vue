@@ -1,11 +1,11 @@
 <template>
-  <div class="link-bar-page">
+  <router-link class="link-bar-page" :to="link">
     <span class="link-bar-left">{{contentLeft}}</span>
     <section class="link-bar-right">
       <span>{{contentRight}}</span>
       <arrow-right></arrow-right>
     </section>
-  </div>
+  </router-link>
 </template>
 <script>
 import arrowRight from '@/components/common/arrowRight'
@@ -13,7 +13,7 @@ export default {
   components: {
     arrowRight
   },
-  props: ['contentLeft', 'contentRight']
+  props: ['contentLeft', 'contentRight', 'link']
 }
 </script>
 <style>

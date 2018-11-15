@@ -10,7 +10,7 @@
       <span class="head-right" slot="head-right">编辑</span>
     </head-top>
     <div class="edit-address-container">
-      <link-bar contentLeft="新增地址" contentRight=""></link-bar>
+      <link-bar contentLeft="新增地址" contentRight="" link="/addNewAddress"></link-bar>
     </div>
   </div>
 </template>

@@ -18,6 +18,7 @@ const login = r => require.ensure([], require => r(require('../page/login')), 'l
 const accountInfo = r => require.ensure([], require => r(require('../page/accountInfo')), 'accountInfo')
 const changeUsername = r => require.ensure([], require => r(require('../page/accountInfo/children/changeUsername')), 'changeUsername')
 const editAddress = r => require.ensure([], require => r(require('../page/accountInfo/children/editAddress')), 'editAddress')
+const addNewAddress = r => require.ensure([], require => r(require('../page/accountInfo/children/children/addNewAddress')), 'addNewAddress')
 const search = r => require.ensure([], require => r(require('../page/search')), 'search')
 const profile = r => require.ensure([], require => r(require('../page/profile')), 'profile')
 const membershipCard = r => require.ensure([], require => r(require('../page/membershipCard')), 'membershipCard')
@@ -101,6 +102,11 @@ export default new Router({
       path: '/changeUsername',
       name: 'changeUsername',
       component: changeUsername
+    },
+    {
+      path: '/addNewAddress',
+      name: 'addNewAddress',
+      component: addNewAddress
     },
     {
       path: '/search/:geohash',
