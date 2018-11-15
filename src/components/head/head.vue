@@ -7,6 +7,9 @@
     <slot name="city-name"></slot>
     <slot name="point-title"></slot>
     <slot name="change-city"></slot>
+    <slot name="head-left"></slot>
+    <slot name="head-right"></slot>
+    <slot name="head-center"></slot>
   </header>
 </template>
 <script>
@@ -22,15 +25,21 @@
     top: 0;
     display: flex;
     justify-content: space-between;
+    padding: 0 0.5rem;
+    box-sizing: border-box;
+    align-items: center;
   }
-.point-title {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    text-align: center;
-    transform: translate(-50%, -50%);
+  .point-title {
     color: #fff;
-    font-size: 1.7rem;
+    font-size: 1.2rem;
     font-weight: bold;
+  }
+  .head-right {
+    font-size: 1rem;
+    color: #fff;
+  }
+  .head-goback {
+    width: 1rem;
+    height: 1.2rem;
   }
 </style>

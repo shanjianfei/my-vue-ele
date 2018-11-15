@@ -25,7 +25,7 @@
             <arrow-right></arrow-right>
           </section>
         </router-link>
-        <router-link class="item delivery-address" to="/abc">
+        <router-link class="item delivery-address" to="/editAddress">
           <span>收货地址</span>
           <arrow-right></arrow-right>
         </router-link>
