@@ -1,9 +1,9 @@
 <template>
-  <input class="input-component" type="text" :value="value" :placeholder="placeholder" @input="$emit('inputs', $event.target.value)">
+  <input class="input-component" type="text" :value="value" :placeholder="placeholder" @input="$emit('inputs', $event.target.value)" @change="$emit('change', $event.target.value)" :maxlength="maxLength? maxlength: 20">
 </template>
 <script>
 export default {
-  props: ['value', 'placeholder']
+  props: ['value', 'placeholder', 'maxLength']
 }
 </script>
 <style>

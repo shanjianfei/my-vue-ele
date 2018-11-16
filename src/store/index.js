@@ -90,8 +90,6 @@ const addAddress = {
   mutations: {
     updateDeliveryAddress: function (state, deliveryAddress) {
       state.deliveryAddress = deliveryAddress
-      console.log(state)
-      console.log(1)
     }
   }
 }
