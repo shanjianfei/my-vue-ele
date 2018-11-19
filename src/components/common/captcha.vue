@@ -1,36 +1,16 @@
 <template>
   <section class="captcha-container">
-    <input type="text" name="captcha" placeholder="验证码" @input="$emit('input', $event.target.value)">
+    <input type="text" name="captcha" placeholder="验证码" maxlength="4" @input="$emit('input', $event.target.value)">
     <img class="captcha-img" :src="captchaImg">
-    <span class="change-chaptcha" @click="$emit('changeChaptcha')">
+    <span class="change-chaptcha" @click="$emit('changeChaptchaImg')">
       <span>看不清</span>
       <span>换一张</span>
     </span>
   </section>
 </template>
 <script>
-import {getCaptcha} from '@/service/getData'
 export default {
-  data () {
-    return {
-      captchaImg: ''
-    }
-  },
-  mounted: function () {
-    this.getCaptcha()
-  },
-  methods: {
-    getCaptcha: function () {
-      let self = this
-      getCaptcha()
-        .then(function (data) {
-          self.captchaImg = data.code
-        })
-    },
-    changeChaptcha: function () {
-      this.getCaptcha()
-    }
-  }
+  props: ['captchaImg'],
 }
 </script>
 <style>

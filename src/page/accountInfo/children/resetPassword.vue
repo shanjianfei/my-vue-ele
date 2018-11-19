@@ -14,27 +14,36 @@
       <input-component placeholder="旧密码" bg="#fff" border="0.04rem solid #f1f1f1" ht="4rem"  @inputs="getOldPassword"></input-component>
       <input-component placeholder="请输入新密码" bg="#fff" border="0.04rem solid #f1f1f1" ht="4rem"  @inputs="getNewPassword"></input-component>
       <input-component placeholder="请确认密码" bg="#fff" border="0.04rem solid #f1f1f1" ht="4rem"  @inputs="getConfirmPassword"></input-component>
-      <captcha @input="getCaptchaCode"></captcha>
+      <captcha @input="getCaptchaCode" :captchaImg="captchaImg" @changeChaptchaImg="changeChaptchaImg"></captcha>
       <button-submit text="确认修改" @submit="resetPassword"></button-submit>
     </form>
+    <alert-message :message="alertMessage" :show="alertShow" @closeTip="closeTip"></alert-message>
   </div>
 </template>
 <script>
 import headTop from '@/components/head/head'
 import inputComponent from '@/components/common/input'
+import alertMessage from '@/components/common/alertMessage'
 import captcha from '@/components/common/captcha'
 import buttonSubmit from '@/components/common/buttonSubmit'
 import {resetPassword} from '@/service/getData'
 import {getStore} from '@/commonApi/localStorage'
+import {getCaptcha} from '@/service/getData'
 export default {
   data () {
     return {
       username: '',
+      captchaImg: '', // 
       captchaCode: '',
       oldpassWord: '',
       newpassword: '',
-      confirmpassword: ''
+      confirmpassword: '',
+      alertMessage: '',
+      alertShow: false
     }
+  },
+  mounted: function () {
+    this.getCaptchaImg()
   },
   methods: {
     getUsername: function (value) {
@@ -49,24 +58,79 @@ export default {
     getConfirmPassword: function (value) {
       this.confirmpassword = value
     },
+    getCaptchaImg: function () {
+      let self = this
+      getCaptcha()
+        .then(function (data) {
+          self.captchaImg = data.code
+        })
+    },
+    changeChaptchaImg: function () {
+      this.getCaptchaImg()
+    },
     getCaptchaCode: function (value) {
       this.captchaCode = value
     },
     resetPassword: function () {
-      // username, oldpassWord, newpassword, confirmpassword, captcha_code
-      let username = JSON.parse(getStore('user')).username
+      if (!this.username) {
+        this.alertMessage = "请输入正确的账号"
+        this.alertShow = true
+        return
+      }
+      if (!this.oldpassWord) {
+        this.alertMessage = "请输入旧密码"
+        this.alertShow = true
+        return
+      }
+      if (!this.newpassword) {
+        this.alertMessage = "请输入新密码"
+        this.alertShow = true
+        return
+      }
+      if (!this.confirmpassword) {
+        this.alertMessage = "请输入确认密码"
+        this.alertShow = true
+        return
+      }
+      if (!this.captchaCode) {
+        this.alertMessage = "请输入验证码"
+        this.alertShow = true
+        return
+      }
+      if (this.newpassword === this.oldpassWord) {
+        this.alertMessage = "新密码与旧密码相同"
+        this.alertShow = true
+        return
+      }
+      if (this.newpassword !== this.confirmpassword) {
+        this.alertMessage = "两次输入的密码不一致"
+        this.alertShow = true
+        return
+      }
+      // let username = JSON.parse(getStore('user')).username
       let self = this
-      resetPassword(username, this.oldpassWord, this.newpassword, this.confirmpassword, this.captchaCode)
+      resetPassword(this.username, this.oldpassWord, this.newpassword, this.confirmpassword, this.captchaCode)
         .then(function (data) {
-          self.$router.push('/login')
+          if (data.status === 1) {
+            self.$router.push('/login')
+          } else {
+            self.changeChaptchaImg()
+            self.alertMessage = data.message
+            self.alertShow = true
+            return
+          }
         })
+    },
+    closeTip: function () {
+      this.alertShow = false
     }
   },
   components: {
     headTop,
     inputComponent,
     captcha,
-    buttonSubmit
+    buttonSubmit,
+    alertMessage
   }
 }
 </script>
