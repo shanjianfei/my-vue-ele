@@ -11,7 +11,7 @@
     <div class="add-new-address-container">
       <section class="area-input">
         <section class="input-component-container">
-          <input-component placeholder="请填写你的名字" v-model="username"></input-component>
+          <input-component placeholder="请填写你的名字" v-model="username" @change="checkUsername"></input-component>
           <p class="tip" v-if="usernameTip">请填写您的姓名</p>
         </section>
         <section class="input-component-container">
@@ -61,7 +61,8 @@ export default {
     buttonSubmit
   },
   computed: mapState({
-    deliveryAddress: state => state.addAddress.deliveryAddress
+    deliveryAddress: state => state.addAddress.deliveryAddress,
+    geohash: state => state.geohash
   }),
   mounted: function () {
     this.address = this.deliveryAddress? this.deliveryAddress: this.address
@@ -75,6 +76,14 @@ export default {
     },
     checkTelNum: function () {
       return /^1[3,4,5,6,7,8]\d{9}$/.test(this.telNum)
+    },
+    checkUsername: function () {
+      console.log(1)
+      if (!this.username) {
+        this.usernameTip = true
+      } else {
+        this.usernameTip = false
+      }
     },
     searchAddress: function () {
       console.log(2)

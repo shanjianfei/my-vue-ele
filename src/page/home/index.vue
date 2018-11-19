@@ -9,8 +9,8 @@
         <span>当前定位城市：</span>
         <span>定位不准时，请在城市列表中选择</span>
       </div>
-      <router-link :to="'/city/' + cityId" class="guess_city">
-        <span>{{locationCity}}</span>
+      <router-link :to="'/city/' + locationCity.id" class="guess_city" @click.native="choseCity(locationCity)">
+        <span>{{locationCity.name}}</span>
         <svg class="arrow_right">
             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
         </svg>
@@ -19,7 +19,7 @@
     <section class="hot_city_container">
       <h4 class="city_title">热门城市</h4>
       <ul>
-        <router-link v-for="(item, index) in hotCityList" :to="'/city/' + item.id" :key="index" tag="li">
+        <router-link v-for="(item, index) in hotCityList" :to="'/city/' + item.id" :key="index" tag="li" @click.native="choseCity(item)">
           {{item.name}}
         </router-link>
       </ul>
@@ -30,7 +30,7 @@
           {{index}}
         </h4>
         <ul>
-          <router-link v-for="(i, d) in item" :key="d" tag="li" :to="'/city/' + i.id">
+          <router-link v-for="(i, d) in item" :key="d" tag="li" :to="'/city/' + i.id" @click.native="choseCity(i)">
             {{i.name}}
           </router-link>
         </ul>
@@ -41,11 +41,11 @@
 <script>
 import headTop from '@/components/head/head'
 import axios from 'axios'
+import {mapState, mapMutations} from 'vuex'
 export default {
   data: function () {
     return {
       locationCity: '',
-      cityId: '',
       hotCityList: [],
       groupCityList: []
     }
@@ -59,8 +59,7 @@ export default {
     axios.get(urlGuess)
       .then(function (response) {
         if (response.status === 200) {
-          self.cityId = response.data.id
-          self.locationCity = response.data.name
+          self.locationCity = response.data
         }
       })
     axios.get(urlHot)
@@ -79,6 +78,7 @@ export default {
       })
   },
   computed: {
+    ...mapState(['geohash']),
     sortgroupcity () {
       let sortobj = {}
       for (let i = 65; i <= 90; i++) {
@@ -90,8 +90,13 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['updateGeohash']),
     login: function () {
       this.$router.push('/login')
+    },
+    choseCity: function (item) {
+      let geohash = item.latitude + ',' + item.longitude
+      this.updateGeohash(geohash)
     }
   },
   components: {

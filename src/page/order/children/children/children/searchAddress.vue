@@ -8,11 +8,12 @@
       </section>
       <span class="point-title" slot="point-title">搜索</span>
     </head-top>
-    <div class="search-container">
+    <form class="search-container" @submit.prevent>
       <input class="search-address-input" type="text" name="search-address" placeholder="请输入小区/写字楼/学校等" v-model="keyword">
-      <button class="search-address-button" @click="search">搜索</button>
-    </div>
-    <div class="search-results" v-if="searchResults">
+      <input type="submit" class="search-address-button" @click="search">
+    </form>
+    <div class="search-results" v-if="searchResults.length > 0">
+      <div class="search-address-tip">为了满足商家的送餐要求，建议您从列表中选择地址</div>
       <ul class="search-results-ul">
         <li class="search-results-li" v-for="(item, index) in searchResults" :key="index" @click="choose(item)">
           <p>{{item.name}}</p>
@@ -20,7 +21,7 @@
         </li>
       </ul>
     </div>
-    <div class="search-tips" v-if="!searchResults">
+    <div class="search-tips" v-if="searchResults.length === 0">
       <p>找不到地址？</p>
       <p>尝试输入小区、写字楼或学校名</p>
       <p>详细地址（如门牌号等）可稍后输入哦</p>
@@ -35,7 +36,7 @@ export default {
   data () {
     return {
       keyword: '',
-      searchResults: null
+      searchResults: []
     }
   },
   computed: mapState({
@@ -63,7 +64,7 @@ export default {
 <style>
   .search-address {
     height: 100%;
-    background-color: #fff;
+    /*background-color: #fff;*/
   }
   .head-goback {
     left: 0.4rem;
@@ -87,8 +88,9 @@ export default {
   .search-container {
     display: flex;
     flex-direction: row;
-    padding-top: 4rem;
     height: 3rem;
+    padding: 4rem .5rem 1rem .5rem;
+    background-color: #fff;
   }
   .search-address-input {
     flex: 8;
@@ -96,7 +98,7 @@ export default {
     margin: 0 1rem;
     border-radius: 0.5rem;
     border: 0;
-    background-color: #f1f1f1;
+    background-color: #f2f2f2;
     color: #999;
     padding: 0 0.5rem;
   }
@@ -132,5 +134,12 @@ export default {
   }
   .search-results-li > p:last-child {
     color: #999;
+  }
+  .search-address-tip {
+    line-height: 2rem;
+    color: #FF883F;
+    background-color: #FFF6E4;
+    text-align: center;
+    font-size: 1.2rem;
   }
 </style>
