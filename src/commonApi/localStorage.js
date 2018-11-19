@@ -2,6 +2,9 @@ export const setStore = (key, value) => {
   if (!key) {
     return
   }
+  if (typeof(value) === 'object') {
+  	value = JSON.stringify(value)
+  }
   window.localStorage.setItem(key, value)
 }
 

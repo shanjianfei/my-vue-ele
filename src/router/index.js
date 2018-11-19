@@ -17,6 +17,7 @@ const orderComments = r => require.ensure([], require => r(require('../page/orde
 const login = r => require.ensure([], require => r(require('../page/login')), 'login')
 const accountInfo = r => require.ensure([], require => r(require('../page/accountInfo')), 'accountInfo')
 const changeUsername = r => require.ensure([], require => r(require('../page/accountInfo/children/changeUsername')), 'changeUsername')
+const resetPassword = r => require.ensure([], require => r(require('../page/accountInfo/children/resetPassword')), 'resetPassword')
 const editAddress = r => require.ensure([], require => r(require('../page/accountInfo/children/editAddress')), 'editAddress')
 const addNewAddress = r => require.ensure([], require => r(require('../page/accountInfo/children/children/addNewAddress')), 'addNewAddress')
 const search = r => require.ensure([], require => r(require('../page/search')), 'search')
@@ -102,6 +103,11 @@ export default new Router({
       path: '/changeUsername',
       name: 'changeUsername',
       component: changeUsername
+    },
+    {
+      path: '/resetPassword',
+      name: 'resetPassword',
+      component: resetPassword
     },
     {
       path: '/addNewAddress',

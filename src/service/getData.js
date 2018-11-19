@@ -272,3 +272,23 @@ export const uploadProfilePhoto= (userId, formData) => {
       })
   })
 }
+
+export const resetPassword= (username, oldpassWord, newpassword, confirmpassword, captcha_code) => {
+  let url = 'https://elm.cangdu.org/v2/changepassword'
+  let formData = {
+    username,
+    oldpassWord,
+    newpassword,
+    confirmpassword,
+    captcha_code
+  }
+  username
+  return new Promise(function (resolve, reject) {
+    axios.post(url, formData)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  })
+}

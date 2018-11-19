@@ -64,6 +64,7 @@ export default {
         .then(function (data) {
           if ('username' in data) {
             setStore('user_id', data['user_id'])
+            setStore('user', data)
             self.$router.go(-1)
           }
         })

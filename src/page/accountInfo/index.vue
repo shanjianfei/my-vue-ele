@@ -42,7 +42,7 @@
       </section>
       <section class="security-setting">
         <p>账号安全</p>
-        <router-link to="/abc">
+        <router-link to="/resetPassword">
           <span>密码登录</span>
           <section>
             <span>修改</span>
