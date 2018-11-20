@@ -1,7 +1,6 @@
 import axios from 'axios'
-axios.defaults.withCredentials=true
-
 import {getStore} from '@/commonApi/localStorage'
+axios.defaults.withCredentials = true
 
 export const isLogin = () => {
   let userId = getStore('user_id')
@@ -244,13 +243,13 @@ export const membershipCard = (userId) => {
   })
 }
 
-export const login = (username, password, captcha_code) => {
+export const login = (username, password, captchaCode) => {
   let url = 'https://elm.cangdu.org/v2/login'
   return new Promise(function (resolve, reject) {
     axios.post(url, {
       username,
       password,
-      captcha_code
+      captcha_code: captchaCode
     })
       .then(function (response) {
         if (response.status === 200) {
@@ -260,9 +259,8 @@ export const login = (username, password, captcha_code) => {
   })
 }
 
-export const uploadProfilePhoto= (userId, formData) => {
+export const uploadProfilePhoto = (userId, formData) => {
   let url = 'https://elm.cangdu.org/eus/v1/users/' + userId + '/avatar'
-  // let url = 'https://elm.cangdu.org/v1/addimg/' + type
   return new Promise(function (resolve, reject) {
     axios.post(url, formData)
       .then(function (response) {
@@ -273,16 +271,15 @@ export const uploadProfilePhoto= (userId, formData) => {
   })
 }
 
-export const resetPassword= (username, oldpassWord, newpassword, confirmpassword, captcha_code) => {
+export const resetPassword = (username, oldpassWord, newpassword, confirmpassword, captchaCode) => {
   let url = 'https://elm.cangdu.org/v2/changepassword'
   let formData = {
     username,
     oldpassWord,
     newpassword,
     confirmpassword,
-    captcha_code
+    captcha_code: captchaCode
   }
-  username
   return new Promise(function (resolve, reject) {
     axios.post(url, formData)
       .then(function (response) {

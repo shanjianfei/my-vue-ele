@@ -11,23 +11,18 @@
     <div class="quick-note">
       <header class="quick-note-title">快速备注</header>
       <section class="quick-note-item">
-        <span v-for="(item, index) in getRemar"></span>
+        <span v-for="(item, index) in getRemar" :key="index"></span>
       </section>
     </div>
   </div>
 </template>
 <script>
-import {getRemarks} from '@/service/getData'
 import headTop from '@/components/head/head'
 export default {
   data () {
     return {
       remarks: []
     }
-  },
-  mounted: function () {
-    let self = this
-    getRemarks()
   },
   components: {headTop}
 }

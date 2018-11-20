@@ -70,6 +70,7 @@ export default {
         }
       })
       .then(function () {
+        /* eslint-disable no-new */
         new Swiper('.swiper-container', {
           pagination: '.swiper-pagination',
           loop: true

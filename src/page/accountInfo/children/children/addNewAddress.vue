@@ -26,8 +26,8 @@
         <section class="input-component-container">
           <input-component placeholder="请填写能够联系到您的手机号" v-model="telNum"></input-component>
           <p class="tip" v-if="telNumTip">请输入正确的手机号</p>
-        </section class="input-component-container">
-        <section>
+        </section>
+        <section class="input-component-container">
           <input-component placeholder="备用联系电话（选填）" v-model="emergencyTelNum"></input-component>
           <p class="tip" v-if="emergencyTelNumTip">请输入正确的手机号</p>
         </section>
@@ -65,7 +65,7 @@ export default {
     geohash: state => state.geohash
   }),
   mounted: function () {
-    this.address = this.deliveryAddress? this.deliveryAddress: this.address
+    this.address = this.deliveryAddress ? this.deliveryAddress : this.address
   },
   methods: {
     ...mapMutations({

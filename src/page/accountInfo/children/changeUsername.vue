@@ -14,22 +14,27 @@
         <span v-if="checkName">用户名只能修改一次（5-24字符之间）</span>
         <span v-else style="color:red">用户名长度在5到24位之间</span>
       </div>
-      <div class="submit" @click="submit">确认修改</div>
+      <!-- <div class="submit" @click="submit">确认修改</div> -->
+      <button-submit text="确认修改" lh="2.5rem" bg="#3199e8" @submit="submit"></button-submit>
     </div>
   </div>
 </template>
 <script>
 import inputComponent from '@/components/common/input'
+import buttonSubmit from '@/components/common/buttonSubmit'
 import headTop from '@/components/head/head'
+import {getStore, setStore} from '@/commonApi/localStorage'
 export default {
   data () {
     return {
-      checkName: true
+      checkName: true,
+      username: ''
     }
   },
   components: {
     inputComponent,
-    headTop
+    headTop,
+    buttonSubmit
   },
   methods: {
     checkValueInput: function (value) {
@@ -38,9 +43,16 @@ export default {
       } else {
         this.checkName = false
       }
+      this.username = value
     },
     submit: function () {
-      
+      let userInfo = JSON.parse(getStore('user'))
+      if (!this.checkName) {
+        return
+      }
+      userInfo.username = this.username
+      setStore('user', JSON.stringify(userInfo))
+      this.$router.go(-1)
     }
   }
 }
@@ -58,6 +70,9 @@ export default {
     line-height: 2.5rem;
     text-align: center;
     color: #ccc;
+    margin-top: 1rem;
+  }
+  .button-submit {
     margin-top: 1rem;
   }
 </style>

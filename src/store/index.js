@@ -10,20 +10,17 @@ const stateShopDetail = {
 
 function deepCopy (o) {
   if (o instanceof Array) {
-    let n = []
-    for (let i = 0; i < o.length; ++i) {
-      n[i] = deepCopy(o[i])
+    let _o = []
+    for (let i = 0; i < o.length; i++) {
+      _o[i] = deepCopy(o[i])
     }
-    return n
-  } else if (o instanceof Function) {
-    let n = new Function('return ' + o.toString())()
-    return n
+    return _o
   } else if (o instanceof Object) {
-    let n = {}
+    let _o = {}
     for (let i in o) {
-      n[i] = deepCopy(o[i])
+      _o[i] = deepCopy(o[i])
     }
-    return n
+    return _o
   } else {
     return o
   }

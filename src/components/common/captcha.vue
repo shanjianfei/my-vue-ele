@@ -10,7 +10,7 @@
 </template>
 <script>
 export default {
-  props: ['captchaImg'],
+  props: ['captchaImg']
 }
 </script>
 <style>
@@ -41,7 +41,6 @@ export default {
     flex: 2;
     text-align: center;
     justify-content: center;
-    background: 
   }
   .change-chaptcha > span:last-child {
     color: #3b95e9;

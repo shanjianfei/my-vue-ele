@@ -27,7 +27,6 @@
 import headTop from '@/components/head/head'
 import arrowLeft from '@/components/common/arrowLeft'
 import alertMessage from '@/components/common/alertMessage'
-import {membershipCard} from '@/service/getData'
 export default {
   data () {
     return {
@@ -37,7 +36,6 @@ export default {
       showTip: false
     }
   },
-  mounted: function () {console.log(this.showTip)},
   methods: {
     is10Number: function (str) {
       let regNum = /^\d{10}$/
@@ -49,11 +47,6 @@ export default {
     },
     submit: function () {
       this.showTip = true
-      // let userId = ''
-      // membershipCard()
-      //   .then(function (data) {
-
-      //   })
     },
     closeTip: function () {
       this.showTip = false

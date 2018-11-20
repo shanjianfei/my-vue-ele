@@ -11,24 +11,20 @@
     <div class="user-password">
       <input class="captcha-input" type="text" name="user" placeholder="账号" v-model="username">
       <input type="password" name="password" placeholder="密码" v-model="password">
-      <section class="captcha-container">
-        <input type="text" name="captcha" placeholder="验证码" v-model="captchaCode">
-        <img class="captcha-img" :src="captchaImg">
-        <span class="change-chaptcha" @click="changeChaptcha">
-          <span>看不清</span>
-          <span>换一张</span>
-        </span>
-      </section>
+      <captcha :captchaImg="captchaImg" @input="getCaptchaCode" @changeChaptchaImg="changeChaptchaImg"></captcha>
     </div>
     <div class="login-tips">
       <p>温馨提示：未注册过的账号，登录时将自动注册 </p>
       <p>注册过的用户可凭账号密码登录 </p>
     </div>
     <div class="login-submit" @click="login">确定</div>
+    <alert-message :message="alertMessage" :show="showTip" @closeTip="closeTip"></alert-message>
   </div>
 </template>
 <script>
 import headTop from '@/components/head/head'
+import alertMessage from '@/components/common/alertMessage'
+import captcha from '@/components/common/captcha'
 import {mapState} from 'vuex'
 import {getCaptcha, login} from '@/service/getData'
 import {setStore} from '@/commonApi/localStorage'
@@ -38,25 +34,27 @@ export default {
       username: '',
       password: '',
       captchaCode: '',
-      captchaImg: ''
+      captchaImg: '',
+      alertMessage: '',
+      showTip: false
     }
   },
   computed: mapState({
     deliveryAddress: state => state.addAddress.deliveryAddress
   }),
   mounted: function () {
-    this.getCaptcha()
+    this.getChaptchaImg()
   },
   methods: {
-    getCaptcha: function () {
+    getChaptchaImg: function () {
       let self = this
       getCaptcha()
         .then(function (data) {
           self.captchaImg = data.code
         })
     },
-    changeChaptcha: function () {
-      this.getCaptcha()
+    changeChaptchaImg: function () {
+      this.getChaptchaImg()
     },
     login: function () {
       let self = this
@@ -66,11 +64,23 @@ export default {
             setStore('user_id', data['user_id'])
             setStore('user', data)
             self.$router.go(-1)
+          } else {
+            self.changeChaptchaImg()
+            self.showTip = true
+            console.log(data)
+            self.alertMessage = data.message
           }
         })
+    },
+    getCaptchaCode: function (captchaCode) {
+      this.captchaCode = captchaCode
+    },
+    closeTip: function () {
+      this.showTip = false
+      this.alertMessage = ''
     }
   },
-  components: {headTop}
+  components: {headTop, alertMessage, captcha}
 }
 </script>
 <style>

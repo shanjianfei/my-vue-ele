@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import {isLogin} from '@/service/getData'
 
 Vue.use(Router)
 
@@ -32,7 +33,7 @@ const balanceDescription = r => require.ensure([], require => r(require('../page
 const points = r => require.ensure([], require => r(require('../page/points')), 'points')
 const pointsDescription = r => require.ensure([], require => r(require('../page/points/children/pointsDescription')), 'pointsDescription')
 
-export default new Router({
+let router = new Router({
   routes: [
     {
       path: '/',
@@ -92,7 +93,8 @@ export default new Router({
     {
       path: '/accountInfo',
       name: 'accountInfo',
-      component: accountInfo
+      component: accountInfo,
+      meta: { requiresAuth: true }
     },
     {
       path: '/editAddress',
@@ -100,14 +102,16 @@ export default new Router({
       component: editAddress
     },
     {
-      path: '/changeUsername',
+      path: '/accountInfo/changeUsername',
       name: 'changeUsername',
-      component: changeUsername
+      component: changeUsername,
+      meta: { requiresAuth: true }
     },
     {
-      path: '/resetPassword',
+      path: '/accountInfo/resetPassword',
       name: 'resetPassword',
-      component: resetPassword
+      component: resetPassword,
+      meta: { requiresAuth: true }
     },
     {
       path: '/addNewAddress',
@@ -171,3 +175,17 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (isLogin()) {
+      next()
+    } else {
+      next('/login')
+    }
+  } else {
+    next()
+  }
+})
+
+export default router

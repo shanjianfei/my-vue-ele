@@ -103,7 +103,6 @@ import headTop from '@/components/head/head'
 import arrowRight from '@/components/common/arrowRight'
 import footerGuide from '@/components/footer/footer'
 import {getUserInfo, isLogin} from '@/service/getData'
-import {getStore} from '@/commonApi/localStorage'
 export default {
   data () {
     return {
@@ -116,8 +115,7 @@ export default {
   },
   mounted: function () {
     let self = this
-    if (isLogin) {
-      let userId = getStore('user_id')
+    if (isLogin()) {
       getUserInfo()
         .then(function (data) {
           if (!('status' in data)) {

@@ -26,14 +26,12 @@ import inputComponent from '@/components/common/input'
 import alertMessage from '@/components/common/alertMessage'
 import captcha from '@/components/common/captcha'
 import buttonSubmit from '@/components/common/buttonSubmit'
-import {resetPassword} from '@/service/getData'
-import {getStore} from '@/commonApi/localStorage'
-import {getCaptcha} from '@/service/getData'
+import {getCaptcha, resetPassword} from '@/service/getData'
 export default {
   data () {
     return {
       username: '',
-      captchaImg: '', // 
+      captchaImg: '',
       captchaCode: '',
       oldpassWord: '',
       newpassword: '',
@@ -73,41 +71,40 @@ export default {
     },
     resetPassword: function () {
       if (!this.username) {
-        this.alertMessage = "请输入正确的账号"
+        this.alertMessage = '请输入正确的账号'
         this.alertShow = true
         return
       }
       if (!this.oldpassWord) {
-        this.alertMessage = "请输入旧密码"
+        this.alertMessage = '请输入旧密码'
         this.alertShow = true
         return
       }
       if (!this.newpassword) {
-        this.alertMessage = "请输入新密码"
+        this.alertMessage = '请输入新密码'
         this.alertShow = true
         return
       }
       if (!this.confirmpassword) {
-        this.alertMessage = "请输入确认密码"
+        this.alertMessage = '请输入确认密码'
         this.alertShow = true
         return
       }
       if (!this.captchaCode) {
-        this.alertMessage = "请输入验证码"
+        this.alertMessage = '请输入验证码'
         this.alertShow = true
         return
       }
       if (this.newpassword === this.oldpassWord) {
-        this.alertMessage = "新密码与旧密码相同"
+        this.alertMessage = '新密码与旧密码相同'
         this.alertShow = true
         return
       }
       if (this.newpassword !== this.confirmpassword) {
-        this.alertMessage = "两次输入的密码不一致"
+        this.alertMessage = '两次输入的密码不一致'
         this.alertShow = true
         return
       }
-      // let username = JSON.parse(getStore('user')).username
       let self = this
       resetPassword(this.username, this.oldpassWord, this.newpassword, this.confirmpassword, this.captchaCode)
         .then(function (data) {
@@ -117,7 +114,6 @@ export default {
             self.changeChaptchaImg()
             self.alertMessage = data.message
             self.alertShow = true
-            return
           }
         })
     },
