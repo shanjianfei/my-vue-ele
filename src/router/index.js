@@ -31,6 +31,9 @@ const balance = r => require.ensure([], require => r(require('../page/balance'))
 const balanceDescription = r => require.ensure([], require => r(require('../page/balance/children/balanceDescription')), 'balanceDescription')
 const points = r => require.ensure([], require => r(require('../page/points')), 'points')
 const pointsDescription = r => require.ensure([], require => r(require('../page/points/children/pointsDescription')), 'pointsDescription')
+const coupon = r => require.ensure([], require => r(require('../page/profile/children/coupon')), 'coupon')
+const couponDescription = r => require.ensure([], require => r(require('../page/profile/children/children/couponDescription')), 'couponDescription')
+
 
 let router = new Router({
   routes: [
@@ -114,6 +117,16 @@ let router = new Router({
       path: '/profile/points/pointsDescription',
       name: 'pointsDescription',
       component: pointsDescription
+    },
+    {
+      path: '/profile/coupon',
+      name: 'coupon',
+      component: coupon
+    },
+    {
+      path: '/profile/points/couponDescription',
+      name: 'couponDescription',
+      component: couponDescription
     },
     {
       path: '/editAddress',

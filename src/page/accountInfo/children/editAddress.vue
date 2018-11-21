@@ -23,7 +23,7 @@
 <script>
 import headTop from '@/components/head/head'
 import linkBar from '@/components/common/linkBar'
-import {getDeliveryAddress, isLogin} from '@/service/getData'
+import {getDeliveryAddress} from '@/service/getData'
 import {getStore} from '@/commonApi/localStorage'
 export default {
   data () {
