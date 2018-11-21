@@ -219,6 +219,18 @@ export const getUserInfo = userId => {
   })
 }
 
+export const getDeliveryAddress = userId => {
+  let url = 'https://elm.cangdu.org/v1/users/' + userId + '/addresses'
+  return new Promise(function (resolve, reject) {
+    axios.get(url)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  })
+}
+
 export const getProfileExplain = () => {
   let url = 'https://elm.cangdu.org/v3/profile/explain'
   return new Promise(function (resolve, reject) {

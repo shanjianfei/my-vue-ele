@@ -12,7 +12,7 @@
           <span>当前积分</span>
           <section>
             <img src="@/images/description.png">
-            <router-link to="/points/pointsDescription">积分说明</router-link>
+            <router-link to="/profile/points/pointsDescription">积分说明</router-link>
           </section>
         </section>
         <section class="points-body">

@@ -26,19 +26,19 @@
 
     <div class="profile-item">
       <section class="profile-info">
-        <router-link class="amount" to="/balance">
+        <router-link class="amount" to="/profile/balance">
           <p>
             <span>{{balance}}</span>元
           </p>
           <p>我的余额</p>
         </router-link>
-        <router-link class="coupon" to="/coupon">
+        <router-link class="coupon" to="/profile/coupon">
           <p>
             <span>{{coupon}}</span>个
           </p>
           <p>我的优惠</p>
         </router-link>
-        <router-link class="points" to="/points">
+        <router-link class="points" to="/profile/points">
           <p>
             <span>{{points}}</span>分
           </p>
@@ -119,6 +119,7 @@ export default {
       getUserInfo()
         .then(function (data) {
           if (!('status' in data)) {
+            console.log(data)
             self.balance = data.balance
             self.coupon = data.gift_amount
             self.points = data.point

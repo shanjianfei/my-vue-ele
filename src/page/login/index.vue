@@ -9,7 +9,7 @@
       <span class="point-title" slot="point-title">密码登录</span>
     </head-top>
     <div class="user-password">
-      <input class="captcha-input" type="text" name="user" placeholder="账号" v-model="username">
+      <input-component placeholder="账号" :bg="inputBg" :ht="inputHt" @inputs="getUsername"></input-component>
       <input type="password" name="password" placeholder="密码" v-model="password">
       <captcha :captchaImg="captchaImg" @input="getCaptchaCode" @changeChaptchaImg="changeChaptchaImg"></captcha>
     </div>
@@ -24,6 +24,7 @@
 <script>
 import headTop from '@/components/head/head'
 import alertMessage from '@/components/common/alertMessage'
+import inputComponent from '@/components/common/input'
 import captcha from '@/components/common/captcha'
 import {mapState} from 'vuex'
 import {getCaptcha, login} from '@/service/getData'
@@ -36,7 +37,9 @@ export default {
       captchaCode: '',
       captchaImg: '',
       alertMessage: '',
-      showTip: false
+      showTip: false,
+      inputBg: '#fff',
+      inputHt: '3rem'
     }
   },
   computed: mapState({
@@ -56,18 +59,53 @@ export default {
     changeChaptchaImg: function () {
       this.getChaptchaImg()
     },
+    getUsername: function (value) {
+      this.username = value
+    },
+    checkUsername: function () {
+      if (this.username) {
+        return true
+      }
+      return false
+    },
+    checkPassword: function () {
+      if (this.password) {
+        return true
+      }
+      return false
+    },
+    checkCaptcha: function () {
+      if (/^\d{4}$/.test(this.captchaCode)) {
+        return true
+      }
+      return false
+    },
     login: function () {
       let self = this
+      if (!this.checkUsername()) {
+        this.showTip = true
+        this.alertMessage = '用户名不能为空'
+        return
+      }
+      if (!this.checkPassword()) {
+        this.showTip = true
+        this.alertMessage = '密码不能为空'
+        return
+      }
+      if (!this.checkCaptcha()) {
+        this.showTip = true
+        this.alertMessage = '验证码为四位数字'
+        return
+      }
       login(this.username, this.password, this.captchaCode)
         .then(function (data) {
           if ('username' in data) {
             setStore('user_id', data['user_id'])
             setStore('user', data)
-            self.$router.go(-1)
+            self.$router.push('/profile')
           } else {
             self.changeChaptchaImg()
             self.showTip = true
-            console.log(data)
             self.alertMessage = data.message
           }
         })
@@ -80,7 +118,7 @@ export default {
       this.alertMessage = ''
     }
   },
-  components: {headTop, alertMessage, captcha}
+  components: {headTop, alertMessage, captcha, inputComponent}
 }
 </script>
 <style>

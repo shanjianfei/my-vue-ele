@@ -7,7 +7,6 @@ Vue.use(Router)
 const home = r => require.ensure([], rquire => r(require('../page/home')), 'home')
 const city = r => require.ensure([], rquire => r(require('../page/city')), 'city')
 const shopsGuide = r => require.ensure([], require => r(require('../page/shopsGuide')), 'shopsGuide')
-// const ratingStar = r => require.ensure([], require => r(require('../components/common/ratingStar')), 'ratingStar')
 const shop = r => require.ensure([], require => r(require('../page/shop')), 'shop')
 const shopDetail = r => require.ensure([], require => r(require('../page/shopDetail')), 'shopDetail')
 const order = r => require.ensure([], require => r(require('../page/order')), 'order')
@@ -97,9 +96,30 @@ let router = new Router({
       meta: { requiresAuth: true }
     },
     {
+      path: '/profile/balance',
+      name: 'balance',
+      component: balance
+    },
+    {
+      path: '/profile/balance/balanceDescription',
+      name: 'balanceDescription',
+      component: balanceDescription
+    },
+    {
+      path: '/profile/points',
+      name: 'points',
+      component: points
+    },
+    {
+      path: '/profile/points/pointsDescription',
+      name: 'pointsDescription',
+      component: pointsDescription
+    },
+    {
       path: '/editAddress',
       name: 'editAddress',
-      component: editAddress
+      component: editAddress,
+      meta: { requiresAuth: true }
     },
     {
       path: '/accountInfo/changeUsername',
@@ -152,26 +172,6 @@ let router = new Router({
       path: '/download',
       name: 'download',
       component: download
-    },
-    {
-      path: '/balance',
-      name: 'balance',
-      component: balance
-    },
-    {
-      path: '/balance/balanceDescription',
-      name: 'balanceDescription',
-      component: balanceDescription
-    },
-    {
-      path: '/points',
-      name: 'points',
-      component: points
-    },
-    {
-      path: '/points/pointsDescription',
-      name: 'pointsDescription',
-      component: pointsDescription
     }
   ]
 })

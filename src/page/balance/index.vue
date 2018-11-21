@@ -12,7 +12,7 @@
           <span>当前余额</span>
           <section>
             <img src="@/images/description.png">
-            <router-link to="/balance/balanceDescription">余额说明</router-link>
+            <router-link to="/profile/balance/balanceDescription">余额说明</router-link>
           </section>
         </section>
         <section class="balance-body">
