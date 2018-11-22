@@ -301,3 +301,15 @@ export const resetPassword = (username, oldpassWord, newpassword, confirmpasswor
       })
   })
 }
+
+export const getRedPackage = (userId, limit, offset) => {
+  let url = 'https://elm.cangdu.org/promotion/v2/users/' + userId + '/hongbaos?limit=' + limit + '&offset=' + offset
+  return new Promise(function (resolve, reject) {
+    axios.get(url)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  })
+}

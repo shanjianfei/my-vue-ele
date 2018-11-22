@@ -34,7 +34,6 @@ const pointsDescription = r => require.ensure([], require => r(require('../page/
 const coupon = r => require.ensure([], require => r(require('../page/profile/children/coupon')), 'coupon')
 const couponDescription = r => require.ensure([], require => r(require('../page/profile/children/children/couponDescription')), 'couponDescription')
 
-
 let router = new Router({
   routes: [
     {
@@ -121,12 +120,14 @@ let router = new Router({
     {
       path: '/profile/coupon',
       name: 'coupon',
-      component: coupon
+      component: coupon,
+      meta: { requiresAuth: true }
     },
     {
       path: '/profile/points/couponDescription',
       name: 'couponDescription',
-      component: couponDescription
+      component: couponDescription,
+      meta: { requiresAuth: true }
     },
     {
       path: '/editAddress',
