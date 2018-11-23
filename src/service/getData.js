@@ -313,3 +313,15 @@ export const getRedPackage = (userId, limit, offset) => {
       })
   })
 }
+
+export const getOverdueRedPackage = (userId, limit, offset) => {
+  let url = 'https://elm.cangdu.org/promotion/v2/users/' + userId + '/expired_hongbaos?limit=' + limit + '&offset=' + offset
+  return new Promise(function (resolve, reject) {
+    axios.get(url)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  })
+}

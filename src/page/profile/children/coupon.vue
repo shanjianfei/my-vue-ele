@@ -9,7 +9,10 @@
       <div class="red-packages-container">
         <div class="red-packages-title">
           <span>有 <span>{{redPackagesNum}}</span> 个红包即将到期</span>
-          <router-link class="red-package-description" to="/profile/points/couponDescription">红包说明</router-link>
+          <section>
+            <img src="@/images/description.png">
+            <router-link class="red-package-description" to="/profile/points/couponDescription">红包说明</router-link>
+          </section>
         </div>
         <ul>
           <li class="red-packages-content" v-for="(item, index) in redPackages" :key="index">
@@ -33,12 +36,17 @@
           </li>
         </ul>
       </div>
+      <router-link class="history-red-packages-link" to="/profile/coupon/overdueredpackages">
+        <span>查看历史红包</span>
+        <svg><use data-v-841e3554="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use></svg>
+      </router-link>
     </div>
   </div>
 </template>
 <script>
 import headTop from '@/components/head/head'
 import arrowLeft from '@/components/common/arrowLeft'
+import arrowRight from '@/components/common/arrowRight'
 import horizontalSwitchBar from '@/components/common/horizontalSwitchBar'
 import {getRedPackage} from '@/service/getData'
 import {getStore} from '@/commonApi/localStorage'
@@ -67,7 +75,7 @@ export default {
       }
     }
   },
-  components: {headTop, arrowLeft, horizontalSwitchBar}
+  components: {headTop, arrowLeft, horizontalSwitchBar, arrowRight}
 }
 </script>
 <style>
@@ -126,5 +134,29 @@ export default {
     font-size: .7rem;
     color: #aaa;
     background-color: #f5f5f5;
+  }
+  .history-red-packages-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: .7rem;
+  }
+  .history-red-packages-link > svg {
+    width: 0.7rem;
+    height: 0.7rem;
+    margin-left: .5rem;
+  }
+  .red-package-description {
+    color: #3190e8;
+  }
+  .red-packages-title img {
+    width: .8rem;
+    height: .8rem;
+    margin-right: 0.3rem;
+  }
+  .red-packages-title > section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 </style>

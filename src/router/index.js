@@ -33,6 +33,7 @@ const points = r => require.ensure([], require => r(require('../page/points')), 
 const pointsDescription = r => require.ensure([], require => r(require('../page/points/children/pointsDescription')), 'pointsDescription')
 const coupon = r => require.ensure([], require => r(require('../page/profile/children/coupon')), 'coupon')
 const couponDescription = r => require.ensure([], require => r(require('../page/profile/children/children/couponDescription')), 'couponDescription')
+const overdueRedPackages = r => require.ensure([], require => r(require('../page/profile/children/children/overdueRedPackages')), 'overdueRedPackages')
 
 let router = new Router({
   routes: [
@@ -116,6 +117,12 @@ let router = new Router({
       path: '/profile/points/pointsDescription',
       name: 'pointsDescription',
       component: pointsDescription
+    },
+    {
+      path: '/profile/coupon/overdueredpackages',
+      name: 'overdueRedPackages',
+      component: overdueRedPackages,
+      meta: { requiresAuth: true }
     },
     {
       path: '/profile/coupon',
