@@ -32,8 +32,11 @@ const balanceDescription = r => require.ensure([], require => r(require('../page
 const points = r => require.ensure([], require => r(require('../page/points')), 'points')
 const pointsDescription = r => require.ensure([], require => r(require('../page/points/children/pointsDescription')), 'pointsDescription')
 const coupon = r => require.ensure([], require => r(require('../page/profile/children/coupon')), 'coupon')
-const couponDescription = r => require.ensure([], require => r(require('../page/profile/children/children/couponDescription')), 'couponDescription')
+const redPackageDescription = r => require.ensure([], require => r(require('../page/profile/children/children/redPackageDescription')), 'redPackageDescription')
+const voucherDescription = r => require.ensure([], require => r(require('../page/profile/children/voucher/children/voucherDescription')), 'voucherDescription')
 const overdueRedPackages = r => require.ensure([], require => r(require('../page/profile/children/children/overdueRedPackages')), 'overdueRedPackages')
+const redPackages = r => require.ensure([], require => r(require('../page/profile/children/children/redPackages')), 'redPackages')
+const voucher = r => require.ensure([], require => r(require('../page/profile/children/voucher/voucher')), 'voucher')
 
 let router = new Router({
   routes: [
@@ -128,12 +131,28 @@ let router = new Router({
       path: '/profile/coupon',
       name: 'coupon',
       component: coupon,
+      meta: { requiresAuth: true },
+      children: [
+        {
+          path: 'redpackages',
+          component: redPackages
+        },
+        {
+          path: 'voucher',
+          component: voucher
+        }
+      ]
+    },
+    {
+      path: '/profile/coupon/redpackages/redpackagedescription',
+      name: 'redPackageDescription',
+      component: redPackageDescription,
       meta: { requiresAuth: true }
     },
     {
-      path: '/profile/points/couponDescription',
-      name: 'couponDescription',
-      component: couponDescription,
+      path: '/profile/coupon/voucher/voucherdescription',
+      name: 'voucherDescription',
+      component: voucherDescription,
       meta: { requiresAuth: true }
     },
     {

@@ -5,41 +5,8 @@
       <span class="point-title" slot="head-center">我的优惠</span>
     </head-top>
     <div class="coupon-container">
-      <horizontal-switch-bar :items="itemsSwitchBar" :itemActive="itemActive" @changeItem="changeItem"></horizontal-switch-bar>
-      <div class="red-packages-container">
-        <div class="red-packages-title">
-          <span>有 <span>{{redPackagesNum}}</span> 个红包即将到期</span>
-          <section>
-            <img src="@/images/description.png">
-            <router-link class="red-package-description" to="/profile/points/couponDescription">红包说明</router-link>
-          </section>
-        </div>
-        <ul>
-          <li class="red-packages-content" v-for="(item, index) in redPackages" :key="index">
-            <div class="red-package">
-              <section>
-                <p>￥{{item.amount}}</p>
-                <p>{{item.description_map.sum_condition}}</p>
-              </section>
-              <section>
-                <p>{{item.name}}</p>
-                <p>{{item.description_map.validity_periods}}</p>
-                <p>{{item.description_map.phone}}</p>
-              </section>
-              <span>{{item.description_map.validity_delta}}</span>
-            </div>
-            <ul class="limit-map">
-              <li v-for="(item ,index) in item.limit_map" :key="index">
-                <span>{{item}}</span>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-      <router-link class="history-red-packages-link" to="/profile/coupon/overdueredpackages">
-        <span>查看历史红包</span>
-        <svg><use data-v-841e3554="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use></svg>
-      </router-link>
+      <horizontal-switch-bar :items="itemsSwitchBar"></horizontal-switch-bar>
+      <router-view></router-view>
     </div>
   </div>
 </template>
@@ -48,31 +15,10 @@ import headTop from '@/components/head/head'
 import arrowLeft from '@/components/common/arrowLeft'
 import arrowRight from '@/components/common/arrowRight'
 import horizontalSwitchBar from '@/components/common/horizontalSwitchBar'
-import {getRedPackage} from '@/service/getData'
-import {getStore} from '@/commonApi/localStorage'
 export default {
   data () {
     return {
-      itemsSwitchBar: ['红包', '商家代金券'],
-      itemActive: 0,
-      redPackages: [],
-      redPackagesNum: 0
-    }
-  },
-  mounted: function () {
-    let userId = getStore('user_id')
-    let self = this
-    getRedPackage(userId, 20, 0)
-      .then(function (data) {
-        self.redPackages = data
-        self.redPackagesNum = data.length
-      })
-  },
-  methods: {
-    changeItem: function (value) {
-      if (this.itemActive !== value) {
-        this.itemActive = value
-      }
+      itemsSwitchBar: [{content: '红包', link: '/profile/coupon/redpackages'}, {content: '商家代金券', link: '/profile/coupon/voucher'}]
     }
   },
   components: {headTop, arrowLeft, horizontalSwitchBar, arrowRight}
