@@ -325,3 +325,20 @@ export const getOverdueRedPackage = (userId, limit, offset) => {
       })
   })
 }
+
+export const exchangeRedPackage = (userId, exchangeCode, captchaCode) => {
+  let url = 'https://elm.cangdu.org/v1/users/' + userId + '/hongbao/exchange'
+  let formData = {
+    user_id: userId,
+    exchange_code: exchangeCode,
+    captcha_code: captchaCode
+  }
+  return new Promise(function (resolve, reject) {
+    axios.post(url, formData)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  })
+}

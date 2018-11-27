@@ -37,6 +37,8 @@ const voucherDescription = r => require.ensure([], require => r(require('../page
 const overdueRedPackages = r => require.ensure([], require => r(require('../page/profile/children/children/overdueRedPackages')), 'overdueRedPackages')
 const redPackages = r => require.ensure([], require => r(require('../page/profile/children/children/redPackages')), 'redPackages')
 const voucher = r => require.ensure([], require => r(require('../page/profile/children/voucher/voucher')), 'voucher')
+const convertRedPackages = r => require.ensure([], require => r(require('../page/profile/children/children/convertRedPackages')), 'convertRedPackages')
+const recommand = r => require.ensure([], require => r(require('../page/profile/children/children/recommand')), 'recommand')
 
 let router = new Router({
   routes: [
@@ -125,6 +127,18 @@ let router = new Router({
       path: '/profile/coupon/overdueredpackages',
       name: 'overdueRedPackages',
       component: overdueRedPackages,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/profile/coupon/convertredpackages',
+      name: 'convertRedPackages',
+      component: convertRedPackages,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/profile/coupon/recommand',
+      name: 'recommand',
+      component: recommand,
       meta: { requiresAuth: true }
     },
     {

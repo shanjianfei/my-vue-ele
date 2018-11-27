@@ -8,6 +8,10 @@
       <horizontal-switch-bar :items="itemsSwitchBar"></horizontal-switch-bar>
       <router-view></router-view>
     </div>
+    <div class="bottom-switch-bar">
+      <router-link to="/profile/coupon/convertredpackages">兑换红包</router-link>
+      <router-link to="/profile/coupon/recommand">推荐有奖</router-link>
+    </div>
   </div>
 </template>
 <script>
@@ -104,5 +108,23 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+  .bottom-switch-bar {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    line-height: 3rem;
+    background-color: #fff;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .bottom-switch-bar > a {
+    width: 100%;
+    text-align: center;
+    color: #555;
+    font-size: 1.2rem;
+  }
+  .bottom-switch-bar > a:first-child {
+    border-right: .05rem solid #f1f1f1;
   }
 </style>

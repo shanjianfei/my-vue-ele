@@ -19,16 +19,17 @@ export default {
     flex: 6;
     outline: none;
     border: 0;
-    border-bottom: 0.1rem solid #f1f1f1;
     line-height: 3rem;
     padding-left: 1rem;
     font-size: 1rem;
   }
   .captcha-container {
+    border-bottom: 0.1rem solid #f1f1f1;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     background-color: #fff;
+    width: 100%;
   }
   .change-img {
     width: 100%;
