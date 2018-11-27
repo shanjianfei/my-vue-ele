@@ -25,5 +25,6 @@ export default {
   .router-link-active > span {
     padding-bottom: .3rem;
     border-bottom: .2rem solid #3190e8;
+    color: #3190e8;
   }
 </style>

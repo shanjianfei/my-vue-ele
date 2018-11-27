@@ -7,15 +7,15 @@
     <div class="recommand-container">
       <img src="@/images/activity.png">
       <section class="recommand-ways">
-        <span>
+        <span @click="recommand">
           <img src="@/images/weixin.png">
           <p>邀请微信好友</p>
         </span>
-        <span>
+        <span @click="recommand">
           <img src="@/images/qq.png">
           <p>邀请QQ好友</p>
         </span>
-        <span>
+        <span @click="recommand">
           <img src="@/images/fenxiang.png">
           <p>面对面邀请</p>
         </span>
@@ -44,13 +44,28 @@
         </section>
       </div>
     </div>
+    <alert-message message="请在饿了吗APP中打开" :show="tipShow" @closeTip="closeTip"></alert-message>
   </div>
 </template>
 <script>
 import headTop from '@/components/head/head'
 import arrowLeft from '@/components/common/arrowLeft'
+import alertMessage from '@/components/common/alertMessage'
 export default {
-  components: {headTop, arrowLeft}
+  data () {
+    return {
+      tipShow: false
+    }
+  },
+  methods: {
+    recommand: function () {
+      this.tipShow = true
+    },
+    closeTip: function () {
+      this.tipShow = false
+    }
+  },
+  components: {headTop, arrowLeft, alertMessage}
 }
 </script>
 <style>

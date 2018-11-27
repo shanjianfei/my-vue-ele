@@ -143,6 +143,7 @@ let router = new Router({
     },
     {
       path: '/profile/coupon',
+      redirect: '/profile/coupon/redpackages',
       name: 'coupon',
       component: coupon,
       meta: { requiresAuth: true },

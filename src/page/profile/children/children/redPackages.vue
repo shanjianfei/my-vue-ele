@@ -119,4 +119,15 @@ export default {
     align-items: center;
     justify-content: space-between;
   }
+  .history-red-packages-link > svg {
+    width: 0.7rem;
+    height: 0.7rem;
+    margin-left: .5rem;
+  }
+  .history-red-packages-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: .7rem;
+  }
 </style>
