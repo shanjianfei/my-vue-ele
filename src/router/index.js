@@ -23,6 +23,10 @@ const addNewAddress = r => require.ensure([], require => r(require('../page/acco
 const search = r => require.ensure([], require => r(require('../page/search')), 'search')
 const profile = r => require.ensure([], require => r(require('../page/profile')), 'profile')
 const membershipCard = r => require.ensure([], require => r(require('../page/membershipCard')), 'membershipCard')
+const purchaseRecord = r => require.ensure([], require => r(require('../page/membershipCard/children/purchaseRecord')), 'purchaseRecord')
+const payOnline = r => require.ensure([], require => r(require('../page/membershipCard/children/payOnline')), 'payOnline')
+const vipDescription = r => require.ensure([], require => r(require('../page/membershipCard/children/vipDescription')), 'vipDescription')
+
 const exchangeMembership = r => require.ensure([], require => r(require('../page/membershipCard/children/exchangeMembership')), 'exchangeMembership')
 const serviceCenter = r => require.ensure([], require => r(require('../page/serviceCenter')), 'serviceCenter')
 const servceDescription = r => require.ensure([], require => r(require('../page/serviceCenter/children/serviceDescription')), 'servceDescription')
@@ -212,6 +216,21 @@ let router = new Router({
       path: '/membershipCard/exchangeMembership',
       name: 'exchangeMembership',
       component: exchangeMembership
+    },
+    {
+      path: '/membershipCard/purchaseRecord',
+      name: 'purchaseRecord',
+      component: purchaseRecord
+    },
+    {
+      path: '/membershipCard/payOnline',
+      name: 'payOnline',
+      component: payOnline
+    },
+    {
+      path: '/membershipCard/vipDescription',
+      name: 'vipDescription',
+      component: vipDescription
     },
     {
       path: '/serviceCenter',

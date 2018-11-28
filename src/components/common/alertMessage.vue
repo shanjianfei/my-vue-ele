@@ -31,7 +31,6 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 20rem;
-    height: 12rem;
     background-color: #fff;
     display: flex;
     align-items: center;

@@ -102,19 +102,19 @@
       <span>待支付￥{{checkData.cart.total}}</span>
       <router-link to="/a">确认下单</router-link>
     </div>
-    <footer-guide></footer-guide>
   </div>
 </template>
 <script>
 import {mapState} from 'vuex'
 import headTop from '@/components/head/head'
-import footerGuide from '@/components/footer/footer'
-import {getImageUrl, addToCart} from '@/service/getData'
+import {getImageUrl, addToCart, getDeliveryAddress} from '@/service/getData'
+import {getStore} from '@/commonApi/localStorage'
 export default {
   data () {
     return {
       restaurantId: null,
-      checkData: null
+      checkData: null,
+      deliveryAddress: []
     }
   },
   computed: {
@@ -128,6 +128,11 @@ export default {
     let restaurantId = this.shopInfo.id
     let geohash = this.shopInfo.latitude + ',' + this.shopInfo.longitude
     let entities = []
+    let userId = getStore('user_id')
+    getDeliveryAddress(userId)
+      .then(function (data) {
+        self.deliveryAddress = data
+      })
     if (restaurantId in this.dishes) {
       for (let i in this.dishes[restaurantId]) {
         let foodInfo = {attrs: [], extra: {}}
@@ -157,7 +162,7 @@ export default {
 
     }
   },
-  components: {headTop, footerGuide}
+  components: {headTop}
 }
 </script>
 <style>

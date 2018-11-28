@@ -5,9 +5,9 @@
       <span class="point-title" slot="point-title">会员中心</span>
     </head-top>
     <div class="membership-card-container">
-      <p>为账户fsj购买会员</p>
+      <p>为账户<span>{{username}}</span>购买会员</p>
       <section class="vip-privilege">
-        <router-link to="/abc" class="vip-description">
+        <router-link to="/membershipCard/vipDescription" class="vip-description">
           <span>会员特权</span>
           <section>
             <span>会员说明</span>
@@ -35,7 +35,7 @@
         <p>开通会员</p>
         <div>
           <span>1个月<span>¥20</span></span>
-          <div>购买</div>
+          <div @click="buy">购买</div>
         </div>
       </section>
       <router-link to="/membershipCard/exchangeMembership" class="exchange-membership">
@@ -45,7 +45,7 @@
           <arrow-right></arrow-right>
         </section>
       </router-link>
-      <router-link to="/abc" class="purchase-history">
+      <router-link to="/membershipCard/purchaseRecord" class="purchase-history">
         <span>购买记录</span>
         <section>
           <span>开发票</span>
@@ -59,7 +59,21 @@
 import headTop from '@/components/head/head'
 import arrowLeft from '@/components/common/arrowLeft'
 import arrowRight from '@/components/common/arrowRight'
+import {getStore} from '@/commonApi/localStorage'
 export default {
+  data () {
+    return {
+      username: ''
+    }
+  },
+  mounted: function () {
+    this.username = JSON.parse(getStore('user')).username
+  },
+  methods: {
+    buy: function () {
+      this.$router.push('/membershipCard/payOnline')
+    }
+  },
   components: {headTop, arrowLeft, arrowRight}
 }
 </script>
@@ -133,6 +147,10 @@ export default {
   background-color: #fff;
   margin-top: 1rem;
   padding: 0 1rem;
+}
+.membership-card-container > p > span {
+  font-weight: bold;
+  color: #000;
 }
 
 </style>

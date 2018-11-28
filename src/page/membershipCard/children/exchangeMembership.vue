@@ -7,7 +7,7 @@
       </span>
     </head-top>
     <div class="exchange-membership-container">
-      <div>成功兑换后将关联到当前帐号： fsj</div>
+      <div>成功兑换后将关联到当前帐号： <span>{{username}}</span></div>
       <input type="text" name="card-number" placeholder="请输入10位卡号" v-model="cardNumber" maxlength="10">
       <input type="text" name="card-password" placeholder="请输入6位卡密" v-model="cardPassword" maxlength="6">
       <button id="submit" disabled="true" @click="submit">兑换</button>
@@ -27,14 +27,19 @@
 import headTop from '@/components/head/head'
 import arrowLeft from '@/components/common/arrowLeft'
 import alertMessage from '@/components/common/alertMessage'
+import {getStore} from '@/commonApi/localStorage'
 export default {
   data () {
     return {
+      username: '',
       cardNumber: '',
       cardPassword: '',
       tipMessage: 'ssss',
       showTip: false
     }
+  },
+  mounted: function () {
+    this.username = JSON.parse(getStore('user')).username
   },
   methods: {
     is10Number: function (str) {
@@ -93,6 +98,7 @@ export default {
     background-color: #fff;
     border: 0;
     border-bottom: 0.05rem solid #f1f1f1;
+    box-sizing: border-box;
   }
   .exchange-membership-container > button {
     width: 90%;
@@ -115,5 +121,10 @@ export default {
   }
   .exchange-membership-tips > p {
     text-align: left;
+  }
+  .exchange-membership-container > div:first-of-type > span {
+    color: #000;
+    font-size: 1.2rem;
+    font-weight: bold;
   }
 </style>
