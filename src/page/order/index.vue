@@ -15,7 +15,18 @@
           <svg data-v-4e0d5034="" class="location_icon">
             <use data-v-4e0d5034="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#location"></use>
           </svg>
-          <span>请添加一个收货地址</span>
+          <section v-if="deliveryAddress">
+            <p>
+              <span>{{deliveryAddress.name}}</span>
+              <span>先生</span>
+              <span>{{deliveryAddress.phone}}</span>
+            </p>
+            <p>
+              <span>{{deliveryAddress.tag}}</span>
+              <span>{{deliveryAddress.address}}</span>
+            </p>
+          </section>
+          <span v-else>请添加一个收货地址</span>
         </section>
         <svg class="arrow_right">
             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
@@ -100,7 +111,20 @@
     </section>
     <div class="order-footer" v-if="checkData">
       <span>待支付￥{{checkData.cart.total}}</span>
-      <router-link to="/a">确认下单</router-link>
+      <router-link to="/membershipCard/payOnline">确认下单</router-link>
+    </div>
+    <div class="pay-way">
+      <p>支付方式</p>
+      <ul>
+        <li class="pay-way-li">
+          <span>货到付款（商家不支持货到付款）</span>
+          <svg fill="#f1f1f1"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use></svg>
+        </li>
+        <li class="pay-way-li">
+          <span>在线支付</span>
+          <svg fill="#f1f1f1"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use></svg>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -114,7 +138,7 @@ export default {
     return {
       restaurantId: null,
       checkData: null,
-      deliveryAddress: []
+      deliveryAddress: null
     }
   },
   computed: {
@@ -131,7 +155,12 @@ export default {
     let userId = getStore('user_id')
     getDeliveryAddress(userId)
       .then(function (data) {
-        self.deliveryAddress = data
+        let deliveryAddressChoosedId = getStore('deliveryAddressChoosedId')
+        for (let i = 0; i < data.length; i++) {
+          if (parseInt(deliveryAddressChoosedId) === data[i].id) {
+            self.deliveryAddress = data[i]
+          }
+        }
       })
     if (restaurantId in this.dishes) {
       for (let i in this.dishes[restaurantId]) {
@@ -206,6 +235,36 @@ export default {
     background-color: #fff;
     font-size: 1.5rem;
     padding: 1rem;
+    flex-direction: row;
+  }
+  .add-delivery-address-container > section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .add-delivery-address-container > section span {
+    font-size: 1rem;
+  }
+  .add-delivery-address-container > section > section {
+    margin-left: .5rem;
+  }
+  
+  .add-delivery-address-container > section > section > p:first-child > span:first-child {
+    font-weight: bold;
+  }
+  .add-delivery-address-container > section > section > p:first-child > span {
+    color: #000;
+    font-size: .9rem;
+  }
+  .add-delivery-address-container > section > section > p:last-child > span:first-child {
+    background-color: #4cd964;
+    color: #fff;
+    /*font-size: .7rem;*/
+    padding: 0 .2rem;
+    border-radius: 15%;
+  }
+  .add-delivery-address-container > section > section > p:last-child > span {
+    font-size: .75rem;
   }
   .arrow_right, .location_icon {
     width: 1rem;
@@ -396,5 +455,29 @@ export default {
     flex: 3;
     text-align: center;
   }
-
+  .pay-way {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 15rem;
+    background-color: #fff;
+  }
+  .pay-way > p {
+    background-color: #fafafa;
+    color: #333;
+    line-height: 3rem;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .pay-way-li {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem .5rem;
+  }
+  .pay-way-li > svg {
+    width: 1rem;
+    height: 1rem;
+  }
 </style>
