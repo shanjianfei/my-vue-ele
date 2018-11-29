@@ -40,15 +40,15 @@
         </section>
       </section>
       <section class="pay-mode-container">
-        <router-link :to="'/city/' + restaurantId" class="pay-mode">
+        <section class="pay-mode">
           <span>支付方式</span>
-          <section>
+          <section @click="showPayWay">
             <span>在线支付</span>
             <svg class="arrow_right">
               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
             </svg>
           </section>
-        </router-link>
+        </section>
         <section class="red-package-container">
           <span>红包</span>
           <span>暂时只在饿了么APP中使用</span>
@@ -113,16 +113,12 @@
       <span>待支付￥{{checkData.cart.total}}</span>
       <router-link to="/membershipCard/payOnline">确认下单</router-link>
     </div>
-    <div class="pay-way">
+    <div class="pay-way" v-if="checkData && paywayShow">
       <p>支付方式</p>
       <ul>
-        <li class="pay-way-li">
-          <span>货到付款（商家不支持货到付款）</span>
-          <svg fill="#f1f1f1"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use></svg>
-        </li>
-        <li class="pay-way-li">
-          <span>在线支付</span>
-          <svg fill="#f1f1f1"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use></svg>
+        <li class="pay-way-li" v-for="(item, index) in checkData.payments" @click="choosePayWay(item)">
+          <span>{{item.name}}<span v-if="!item.is_online_payment">（{{item.disabled_reason}}）</span></span>
+          <svg><use :class="item.select_state === 1 ? 'choosed' : 'select_icon'" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use></svg>
         </li>
       </ul>
     </div>
@@ -138,7 +134,9 @@ export default {
     return {
       restaurantId: null,
       checkData: null,
-      deliveryAddress: null
+      deliveryAddress: null,
+      payayId: 1,
+      paywayShow: false
     }
   },
   computed: {
@@ -189,6 +187,15 @@ export default {
     },
     fillOrderNotes: function () {
 
+    },
+    showPayWay: function () {
+      this.paywayShow = true
+    },
+    choosePayWay: function (payway) {
+      if (payway.is_online_payment) {
+        this.payayId = payway.id
+        this.paywayShow = false
+      }
     }
   },
   components: {headTop}
@@ -479,5 +486,11 @@ export default {
   .pay-way-li > svg {
     width: 1rem;
     height: 1rem;
+  }
+  .select_icon {
+    fill: #f1f1f1;
+  }
+  .choosed {
+    fill: #4cd964;
   }
 </style>
