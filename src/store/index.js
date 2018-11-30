@@ -98,7 +98,6 @@ export default new Vuex.Store({
   mutations: {
     updateGeohash: function (state, geohash) {
       state.geohash = geohash
-      console.log(geohash)
     }
   },
   modules: {

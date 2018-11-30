@@ -5,10 +5,10 @@
         <svg data-v-c8684834="" class="cart-icon">
           <use data-v-c8684834="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-icon"></use>
         </svg>
-        <span class="number-dishes">{{numberDishes}}</span>
+        <span class="number-dishes">{{getNumber}}</span>
       </div>
       <div>
-        <p class="total-price">￥{{totalPrice}}</p>
+        <p class="total-price">￥{{getTotalPrice}}</p>
         <p class="delivery-fee">配送费￥{{deliveryFee}}</p>
       </div>
     </section>
@@ -17,64 +17,41 @@
   </div>
 </template>
 <script>
-import {mapState} from 'vuex'
 import {getRestaurantDetailInfo} from '@/service/getData'
 export default {
   data () {
     return {
-      restaurantId: 0, // 商家的id
       deliveryFee: 0, // 配送费
       floatMinimumOrderAmount: 0, // 最低起送费
-      numberDishes: 0, // 一共点了几分菜品
-      totalPrice: 0 // 本家店总的点餐费用
+      totalPrice: 0
     }
   },
+  props: ['restaurantId', 'selectFood'],
   computed: {
-    ...mapState({
-      dishes: state => state.shopDetail.dishes
-    }),
     // 距离最低起送费相差金额
     distanceOrderAmount: function () {
       return this.floatMinimumOrderAmount - this.totalPrice
+    },
+    getNumber: function () { // 一共点了几分菜品
+      return this.selectFood.length
+    },
+    getTotalPrice () { // 本家店总的点餐费用
+      let totalPrice = 0
+      for (let i in this.selectFood) {
+        totalPrice += this.selectFood[i].specfoods[0].price
+      }
+      this.totalPrice = totalPrice
+      return totalPrice
     }
   },
   mounted: function () {
-    this.restaurantId = parseInt(this.$route.query.id)
     let self = this
-    this.getNumberDishes(this.dishes)
     getRestaurantDetailInfo(this.restaurantId)
       .then(function (data) {
         self.deliveryFee = data.float_delivery_fee
         self.floatMinimumOrderAmount = data.float_minimum_order_amount
       })
-  },
-  methods: {
-    getNumberDishes (dishes) {
-      for (let i in dishes) {
-        console.log('bcd')
-        console.log(i)
-        console.log(this.restaurantId)
-        if (parseInt(i) === this.restaurantId) {
-          this.numberDishes = 0
-          this.totalPrice = 0
-          for (let j in dishes[i]) {
-            console.log('abc')
-            this.numberDishes += dishes[i][j].numberDishes
-            this.totalPrice += (dishes[i][j].specfoods[0].price * dishes[i][j].numberDishes)
-          }
-        }
-      }
-    }
-  },
-  watch: {
-    dishes: {
-      handler (newValue, oldValue) {
-        this.getNumberDishes(newValue)
-      },
-      deep: true
-    }
   }
-  // props: ['deliveryFee', 'totalPrice', 'numberDishes']
 }
 </script>
 <style>

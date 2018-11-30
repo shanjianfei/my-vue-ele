@@ -1,6 +1,6 @@
 <template>
   <div class="shop-detail-header-container">
-    <img :src="getImageUrl(shopInfo.image_path)">
+    <img :src="getImageUrl(restaurantInfo.image_path)">
     <div class="head-top">
       <div class="head-top-back-icon" @click="$router.go(-1)">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
@@ -13,11 +13,11 @@
         </svg>
       </div>
       <div class="shop-introduction">
-        <img :src="getImageUrl(shopInfo.image_path)">
+        <img :src="getImageUrl(restaurantInfo.image_path)">
         <section>
-          <p>{{shopInfo.name}}</p>
-          <p>商家配送／{{shopInfo.order_lead_time}}分钟送达／配送费¥{{shopInfo.float_delivery_fee}}</p>
-          <p>公告：{{shopInfo.promotion_info}}</p>
+          <p>{{restaurantInfo.name}}</p>
+          <p>商家配送／{{restaurantInfo.order_lead_time}}分钟送达／配送费¥{{restaurantInfo.float_delivery_fee}}</p>
+          <p>公告：{{restaurantInfo.promotion_info}}</p>
         </section>
       </div>
     </div>
@@ -32,19 +32,23 @@
   </div>
 </template>
 <script>
-import {mapState} from 'vuex'
-import {getImageUrl} from '@/service/getData'
+import {getRestaurantDetailInfo, getImageUrl} from '@/service/getData'
 export default {
   data () {
     return {
-      restaurantId: '',
-      currentLi: 'product'
+      currentLi: 'product',
+      restaurantInfo: {}
     }
   },
-  computed: {
-    ...mapState({
-      shopInfo: state => state.shopDetail.currentRestaurantDetailInfo
-    })
+  mounted: function () {
+    let self = this
+    getRestaurantDetailInfo(this.restaurantId)
+      .then(function (data) {
+        if (!('status' in data && data.status === 0)) {
+          self.restaurantInfo = data
+          console.log(data)
+        }
+      })
   },
   methods: {
     changeProductEvaluat: function (option) {
@@ -52,9 +56,11 @@ export default {
       this.currentLi = option
     },
     getImageUrl: function (imagePath) {
+      console.log(imagePath)
       return getImageUrl(imagePath)
     }
-  }
+  },
+  props: ['restaurantId']
 }
 </script>
 <style>

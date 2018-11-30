@@ -24,6 +24,9 @@ export default {
       remarks: []
     }
   },
+  methods: {
+
+  },
   components: {headTop}
 }
 </script>

@@ -92,7 +92,7 @@ let router = new Router({
       component: searchAddress
     },
     {
-      path: '/orderComments',
+      path: '/order/orderComments',
       name: 'orderComments',
       component: orderComments
     },

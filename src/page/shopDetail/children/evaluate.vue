@@ -64,7 +64,7 @@
   </div>
 </template>
 <script>
-import {getAssessmentInfo, getScore, getImageUrlByCdn, getImageUrl} from '@/service/getData'
+import {getAssessmentInfo, getScore, getImageUrlByCdn, getImageUrl, getRatingsTags} from '@/service/getData'
 import ratingStar from '@/components/common/ratingStar'
 export default {
   data: function () {
@@ -74,10 +74,11 @@ export default {
       compareRating: 0,
       serviceScore: 0,
       overallScore: 0,
-      deliverTime: 0
+      deliverTime: 0,
+      assessmentTags: []
     }
   },
-  props: ['assessmentTags', 'restaurantId'],
+  props: ['restaurantId'],
   mounted: function () {
     let self = this
     if (this.restaurantId !== 0) {
@@ -92,6 +93,9 @@ export default {
         self.deliverTime = data.deliver_time
       })
     }
+    getRatingsTags(this.restaurantId).then(function (data) {
+      self.assessmentTags = data
+    })
   },
   methods: {
     getImageUrlByCdn: function (path) {

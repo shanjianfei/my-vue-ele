@@ -116,7 +116,7 @@
     <div class="pay-way" v-if="checkData && paywayShow">
       <p>支付方式</p>
       <ul>
-        <li class="pay-way-li" v-for="(item, index) in checkData.payments" @click="choosePayWay(item)">
+        <li class="pay-way-li" v-for="(item, index) in checkData.payments" @click="choosePayWay(item)" :key="index">
           <span>{{item.name}}<span v-if="!item.is_online_payment">（{{item.disabled_reason}}）</span></span>
           <svg><use :class="item.select_state === 1 ? 'choosed' : 'select_icon'" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use></svg>
         </li>
@@ -147,8 +147,8 @@ export default {
   },
   mounted: function () {
     let self = this
-    let restaurantId = this.shopInfo.id
-    let geohash = this.shopInfo.latitude + ',' + this.shopInfo.longitude
+    let restaurantId = this.$route.query.restaurantId + ''
+    // let geohash = this.shopInfo.latitude + ',' + this.shopInfo.longitude
     let entities = []
     let userId = getStore('user_id')
     getDeliveryAddress(userId)
@@ -160,22 +160,28 @@ export default {
           }
         }
       })
-    if (restaurantId in this.dishes) {
-      for (let i in this.dishes[restaurantId]) {
+    let order = JSON.parse(getStore('order'))
+    if (restaurantId in order) {
+      let selectFood = order[restaurantId].foodsInfo
+      console.log(selectFood)
+      for (let i in selectFood) {
         let foodInfo = {attrs: [], extra: {}}
-        foodInfo.id = this.dishes[restaurantId][i].item_id
-        foodInfo.name = this.dishes[restaurantId][i].name
-        foodInfo.packing_fee = this.dishes[restaurantId][i].specfoods[0].packing_fee
-        foodInfo.price = this.dishes[restaurantId][i].specfoods[0].price
-        foodInfo.quantity = this.dishes[restaurantId][i].numberDishes
-        foodInfo.sku_id = this.dishes[restaurantId][i].specfoods[0].sku_id
-        foodInfo.specs = this.dishes[restaurantId][i].specfoods[0].specs
-        foodInfo.stock = this.dishes[restaurantId][i].specfoods[0].stock
+        foodInfo.id = selectFood[i].item_id
+        foodInfo.name = selectFood[i].name
+        foodInfo.packing_fee = selectFood[i].specfoods[0].packing_fee
+        foodInfo.price = selectFood[i].specfoods[0].price
+        foodInfo.quantity = selectFood[i].numberDishes
+        foodInfo.sku_id = selectFood[i].specfoods[0].sku_id
+        foodInfo.specs = selectFood[i].specfoods[0].specs
+        foodInfo.stock = selectFood[i].specfoods[0].stock
         entities.push([foodInfo])
       }
     }
+    let geohash = JSON.parse(getStore('geohash'))
+    console.log(geohash)
     addToCart(restaurantId, geohash, entities)
       .then(function (data) {
+        console.log(geohash)
         if (!('status' in data && data.status === 0)) {
           self.checkData = data
         }
@@ -255,7 +261,6 @@ export default {
   .add-delivery-address-container > section > section {
     margin-left: .5rem;
   }
-  
   .add-delivery-address-container > section > section > p:first-child > span:first-child {
     font-weight: bold;
   }

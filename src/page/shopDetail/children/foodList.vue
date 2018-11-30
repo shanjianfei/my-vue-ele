@@ -2,8 +2,8 @@
   <div class="food-list-container">
     <ul>
       <header class="food-header">
-        <span>{{currentRestaurantDetailInfo.name}}</span>
-        <span>{{currentRestaurantDetailInfo.description}}</span>
+        <span>{{restaurantInfo.name}}</span>
+        <span>{{restaurantInfo.description}}</span>
       </header>
       <li class="food-li" v-for="(item, index) in food.foods" :key="index">
         <div class="food-attributes">
@@ -29,12 +29,11 @@
               <span>{{item.specfoods[0].price}}</span>
             </span>
             <span>
-              <svg class="remove-food" @click="removeFood(restaurantId, item)">
+              <svg class="remove-food" @click="$emit('removeFood', item)">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-minus"></use>
               </svg>
-              <span class="food-num" v-if="numberDishes[item.item_id]">{{numberDishes[item.item_id]}}</span>
-              <span class="food-num" v-else>0</span>
-              <svg class="add-food" @click="addFood(restaurantId, item)">
+              <span class="food-num">{{getNumber(item.item_id)}}</span>
+              <svg class="add-food" @click="$emit('addFood', item)">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cart-add"></use>
               </svg>
             </span>
@@ -45,13 +44,12 @@
   </div>
 </template>
 <script>
-import {getImageUrl} from '@/service/getData'
 import {mapState, mapMutations} from 'vuex'
+import {getRestaurantDetailInfo, getImageUrl} from '@/service/getData'
 export default {
   data () {
     return {
-      restaurantId: null,
-      numberDishes: {}
+      restaurantInfo: {}
     }
   },
   computed: {
@@ -61,34 +59,28 @@ export default {
     })
   },
   mounted: function () {
-    this.restaurantId = this.$route.query.id
+    let self = this
+    getRestaurantDetailInfo(this.restaurantId)
+      .then(function (data) {
+        if (!('status' in data && data.status === 0)) {
+          self.restaurantInfo = data
+        }
+      })
   },
-  props: ['food'],
+  props: ['food', 'restaurantId', 'selectFood'],
   methods: {
     ...mapMutations(['updateDishes']),
     getImageUrl: function (path) {
       return getImageUrl(path)
     },
-    addFood: function (restaurantId, item) {
-      console.log(item)
-      this.updateDishes({restaurantId: restaurantId, item: item, flag: 1})
-    },
-    removeFood: function (restaurantId, item) {
-      this.updateDishes({restaurantId: restaurantId, item: item, flag: 0})
-    },
-    setNumberDishes: function () {
-      let foods = this.dishes[this.restaurantId]
-      for (let i in foods) {
-        this.$set(this.numberDishes, foods[i].item_id, foods[i].numberDishes)
+    getNumber: function (id) {
+      let count = 0
+      for (let i in this.selectFood) {
+        if (this.selectFood[i].item_id === id) {
+          count += 1
+        }
       }
-    }
-  },
-  watch: {
-    dishes: {
-      handler () {
-        this.setNumberDishes()
-      },
-      deep: true
+      return count
     }
   }
 }
