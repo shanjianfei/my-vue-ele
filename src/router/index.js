@@ -9,6 +9,9 @@ const city = r => require.ensure([], rquire => r(require('../page/city')), 'city
 const shopsGuide = r => require.ensure([], require => r(require('../page/shopsGuide')), 'shopsGuide')
 const shop = r => require.ensure([], require => r(require('../page/shop')), 'shop')
 const shopDetail = r => require.ensure([], require => r(require('../page/shopDetail')), 'shopDetail')
+const shopDescription = r => require.ensure([], require => r(require('../page/shopDetail/shopDescription')), 'shopDescription')
+const publicity = r => require.ensure([], require => r(require('../page/shopDetail/shopDescription/children/publicity')), 'publicity')
+
 const order = r => require.ensure([], require => r(require('../page/order')), 'order')
 const chooseDeliveryAddress = r => require.ensure([], require => r(require('../page/order/children/chooseDeliveryAddress')), 'chooseDeliveryAddress')
 const addAddress = r => require.ensure([], require => r(require('../page/order/children/children/addAddress')), 'addAddress')
@@ -70,6 +73,16 @@ let router = new Router({
       path: '/shopDetail',
       name: 'shopDetail',
       component: shopDetail
+    },
+    {
+      path: '/shopDetail/shopDescription',
+      name: 'shopDescription',
+      component: shopDescription
+    },
+    {
+      path: '/shopDetail/shopDescription/children/publicity',
+      name: 'publicity',
+      component: publicity
     },
     {
       path: '/order',

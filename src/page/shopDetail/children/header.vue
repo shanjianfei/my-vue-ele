@@ -7,11 +7,11 @@
           <polyline data-v-c8684834="" points="12,18 4,9 12,0" style="fill: none; stroke: black; stroke-width: 3;"></polyline>
         </svg>
       </div>
-      <div>
-        <svg class="description_arrow" data-v-c8684834="" xmlns="http://www.w3.org/2000/svg" version="1.1">
+      <router-link tag="div" :to="{path: '/shopDetail/shopDescription', query: {'restaurantId': restaurantId}}">
+        <svg class="description_arrow" xmlns="http://www.w3.org/2000/svg" version="1.1">
           <path data-v-c8684834="" d="M0 0 L8 7 L0 14" stroke="black" stroke-width="3" fill="none"></path>
         </svg>
-      </div>
+      </router-link>
       <div class="shop-introduction">
         <img :src="getImageUrl(restaurantInfo.image_path)">
         <section>
@@ -46,7 +46,6 @@ export default {
       .then(function (data) {
         if (!('status' in data && data.status === 0)) {
           self.restaurantInfo = data
-          console.log(data)
         }
       })
   },
@@ -56,7 +55,6 @@ export default {
       this.currentLi = option
     },
     getImageUrl: function (imagePath) {
-      console.log(imagePath)
       return getImageUrl(imagePath)
     }
   },

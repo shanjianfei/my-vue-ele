@@ -1,7 +1,7 @@
 <template>
-  <router-link class="link-bar-page" :to="link">
-    <span class="link-bar-left">{{contentLeft}}</span>
-    <section class="link-bar-right">
+  <router-link class="link-bar-small-page" :to="link">
+    <span class="link-bar-small-left">{{contentLeft}}</span>
+    <section class="link-bar-small-right">
       <span>{{contentRight}}</span>
       <arrow-right></arrow-right>
     </section>
@@ -17,23 +17,20 @@ export default {
 }
 </script>
 <style>
-  .link-bar-page {
+  .link-bar-small-page {
     background-color: #fff;
     display: flex;
     justify-content: space-between;
     padding: 0 .5rem;
-    height: 2.5rem;
-    align-items: center;
+    line-height: 2.5rem;
   }
-  .link-bar-right {
+  .link-bar-small-left {
+    font-size: .8rem;
+  }
+  .link-bar-small-right {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     margin-right: .3rem;
-  }
-  .link-bar-right > span {
-    margin-right: .5rem;
-    color: #bbb;
   }
 </style>

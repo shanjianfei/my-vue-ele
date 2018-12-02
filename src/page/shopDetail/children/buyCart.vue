@@ -8,7 +8,7 @@
         <span class="number-dishes">{{getNumber}}</span>
       </div>
       <div>
-        <p class="total-price">￥{{getTotalPrice}}</p>
+        <p class="total-price">￥{{totalPrice}}</p>
         <p class="delivery-fee">配送费￥{{deliveryFee}}</p>
       </div>
     </section>
@@ -22,8 +22,7 @@ export default {
   data () {
     return {
       deliveryFee: 0, // 配送费
-      floatMinimumOrderAmount: 0, // 最低起送费
-      totalPrice: 0
+      floatMinimumOrderAmount: 0 // 最低起送费
     }
   },
   props: ['restaurantId', 'selectFood'],
@@ -35,13 +34,14 @@ export default {
     getNumber: function () { // 一共点了几分菜品
       return this.selectFood.length
     },
-    getTotalPrice () { // 本家店总的点餐费用
-      let totalPrice = 0
-      for (let i in this.selectFood) {
-        totalPrice += this.selectFood[i].specfoods[0].price
+    totalPrice: { // 本家店总的点餐费用
+      get: function () {
+        let totalPrice = 0
+        for (let i in this.selectFood) {
+          totalPrice += this.selectFood[i].specfoods[0].price
+        }
+        return totalPrice
       }
-      this.totalPrice = totalPrice
-      return totalPrice
     }
   },
   mounted: function () {

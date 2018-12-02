@@ -2,7 +2,7 @@
   <div class="shop-detail-container">
     <head-top @currentOption="changeCurrentComponent" :restaurantId="restaurantId"></head-top>
     <section class="menu-food-container" v-show="currentComponent.product">
-      <nav-left :foodMenu="foodMenu" @changeFoodMenu="changeFoodMenu"></nav-left>
+      <nav-left :foodMenu="foodMenu" :selectFood="selectFood" @changeFoodMenu="changeFoodMenu"></nav-left>
       <food-list :food="food" :restaurantId="restaurantId" :selectFood="selectFood" @removeFood="removeFood" @addFood="addFood"></food-list>
       <buy-cart :selectFood="selectFood" :restaurantId="restaurantId"></buy-cart>
     </section>
