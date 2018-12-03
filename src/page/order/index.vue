@@ -1,501 +1,131 @@
 <template>
-  <div class="order-page-container">
-    <head-top class="header">
-      <span slot="login" class="head-login">注册|登录</span>
-      <section slot="head-goback" class="head-goback" @click="$router.go(-1)">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
-          <polyline points="12,18 4,9 12,0" style="fill:none;stroke:rgb(255,255,255);stroke-width:2"/>
-        </svg>
-      </section>
-      <span class="point-title" slot="point-title">确认订单</span>
+  <div class="order-page">
+    <head-top>
+      <arrow-left slot="head-left"></arrow-left>
+      <head-title slot="head-center" headTitle="订单列表" ></head-title>
     </head-top>
-    <section class="order-container" v-if="checkData">
-      <router-link to="/chooseDeliveryAddress" class="add-delivery-address-container">
+    <ul class="order-container">
+      <li v-for="(item, index) in orders" :key="index" class="order-li">
+        <img :src="getImageUrl(item.restaurant_image_url)">
         <section>
-          <svg data-v-4e0d5034="" class="location_icon">
-            <use data-v-4e0d5034="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#location"></use>
-          </svg>
-          <section v-if="deliveryAddress">
-            <p>
-              <span>{{deliveryAddress.name}}</span>
-              <span>先生</span>
-              <span>{{deliveryAddress.phone}}</span>
-            </p>
-            <p>
-              <span>{{deliveryAddress.tag}}</span>
-              <span>{{deliveryAddress.address}}</span>
-            </p>
-          </section>
-          <span v-else>请添加一个收货地址</span>
-        </section>
-        <svg class="arrow_right">
-            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-        </svg>
-      </router-link>
-      <section class="delivery-time-container">
-        <h2>送达时间</h2>
-        <section>
-          <span>尽快送达 | 预计{{checkData.delivery_reach_time}}</span>
-          <span class="delivery-mode" :style="{'background-color': '#' + shopInfo.delivery_mode.color}">{{shopInfo.delivery_mode.text}}</span>
-        </section>
-      </section>
-      <section class="pay-mode-container">
-        <section class="pay-mode">
-          <span>支付方式</span>
-          <section @click="showPayWay">
-            <span>在线支付</span>
-            <svg class="arrow_right">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-            </svg>
-          </section>
-        </section>
-        <section class="red-package-container">
-          <span>红包</span>
-          <span>暂时只在饿了么APP中使用</span>
-        </section>
-      </section>
-      <section class="food-list-container">
-        <header>
-          <img class="shop-icon" :src="getImageUrl(shopInfo.image_path)">
-          <span>{{shopInfo.name}}</span>
-        </header>
-        <ul class="food-list-ul">
-          <li class="food-list-li" v-for="item in dishes[shopInfo.id]" :key="item.restaurant_id">
-            <span class="food-name">{{item.name}}</span>
-            <section class="num-price-container">
-              <span>x {{item.numberDishes}}</span>
-              <span>￥{{item.specfoods[0].price}}</span>
+          <router-link to="">
+            <section class="info-top">
+              <section>
+                <section class="restaurant-name">
+                  <span>{{item.restaurant_name}}</span>
+                  <arrow-right></arrow-right>
+                </section>
+                <span class="status-title">{{item.status_bar.title}}</span>
+              </section>
+              <p class="created-time">{{item.formatted_created_at}}</p>
             </section>
-          </li>
-          <li class="food-list-li" v-for="(item, index) in checkData.cart.extra" :key="index + 'food'">
-            <span>{{item.name}}</span>
-            <span>￥{{item.price}}</span>
-          </li>
-          <li class="food-list-li">
-            <span>配送费</span>
-            <span>￥{{checkData.cart.deliver_amount}}</span>
-          </li>
-        </ul>
-      </section>
-      <section class="order-total-price-container">
-        <p>
-          <span>订单 ￥{{checkData.cart.total}}</span>
-          <span>待支付</span>
-        </p>
-        <p>￥{{checkData.cart.total}}</p>
-      </section>
-      <section class="order-content-footer">
-        <section class="order-remarks">
-          <router-link :to="{path: '/orderComments', query: checkData.cart.id}" tag="span">订单备注</router-link>
-          <span class="order-remarks-right">
-            <span>口味、偏好等</span>
-            <span>
-              <svg class="arrow_right">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-              </svg>
-            </span>
-          </span>
+            <section class="info-bottom">
+              <span>
+                {{item.basket.group[0][0].name}}
+                <span>等{{item.basket.group[0].length}}件商品</span>
+              </span>
+              <span>￥{{item.total_amount}}</span>
+            </section>
+          </router-link>
+          <section class="order-again">
+            <div>再来一单</div>
+          </section>
         </section>
-        <section class="order-invoice-title">
-          <span>发票抬头</span>
-          <span class="order-invoice-title-right">
-            <span>不需要开发票</span>
-            <span>
-              <svg class="arrow_right">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-              </svg>
-            </span>
-          </span>
-        </section>
-      </section>
-    </section>
-    <div class="order-footer" v-if="checkData">
-      <span>待支付￥{{checkData.cart.total}}</span>
-      <router-link to="/membershipCard/payOnline">确认下单</router-link>
-    </div>
-    <div class="pay-way" v-if="checkData && paywayShow">
-      <p>支付方式</p>
-      <ul>
-        <li class="pay-way-li" v-for="(item, index) in checkData.payments" @click="choosePayWay(item)" :key="index">
-          <span>{{item.name}}<span v-if="!item.is_online_payment">（{{item.disabled_reason}}）</span></span>
-          <svg><use :class="item.select_state === 1 ? 'choosed' : 'select_icon'" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select"></use></svg>
-        </li>
-      </ul>
-    </div>
+      </li>
+    </ul>
   </div>
 </template>
 <script>
-import {mapState} from 'vuex'
 import headTop from '@/components/head/head'
-import {getImageUrl, addToCart, getDeliveryAddress} from '@/service/getData'
+import headTitle from '@/components/head/children/headTitle'
+import arrowLeft from '@/components/common/arrowLeft'
+import arrowRight from '@/components/common/arrowRight'
+import {getOrders, getImageUrl} from '@/service/getData'
 import {getStore} from '@/commonApi/localStorage'
 export default {
   data () {
     return {
-      restaurantId: null,
-      checkData: null,
-      deliveryAddress: null,
-      payayId: 1,
-      paywayShow: false
+      orders: null
     }
-  },
-  computed: {
-    ...mapState({
-      shopInfo: state => state.shopDetail.currentRestaurantDetailInfo,
-      dishes: state => state.shopDetail.dishes
-    })
   },
   mounted: function () {
     let self = this
-    let restaurantId = this.$route.query.restaurantId + ''
-    // let geohash = this.shopInfo.latitude + ',' + this.shopInfo.longitude
-    let entities = []
     let userId = getStore('user_id')
-    getDeliveryAddress(userId)
+    getOrders(userId, 10, 0)
       .then(function (data) {
-        let deliveryAddressChoosedId = getStore('deliveryAddressChoosedId')
-        for (let i = 0; i < data.length; i++) {
-          if (parseInt(deliveryAddressChoosedId) === data[i].id) {
-            self.deliveryAddress = data[i]
-          }
-        }
-      })
-    let order = JSON.parse(getStore('order'))
-    if (restaurantId in order) {
-      let selectFood = order[restaurantId].foodsInfo
-      console.log(selectFood)
-      for (let i in selectFood) {
-        let foodInfo = {attrs: [], extra: {}}
-        foodInfo.id = selectFood[i].item_id
-        foodInfo.name = selectFood[i].name
-        foodInfo.packing_fee = selectFood[i].specfoods[0].packing_fee
-        foodInfo.price = selectFood[i].specfoods[0].price
-        foodInfo.quantity = selectFood[i].numberDishes
-        foodInfo.sku_id = selectFood[i].specfoods[0].sku_id
-        foodInfo.specs = selectFood[i].specfoods[0].specs
-        foodInfo.stock = selectFood[i].specfoods[0].stock
-        entities.push([foodInfo])
-      }
-    }
-    let geohash = JSON.parse(getStore('geohash'))
-    console.log(geohash)
-    addToCart(restaurantId, geohash, entities)
-      .then(function (data) {
-        console.log(geohash)
-        if (!('status' in data && data.status === 0)) {
-          self.checkData = data
-        }
+        self.orders = data
       })
   },
   methods: {
-    getImageUrl: function (imagePath) {
-      return getImageUrl(imagePath)
-    },
-    fillOrderNotes: function () {
-
-    },
-    showPayWay: function () {
-      this.paywayShow = true
-    },
-    choosePayWay: function (payway) {
-      if (payway.is_online_payment) {
-        this.payayId = payway.id
-        this.paywayShow = false
-      }
+    getImageUrl: function (img) {
+      return getImageUrl(img)
     }
   },
-  components: {headTop}
+  components: {headTop, arrowLeft, headTitle, arrowRight}
 }
 </script>
 <style>
-  .head-login {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #fff;
-    right: 0.55rem;
-    font-size: 0.8rem;
-  }
-  .head-goback {
-    left: 0.4rem;
-    width: 1.2rem;
-    height: 1.5rem;
-    line-height: 2.2rem;
-    margin-left: .4rem;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  .point-title {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    text-align: center;
-    transform: translate(-50%, -50%);
-    color: #fff;
-    font-size: 1.5rem;
-  }
   .order-container {
-    margin-top: 2.8rem;
-    height: 100%;
-    margin-bottom: 5rem;
+    padding-top: 3rem;
   }
-  .add-delivery-address-container, .pay-mode, .red-package-container {
-    height: 4rem;
+  .order-li {
+    padding: 1rem 1rem;
+    margin-bottom: 2rem;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    background-color: #fff;
-    font-size: 1.5rem;
-    padding: 1rem;
-    flex-direction: row;
   }
-  .add-delivery-address-container > section {
+  .order-li > img {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+  .order-li > section {
+    width: 100%;
+    padding-left: 1rem;
+  }
+  .info-top {
+    padding-bottom: 1rem;
+    border-bottom: .01rem solid #f1f1f1;
+  }
+  .info-top > section {
     display: flex;
     flex-direction: row;
-    align-items: center;
-  }
-  .add-delivery-address-container > section span {
-    font-size: 1rem;
-  }
-  .add-delivery-address-container > section > section {
-    margin-left: .5rem;
-  }
-  .add-delivery-address-container > section > section > p:first-child > span:first-child {
-    font-weight: bold;
-  }
-  .add-delivery-address-container > section > section > p:first-child > span {
-    color: #000;
-    font-size: .9rem;
-  }
-  .add-delivery-address-container > section > section > p:last-child > span:first-child {
-    background-color: #4cd964;
-    color: #fff;
-    /*font-size: .7rem;*/
-    padding: 0 .2rem;
-    border-radius: 15%;
-  }
-  .add-delivery-address-container > section > section > p:last-child > span {
-    font-size: .75rem;
-  }
-  .arrow_right, .location_icon {
-    width: 1rem;
-    height: 1rem;
-  }
-
-  .delivery-time-container {
-    display: flex;
     justify-content: space-between;
-    background-color: #fff;
-    margin-top: 0.5rem;
-    border-left: 0.3rem solid #3190e8;
-    height: 7rem;
   }
-
-  .delivery-time-container > h2 {
-    margin-left: 2rem;
-    line-height: 7rem;
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-
-  .delivery-time-container > section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-  }
-
-  .delivery-time-container > section > span:nth-child(1) {
-    font-size: 1.2rem;
-    margin-right: 0.5rem;
-    color: #3190e8;
-  }
-
-  .delivery-mode {
-    margin-top: 0.3rem;
-    padding: 0.2rem;
-    border-radius: 0.5rem;
-    color: #fff;
-    margin-right: 0.5rem;
-    font-size: 1rem;
-  }
-  .red-package-container {
-    border-top: 0.1rem solid #f1f1f1;
-  }
-
-  .pay-mode > section > span {
-    color: #aaa;
-    font-size: 1.3rem;
-  }
-
-  .arrow_right {
-    fill: #aaa;
-  }
-
-  .red-package-container > span {
-    color: #aaa;
-    font-size: 1.3rem;
-  }
-
-  .shop-icon {
-    width: 3rem;
-    height: 3rem;
-  }
-
-  .food-list-container {
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
-    margin-top: 1rem;
-  }
-
-  .food-list-container > header {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    height: 5rem;
-    border-bottom: 0.1rem solid #f1f1f1;
-    margin-left: 1rem;
-  }
-
-  .food-list-container > header > span {
-    font-size: 1.8rem;
-    color: #000;
-    margin-left: 1rem;
-  }
-
-  .food-list-ul {
-    margin-left: 1rem;
-  }
-
-  .food-list-li {
+  .info-bottom {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding: 1rem 0;
+    border-bottom: .01rem solid #f1f1f1;
   }
-
-  .food-list-li span {
-    font-size: 1.5rem;
-    color: #aaa;
-  }
-
-  .food-list-li > span:nth-child(2) {
-    margin-right: 1rem;
-  }
-
-  .num-price-container {
-    margin-right: 1rem;
-  }
-
-  .num-price-container > span:nth-child(1) {
-    margin-right: 2rem;
+  .info-bottom > span:last-child {
     color: #f60;
-    font-family: Helvetica Neue,Tahoma,Arial;
+    font-weight: bold;
   }
-
-  .order-total-price-container {
-    margin-top: 0.1rem;
-    background-color: #fff;
-  }
-
-  .order-total-price-container > p > span:nth-child(2) {
-    color: #f60;
-  }
-
-  .order-total-price-container > p:nth-child(2) {
-    color: #f60;
-    text-align: right;
-  }
-
-  .order-total-price-container > p:nth-child(1) {
+  .restaurant-name {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-  }
-
-  .order-total-price-container > p {
-    padding: 1rem;
-    font-size: 1.3rem;
-  }
-
-  .order-content-footer {
-    margin-top: 1rem;
-    background-color: #fff;
-  }
-
-  .order-remarks, .order-invoice-title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 1rem;
-  }
-
-  .order-remarks > span, .order-invoice-title > span {
-    font-size: 1.3rem;
-  }
-
-  .order-remarks-right > span, .order-invoice-title-right > span {
-    font-size: 1rem;
-    color: #aaa;
-  }
-
-  .order-footer {
-    position: fixed;
-    bottom: 0;
-    height: 4rem;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
     align-items: center;
   }
-
-  .order-footer > span, .order-footer > a {
-    font-size: 1.3rem;
-    padding: 1rem;
-    color: #fff;
-    background-color: #3d3d3f;
-    flex: 7;
-  }
-
-  .order-footer > a {
-    background-color: #4cd964;
-    font-size: 1.3rem;
-    padding: 1rem;
-    color: #fff;
-    flex: 3;
-    text-align: center;
-  }
-  .pay-way {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 15rem;
-    background-color: #fff;
-  }
-  .pay-way > p {
-    background-color: #fafafa;
-    color: #333;
-    line-height: 3rem;
+  .restaurant-name > span {
     font-size: 1.2rem;
-    text-align: center;
+    color: #000;
   }
-  .pay-way-li {
+  .created-time {
+    font-size: .8rem;
+    color: #999;
+  }
+  .order-again {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 1rem .5rem;
+    justify-content: flex-end;
+    margin-top: .5rem;
   }
-  .pay-way-li > svg {
-    width: 1rem;
-    height: 1rem;
-  }
-  .select_icon {
-    fill: #f1f1f1;
-  }
-  .choosed {
-    fill: #4cd964;
+  .order-again > div {
+    line-height: 1.6rem;
+    padding: 0 .3rem;
+    border: .01rem solid #3190e8;
+    color: #3190e8;
+    border-radius: .2rem;
   }
 </style>

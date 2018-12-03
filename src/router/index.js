@@ -13,10 +13,12 @@ const shopDescription = r => require.ensure([], require => r(require('../page/sh
 const publicity = r => require.ensure([], require => r(require('../page/shopDetail/shopDescription/children/publicity')), 'publicity')
 
 const order = r => require.ensure([], require => r(require('../page/order')), 'order')
-const chooseDeliveryAddress = r => require.ensure([], require => r(require('../page/order/children/chooseDeliveryAddress')), 'chooseDeliveryAddress')
-const addAddress = r => require.ensure([], require => r(require('../page/order/children/children/addAddress')), 'addAddress')
-const searchAddress = r => require.ensure([], require => r(require('../page/order/children/children/children/searchAddress')), 'searchAddress')
-const orderComments = r => require.ensure([], require => r(require('../page/order/children/orderComments')), 'orderComments')
+
+const confirmOrder = r => require.ensure([], require => r(require('../page/confirmOrder')), 'confirmOrder')
+const chooseDeliveryAddress = r => require.ensure([], require => r(require('../page/confirmOrder/children/chooseDeliveryAddress')), 'chooseDeliveryAddress')
+const addAddress = r => require.ensure([], require => r(require('../page/confirmOrder/children/children/addAddress')), 'addAddress')
+const searchAddress = r => require.ensure([], require => r(require('../page/confirmOrder/children/children/children/searchAddress')), 'searchAddress')
+const orderComments = r => require.ensure([], require => r(require('../page/confirmOrder/children/orderComments')), 'orderComments')
 const login = r => require.ensure([], require => r(require('../page/login')), 'login')
 const accountInfo = r => require.ensure([], require => r(require('../page/accountInfo')), 'accountInfo')
 const changeUsername = r => require.ensure([], require => r(require('../page/accountInfo/children/changeUsername')), 'changeUsername')
@@ -85,9 +87,9 @@ let router = new Router({
       component: publicity
     },
     {
-      path: '/order',
-      name: 'order',
-      component: order
+      path: '/confirmOrder',
+      name: 'confirmOrder',
+      component: confirmOrder
     },
     {
       path: '/chooseDeliveryAddress',
@@ -105,7 +107,7 @@ let router = new Router({
       component: searchAddress
     },
     {
-      path: '/order/orderComments',
+      path: '/confirmOrder/orderComments',
       name: 'orderComments',
       component: orderComments
     },
@@ -118,6 +120,12 @@ let router = new Router({
       path: '/accountInfo',
       name: 'accountInfo',
       component: accountInfo,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/order',
+      name: 'order',
+      component: order,
       meta: { requiresAuth: true }
     },
     {

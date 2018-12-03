@@ -92,7 +92,7 @@
   </div>
 </template>
 <script>
-import {getRestaurantDetailInfo, getImageUrl, getImageUrlByCdn} from '@/service/getData'
+import {getRestaurantDetailInfo, getImageUrl} from '@/service/getData'
 import headTop from '@/components/head/head'
 import arrowLeft from '@/components/common/arrowLeft'
 export default {
@@ -111,7 +111,7 @@ export default {
   },
   methods: {
     getImageUrl: function (img) {
-      return getImageUrlByCdn(img)
+      return getImageUrl(img)
     }
   },
   components: {headTop, arrowLeft}

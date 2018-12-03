@@ -9,11 +9,10 @@
   </div>
 </template>
 <script>
-import {getStore} from '@/commonApi/localStorage'
 export default {
   data: function () {
     return {
-      currentMenu: 0,
+      currentMenu: 0
     }
   },
   props: ['selectFood', 'foodMenu'],

@@ -352,3 +352,15 @@ export const exchangeRedPackage = (userId, exchangeCode, captchaCode) => {
       })
   })
 }
+
+export const getOrders = (userId, limit, offset) => {
+  let url = 'https://elm.cangdu.org/bos/v2/users/' + userId + '/orders?limit=' + limit + '&offset=' + offset
+  return new Promise(function (resolve, reject) {
+    axios.get(url)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  })
+}
