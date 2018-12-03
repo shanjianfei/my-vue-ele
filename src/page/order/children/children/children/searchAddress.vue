@@ -48,7 +48,7 @@ export default {
     }),
     search: function () {
       let self = this
-      searchAddress(this.keyword, 'nearby')
+      searchAddress('', this.keyword, 'nearby')
         .then(function (data) {
           self.searchResults = data
         })

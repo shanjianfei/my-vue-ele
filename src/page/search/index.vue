@@ -1,11 +1,7 @@
 <template>
   <div class="search-container">
     <head-top class="header">
-      <section slot="head-goback" class="head-goback" @click="$router.go(-1)">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
-          <polyline points="12,18 4,9 12,0" style="fill:none;stroke:rgb(255,255,255);stroke-width:2"/>
-        </svg>
-      </section>
+      <arrow-left slot="head-left"></arrow-left>
       <span class="point-title" slot="point-title">搜索</span>
     </head-top>
     <div class="search-form">
@@ -35,6 +31,7 @@
 </template>
 <script>
 import headTop from '@/components/head/head'
+import arrowLeft from '@/components/common/arrowLeft'
 import footerGuide from '@/components/footer/footer'
 import {searchRestaurants} from '@/service/getData'
 import {setStore, getStore, removeItem} from '@/commonApi/localStorage'
@@ -91,7 +88,7 @@ export default {
       removeItem('searchHistory')
     }
   },
-  components: {headTop, footerGuide},
+  components: {headTop, footerGuide, arrowLeft},
   watch: {
     inputValue: function (newValue) {
       if (!newValue) {

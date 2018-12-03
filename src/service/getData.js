@@ -10,6 +10,16 @@ export const isLogin = () => {
   return false
 }
 
+export const getCityInfo = cityId => {
+  let url = 'https://elm.cangdu.org/v1/cities/' + cityId
+  return new Promise(function (resolve, reject) {
+    axios.get(url)
+      .then(function (response) {
+        resolve(response.data)
+      })
+  })
+}
+
 export const getShopList = (latitude, longitude, offset, restaurantCategoryId = '', restaurantCategoryIds = '', orderBy = '', deliveryMode = '', supportIds = []) => {
   let supportStr = ''
   supportIds.forEach(item => {
@@ -161,8 +171,8 @@ export const addToCart = (restaurantId, geohash, entities) => {
   })
 }
 
-export const searchAddress = (keyword, type) => {
-  let url = 'https://elm.cangdu.org/v1/pois?keyword=' + keyword + '&type=' + type
+export const searchAddress = (cityId, keyword, type) => {
+  let url = 'https://elm.cangdu.org/v1/pois?city_id=' + cityId + '&keyword=' + keyword + '&type=' + type
   return new Promise(function (resolve, reject) {
     axios.get(url)
       .then(function (response) {

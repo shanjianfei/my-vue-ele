@@ -7,7 +7,7 @@
           <line x1="14" y1="14" x2="20" y2="20" style="stroke:rgb(255,255,255);stroke-width:2"/>
         </svg>
       </router-link>
-      <router-link class="point-title" slot="point-title" to="/abc">
+      <router-link class="point-title" slot="point-title" to="/">
         <span class="title-text">{{pointTitle}}</span>
       </router-link>
       <router-link class="login" slot="login" to="/abc">

@@ -1,47 +1,56 @@
 <template>
-  <div>
+  <div class="home-page">
     <head-top>
-      <span slot="logo" class="head_logo">ele.me</span>
-      <span slot="login" class="head_login" @click="login">注册|登录</span>
-    </head-top>
-    <div class="city_nav">
-      <div class="city_tip">
-        <span>当前定位城市：</span>
-        <span>定位不准时，请在城市列表中选择</span>
-      </div>
-      <router-link :to="'/city/' + locationCity.id" class="guess_city" @click.native="choseCity(locationCity)">
-        <span>{{locationCity.name}}</span>
-        <svg class="arrow_right">
-            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+      <span slot="head-left" class="head-left">ele.me</span>
+      <router-link class="head-right" v-if="isLogin()" slot="head-right" to="/profile">
+        <svg class="user-avatar">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#user" stroke="#fff" fill="#fff"></use>
         </svg>
       </router-link>
-    </div>
-    <section class="hot_city_container">
-      <h4 class="city_title">热门城市</h4>
-      <ul>
-        <router-link v-for="(item, index) in hotCityList" :to="'/city/' + item.id" :key="index" tag="li" @click.native="choseCity(item)">
-          {{item.name}}
+      <router-link v-else slot="head-right" class="head_login" to="/login">注册|登录</router-link>
+    </head-top>
+    <div class="home-container">
+      <div class="city_nav">
+        <div class="city_tip">
+          <span>当前定位城市：</span>
+          <span>定位不准时，请在城市列表中选择</span>
+        </div>
+        <router-link :to="'/city/' + locationCity.id" class="guess_city" @click.native="choseCity(locationCity)">
+          <span>{{locationCity.name}}</span>
+          <arrow-right>
+              <!-- <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use> -->
+          </arrow-right>
         </router-link>
-      </ul>
-    </section>
-    <section class="group_city_container">
-      <div v-for="(item, index) in sortgroupcity" :key="index">
-        <h4 class="city_title">
-          {{index}}
-        </h4>
+      </div>
+      <section class="hot_city_container">
+        <h4 class="city_title">热门城市</h4>
         <ul>
-          <router-link v-for="(i, d) in item" :key="d" tag="li" :to="'/city/' + i.id" @click.native="choseCity(i)">
-            {{i.name}}
+          <router-link v-for="(item, index) in hotCityList" :to="'/city/' + item.id" :key="index" tag="li" @click.native="choseCity(item)">
+            {{item.name}}
           </router-link>
         </ul>
-      </div>
-    </section>
+      </section>
+      <section class="group_city_container">
+        <div v-for="(item, index) in sortgroupcity" :key="index">
+          <h4 class="city_title">
+            {{index}}
+          </h4>
+          <ul>
+            <router-link v-for="(i, d) in item" :key="d" tag="li" :to="'/city/' + i.id" @click.native="choseCity(i)">
+              {{i.name}}
+            </router-link>
+          </ul>
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 <script>
 import headTop from '@/components/head/head'
+import arrowRight from '@/components/common/arrowRight'
 import axios from 'axios'
 import {mapState, mapMutations} from 'vuex'
+import {isLogin} from '@/service/getData'
 export default {
   data: function () {
     return {
@@ -90,39 +99,28 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['updateGeohash']),
-    login: function () {
-      this.$router.push('/login')
+    isLogin: function () {
+      return isLogin()
     },
+    ...mapMutations(['updateGeohash']),
     choseCity: function (item) {
       let geohash = item.latitude + ',' + item.longitude
       this.updateGeohash(geohash)
     }
   },
   components: {
-    headTop
+    headTop,
+    arrowRight
   }
 }
 </script>
 <style>
-  .head_logo {
-    left: 0.4rem;
-    font-weight: 400;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+  .head-left {
     color: #fff;
+    font-weight: bold;
+    margin-left: .5rem;
+    font-size: 1.3rem;
   }
-
-  .head_login {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #fff;
-    right: 0.55rem;
-    font-size: 0.8rem;
-  }
-
   .city_nav {
     padding-top: 3.5rem;
     border-top: 1px solid #e4e4e4;
@@ -219,5 +217,9 @@ export default {
     content:  '';
     display: block;
     clear: both;
+  }
+  .user-avatar {
+    width: 1.2rem;
+    height: 1.2rem;
   }
 </style>
