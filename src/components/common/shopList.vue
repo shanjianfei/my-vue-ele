@@ -3,12 +3,20 @@
     <ul>
       <router-link tag="li" v-for="(item, index) in restaurantsList" :key="index" :to="{path: '/shopDetail', query: {id: item.id, imagePath: item.image_path, shopInfo: item}}">
         <section>
-          <img class="shop-img" :src="imageBaseUrl + item.image_path">
+          <img class="shop-img" :src="getImageUrl(item.image_path)">
         </section>
         <section class="shop-info">
           <ul>
             <li class="brand">
-              <h4>{{item.name}}</h4>
+              <section>
+                <span>品牌</span>
+                <h3>{{item.name}}</h3>
+              </section>
+              <section>
+                <span v-for="(d, i) in item.supports" :key="i" :style="{'color': '#' + d.icon_color, 'border': '.05rem solid ' + '#' + d.icon_color}">
+                  {{d.icon_name}}
+                </span>
+              </section>
             </li>
             <li class="evaluation">
               <section>
@@ -37,12 +45,8 @@
 </template>
 <script>
 import ratingStar from '@/components/common/ratingStar'
+import {getImageUrl} from '@/service/getData'
 export default {
-  data () {
-    return {
-      imageBaseUrl: 'https://elm.cangdu.org/img/'
-    }
-  },
   props: ['restaurantsList'],
   methods: {
     schedule: function (supports) {
@@ -54,6 +58,9 @@ export default {
         }
       }
       return false
+    },
+    getImageUrl: function (imgPath) {
+      return getImageUrl(imgPath)
     }
   },
   components: {
@@ -62,7 +69,7 @@ export default {
 }
 </script>
 <style>
-  .restaurants-list ul, h4 {
+  .restaurants-list ul, h3 {
     padding: 0;
     margin: 0;
   }
@@ -97,12 +104,40 @@ export default {
     justify-content: space-between;
   }
 
+  .brand {
+    display: flex;
+    justify-content: space-between;
+  }
+  .brand > section:last-child > span {
+    font-size: .6rem;
+    margin-left: .1rem;
+    border-radius: 10%;
+  }
+  .brand > section:first-child {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .brand > section:first-child > span {
+    margin-right: .5rem;
+    padding: .1rem .2rem;
+    background-color: #ffd930;
+    border-radius: 10%;
+    color: #000;
+    font-weight: bold;
+    font-size: .9rem;
+  }
+
   .evaluation > section:nth-child(1) {
     display: flex;
   }
 
   .evaluation > section:nth-child(2) {
     font-size: 0.6rem;
+  }
+  .evaluation > section:nth-child(2) > span {
+    border-radius: 8%;
+    padding: 0 .1rem;
   }
 
   .score {

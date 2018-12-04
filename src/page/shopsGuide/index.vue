@@ -22,7 +22,7 @@
         <swiper :options="swiperOption">
           <swiper-slide v-for="(obj, index) in foodsRecommand" :key="index">
             <router-link class="food-link" :to="{path: '/shop', query: {title: item.title, geohash}}" v-for="(item, i) in obj" :key="i">
-              <img class="food-img" :src="foodsRecommandBaseUrl + item.image_url">
+              <img class="food-img" :src="getImageUrl(item.image_url)">
               <p>{{item.title}}</p>
             </router-link>
           </swiper-slide>
@@ -30,6 +30,10 @@
         </swiper>
       </div>
       <div class="food-list">
+        <div class="shop-list-title">
+          <svg class="shop-list-icon"><use xlink:href="#shop"></use></svg>
+          <span>附近商家</span>
+        </div>
         <shop-list :restaurantsList="restaurantsList"></shop-list>
       </div>
     </div>
@@ -37,9 +41,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
 import {swiper, swiperSlide} from 'vue-awesome-swiper'
-import 'swiper/dist/css/swiper.min.css'
 import headTop from '@/components/head/head'
 import headCenterLink from '@/components/head/children/headCenterLink'
 import shopList from '@/components/common/shopList'
@@ -48,7 +50,6 @@ import {isLogin, getFoodClassificationList, getShopList} from '@/service/getData
 export default {
   data () {
     return {
-      foodsRecommandBaseUrl: 'https://fuss10.elemecdn.com',
       foodsRecommand: [],
       headTitle: '',
       restaurantsList: [],
@@ -79,6 +80,12 @@ export default {
       .then(function (data) {
         self.restaurantsList = data
       })
+  },
+  methods: {
+    getImageUrl: function (img) {
+      let baseUrl = 'https://fuss10.elemecdn.com'
+      return baseUrl + img
+    }
   },
   components: {
     headTop,
@@ -125,5 +132,20 @@ export default {
   .user-avatar {
     width: 1.2rem;
     height: 1.2rem;
+  }
+  .shop-list-title {
+    display: flex;
+    align-items: center;
+    padding: .5rem 1rem;
+    background-color: #fff;
+  }
+  .shop-list-icon {
+    width: 1rem;
+    height: 1rem;
+    fill: #999;
+    margin-right: .5rem;
+  }
+  .shop-list-title > span {
+    color: #999;
   }
 </style>

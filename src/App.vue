@@ -12,6 +12,19 @@ export default {
   components: {
     svgIcon
   }
+  // mounted: function () {
+  //   let self = this
+  //   this.setRootFontSize()
+  //   window.onresize = function () {
+  //     self.setRootFontSize()
+  //   }
+  // },
+  // methods: {
+  //   setRootFontSize: function () {
+  //     let w = document.documentElement.offsetWidth
+  //     document.documentElement.style.fontSize=w/20+'px';
+  //   }
+  // }
 }
 </script>
 <style>

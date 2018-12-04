@@ -52,5 +52,15 @@
   <body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <script type="text/javascript">
+      function setRootFontSize() {
+        let w = document.documentElement.offsetWidth
+        document.documentElement.style.fontSize=w/30+'px';
+      }
+      setRootFontSize()
+      window.onresize = function () {
+        setRootFontSize()
+      }
+    </script>
   </body>
 </html>
