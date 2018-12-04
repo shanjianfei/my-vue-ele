@@ -59,6 +59,18 @@ export const getShopList = (latitude, longitude, offset, restaurantCategoryId = 
   })
 }
 
+export const getFoodClassificationList = () => {
+  let url = 'https://elm.cangdu.org/v2/index_entry'
+  return new Promise(function (resolve, reject) {
+    axios.get(url)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  })
+}
+
 export const getShippingMethod = (latitude, longitude) => {
   let url = 'https://elm.cangdu.org/shopping/v1/restaurants/delivery_modes'
   url = url + '?latitude=' + latitude + '&longitude=' + longitude

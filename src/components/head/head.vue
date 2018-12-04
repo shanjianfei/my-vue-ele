@@ -20,7 +20,7 @@
     background-color: #3190e8;
     position: fixed;
     width: 100%;
-    height: 2.8rem;
+    height: 3.5rem;
     z-index: 1000;
     left: 0;
     top: 0;
@@ -28,15 +28,6 @@
     justify-content: space-between;
     box-sizing: border-box;
     align-items: center;
-  }
-  .point-title {
-    position: absolute;
-    top: 50%;
-    color: #fff;
-    font-size: 1.2rem;
-    font-weight: bold;
-    left: 50%;
-    transform: translate(-50%, -50%);
   }
   .head-right {
     position: absolute;
@@ -46,6 +37,9 @@
     font-size: 1rem;
     color: #fff;
     right: .5rem;
+  }
+  .head-left {
+    margin-left: .5rem;
   }
   .head-goback {
     position: absolute;

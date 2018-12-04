@@ -1,170 +1,129 @@
 <template>
-  <div class="shops-guide">
-    <head-top class="header">
-      <router-link slot="head-search" class="head-search" :to="'/search/' + geohash">
+  <div class="shops-guide-page">
+    <head-top>
+      <router-link slot="head-left" class="head-left head-search" :to="'/search/' + geohash">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
           <circle cx="8" cy="8" r="7" stroke="rgb(255,255,255)" stroke-width="1" fill="none"/>
           <line x1="14" y1="14" x2="20" y2="20" style="stroke:rgb(255,255,255);stroke-width:2"/>
         </svg>
       </router-link>
-      <router-link class="point-title" slot="point-title" to="/">
-        <span class="title-text">{{pointTitle}}</span>
+      <head-center-link slot="head-center" link="/" :headTitle="headTitle"></head-center-link>
+      <router-link class="head-right" slot="head-right" to="/login" v-if="!isLogin">
+        注册|登录
       </router-link>
-      <router-link class="login" slot="login" to="/abc">
-        <span>注册|登录</span>
+      <router-link class="head-right" slot="head-right" to="/profile" v-else>
+        <svg class="user-avatar">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#user" stroke="#fff" fill="#fff"></use>
+        </svg>
       </router-link>
     </head-top>
-    <div class="foods-recommand">
-      <!-- Swiper -->
-      <div class="swiper-container">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="(item, index) in foodsRecommand" :key="index">
-            <router-link v-for="(food, index) in item" :key="index" :to="{path: '/shop', query: {title: food.title, geohash: $route.query.geohash}}">
-              <figure>
-                <img :src="foodsRecommandBaseUrl + food.image_url">
-                <figcaption>{{food.title}}</figcaption>
-              </figure>
+    <div class="shops-guide-container">
+      <div class="swiper">
+        <swiper :options="swiperOption">
+          <swiper-slide v-for="(obj, index) in foodsRecommand" :key="index">
+            <router-link class="food-link" :to="{path: '/shop', query: {title: item.title, geohash}}" v-for="(item, i) in obj" :key="i">
+              <img class="food-img" :src="foodsRecommandBaseUrl + item.image_url">
+              <p>{{item.title}}</p>
             </router-link>
-          </div>
-        </div>
-        <!-- Add Pagination -->
-        <div class="swiper-pagination"></div>
+          </swiper-slide>
+          <div class="swiper-pagination" slot="pagination"></div>
+        </swiper>
+      </div>
+      <div class="food-list">
+        <shop-list :restaurantsList="restaurantsList"></shop-list>
       </div>
     </div>
-    <shop-list :restaurantsList="restaurantsList"></shop-list>
     <footer-guild></footer-guild>
   </div>
 </template>
 <script>
 import axios from 'axios'
-import Swiper from 'swiper'
+import {swiper, swiperSlide} from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.min.css'
 import headTop from '@/components/head/head'
+import headCenterLink from '@/components/head/children/headCenterLink'
 import shopList from '@/components/common/shopList'
 import footerGuild from '@/components/footer/footer'
+import {isLogin, getFoodClassificationList, getShopList} from '@/service/getData'
 export default {
   data () {
     return {
       foodsRecommandBaseUrl: 'https://fuss10.elemecdn.com',
       foodsRecommand: [],
-      pointTitle: '',
+      headTitle: '',
       restaurantsList: [],
-      geohash: ''
+      geohash: '',
+      isLogin: false,
+      swiperOption: {
+        pagination: '.swiper-pagination',
+        loop: true
+      }
     }
   },
   mounted: function () {
+    // 获取登陆状态
+    this.isLogin = isLogin()
     this.geohash = this.$route.query.geohash
-    this.pointTitle = this.$route.query.name
-    var urlRecommand = 'https://elm.cangdu.org/v2/index_entry'
-    var self = this
-    axios.get(urlRecommand)
-      .then(function (response) {
-        if (response.status === 200) {
-          var data = response.data
-          var resArr = [...data]
-          var foodArr = []
-          for (let i = 0, j = 0; i < data.length; i += 8, j++) {
-            foodArr[j] = resArr.splice(0, 8)
-          }
-          self.foodsRecommand = foodArr
+    this.headTitle = this.$route.query.name
+    let self = this
+    getFoodClassificationList()
+      .then(function (data) {
+        for (let i = 0, j = 0; i < data.length; i += 8, j++) {
+          self.foodsRecommand[j] = data.slice(i, i + 8)
         }
-      })
-      .then(function () {
-        /* eslint-disable no-new */
-        new Swiper('.swiper-container', {
-          pagination: '.swiper-pagination',
-          loop: true
-        })
       })
     // 获取 shops
-    var urlRestaurantBase = 'https://elm.cangdu.org/shopping/restaurants'
     var latitude = this.geohash.split(',')[0]
     var longitude = this.geohash.split(',')[1]
-    var urlRestaurant = urlRestaurantBase + '?latitude=' + latitude + '&longitude=' + longitude
-    axios.get(urlRestaurant)
-      .then(function (response) {
-        if (response.status === 200) {
-          self.restaurantsList = response.data
-        }
+    getShopList(latitude, longitude)
+      .then(function (data) {
+        self.restaurantsList = data
       })
-  },
-  methods: {
   },
   components: {
     headTop,
     shopList,
-    footerGuild
+    footerGuild,
+    headCenterLink,
+    swiper,
+    swiperSlide
   }
 }
 </script>
 <style>
-  .point-title {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-decoration: none;
-  }
-
-  .title-text {
-    color: #fff;
-  }
-
-  .login {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 0.7rem;
-    text-decoration: none;
-  }
-
-  .login span {
-    color: #fff;
-  }
-
   .head-search {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     height: 1.4rem;
     width: 1.4rem;
-    left: 0.7rem;
   }
-
-  .foods-recommand {
-    padding-top: 3rem;
+  .shops-guide-container {
+    padding-top: 3.5rem;
+  }
+  .swiper {
     background-color: #fff;
   }
-
-  .foods-recommand a {
-    width: 25%;
-    text-align: center;
-    text-decoration: none;
-    margin: 0.7rem 0;
+  .food-list {
+    margin-top: 1rem;
   }
-
-  .foods-recommand figure {
-    padding: 0;
-    margin: 0;
-  }
-
-  .foods-recommand a img {
-    width: 3rem;
-    height: 3rem;
-  }
-
-  .foods-recommand figcaption {
-    color: #666;
-    font-family: "Microsoft Yahei";
-  }
-
-  .swiper-wrapper {
-    margin-bottom: 0.7rem;
-  }
-
   .swiper-slide {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+  }
+  .food-link {
+    width: 25%;
+    text-align: center;
+    margin: 0.6rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .food-img {
+    width: 3rem;
+    height: 3rem;
+  }
+  .user-avatar {
+    width: 1.2rem;
+    height: 1.2rem;
   }
 </style>
