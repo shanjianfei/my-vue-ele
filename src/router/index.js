@@ -7,9 +7,12 @@ Vue.use(Router)
 const home = r => require.ensure([], rquire => r(require('../page/home')), 'home')
 const city = r => require.ensure([], rquire => r(require('../page/city')), 'city')
 const shopsGuide = r => require.ensure([], require => r(require('../page/shopsGuide')), 'shopsGuide')
-const shop = r => require.ensure([], require => r(require('../page/shop')), 'shop')
-const shopDetail = r => require.ensure([], require => r(require('../page/shopDetail')), 'shopDetail')
+const recommendRestaurant = r => require.ensure([], require => r(require('../page/shopsGuide/recommendRestaurant')), 'recommandRestaurant')
+const shopDetail = r => require.ensure([], require => r(require('../page/shopsGuide/shopDetail')), 'shopDetail')
 const shopDescription = r => require.ensure([], require => r(require('../page/shopDetail/shopDescription')), 'shopDescription')
+const food = r => require.ensure([], require => r(require('../page/shopsGuide/shopDetail/children/food')), 'food')
+const evaluate = r => require.ensure([], require => r(require('../page/shopsGuide/shopDetail/children/evaluate')), 'evaluate')
+
 const publicity = r => require.ensure([], require => r(require('../page/shopDetail/shopDescription/children/publicity')), 'publicity')
 
 const order = r => require.ensure([], require => r(require('../page/order')), 'order')
@@ -67,22 +70,32 @@ let router = new Router({
       component: shopsGuide
     },
     {
-      path: '/shop',
-      name: 'shop',
-      component: shop
+      path: '/shopsGuide/recommendRestaurant',
+      name: 'recommendRestaurant',
+      component: recommendRestaurant
     },
     {
-      path: '/shopDetail',
+      path: '/shopsGuide/shopDetail',
       name: 'shopDetail',
-      component: shopDetail
+      component: shopDetail,
+      children: [
+        {
+          path: 'food',
+          component: food
+        },
+        {
+          path: 'evaluate',
+          component: evaluate
+        }
+      ]
     },
     {
-      path: '/shopDetail/shopDescription',
+      path: '/shopsGuide/shopDetail/shopDescription',
       name: 'shopDescription',
       component: shopDescription
     },
     {
-      path: '/shopDetail/shopDescription/children/publicity',
+      path: '/shopsGuide/shopDetail/shopDescription/children/publicity',
       name: 'publicity',
       component: publicity
     },

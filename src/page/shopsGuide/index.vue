@@ -20,7 +20,7 @@
       <div class="swiper">
         <swiper :options="swiperOption">
           <swiper-slide v-for="(obj, index) in foodsRecommand" :key="index">
-            <router-link class="food-link" :to="{path: '/shop', query: {title: item.title, geohash}}" v-for="(item, i) in obj" :key="i">
+            <router-link class="food-link" :to="{path: '/shopsGuide/recommendRestaurant', query: {title: item.title, geohash}}" v-for="(item, i) in obj" :key="i">
               <img class="food-img" :src="getImageUrl(item.image_url)">
               <p>{{item.title}}</p>
             </router-link>
