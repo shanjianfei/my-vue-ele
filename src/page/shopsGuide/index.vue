@@ -2,9 +2,8 @@
   <div class="shops-guide-page">
     <head-top>
       <router-link slot="head-left" class="head-left head-search" :to="'/search/' + geohash">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
-          <circle cx="8" cy="8" r="7" stroke="rgb(255,255,255)" stroke-width="1" fill="none"/>
-          <line x1="14" y1="14" x2="20" y2="20" style="stroke:rgb(255,255,255);stroke-width:2"/>
+        <svg class="search-icon">
+          <use xlink:href="#search" stroke="#fff" fill="#fff"></use>
         </svg>
       </router-link>
       <head-center-link slot="head-center" link="/" :headTitle="headTitle"></head-center-link>
@@ -13,7 +12,7 @@
       </router-link>
       <router-link class="head-right" slot="head-right" to="/profile" v-else>
         <svg class="user-avatar">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#user" stroke="#fff" fill="#fff"></use>
+          <use xlink:href="#user" stroke="#fff" fill="#fff"></use>
         </svg>
       </router-link>
     </head-top>
@@ -129,7 +128,7 @@ export default {
     width: 3rem;
     height: 3rem;
   }
-  .user-avatar {
+  .user-avatar, .search-icon {
     width: 1.2rem;
     height: 1.2rem;
   }

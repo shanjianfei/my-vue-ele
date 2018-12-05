@@ -1,14 +1,8 @@
 <template>
-  <div>
-    <head-top class="header">
-      <section slot="head-goback" class="head-goback" @click="$router.go(-1)">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
-          <polyline points="12,18 4,9 12,0" style="fill:none;stroke:rgb(255,255,255);stroke-width:2"/>
-        </svg>
-      </section>
-      <section slot="point-title" class="point-title">
-        <span class="title-text">{{textTitle}}</span>
-      </section>
+  <div class="food-head-page">
+    <head-top>
+      <arrow-left slot="head-left"></arrow-left>
+      <head-title slot="head-center" :headTitle="textTitle"></head-title>
     </head-top>
     <section class="food-head-container">
       <div :class="['food-category', {'choose-type': contentShow == 'category'}]">
@@ -165,6 +159,8 @@
 <script>
 import Vue from 'vue'
 import headTop from '@/components/head/head'
+import headTitle from '@/components/head/children/headTitle'
+import arrowLeft from '@/components/common/arrowLeft'
 import shopList from '@/components/common/shopList'
 import axios from 'axios'
 import {getShopList, getShippingMethod} from '@/service/getData'
@@ -322,7 +318,9 @@ export default {
   },
   components: {
     headTop,
-    shopList
+    shopList,
+    arrowLeft,
+    headTitle
   }
 }
 </script>
