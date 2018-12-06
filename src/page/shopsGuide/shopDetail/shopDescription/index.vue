@@ -6,7 +6,7 @@
     </head-top>
     <div class="shop-description-container" v-if="restaurantDetailInfo">
       <div class="activity">
-        <header>活动与属性</header>
+        <header class="header">活动与属性</header>
         <ul>
           <li v-for="(item, index) in restaurantDetailInfo.supports" :key="index">
             <span :style="{'background-color': '#' + item.icon_color}">{{item.icon_name}}</span>
@@ -94,86 +94,90 @@ export default {
   components: {headTop, headTitle, arrowLeft, linkBar, arrowRight}
 }
 </script>
-<style>
+<style lang="less">
   .shop-description-container {
     padding-top: 3rem;
+    .activity {
+      header {
+        padding: .8rem;
+        border-bottom: .01rem solid #f1f1f1;
+        background-color: #fff;
+        color: #666;
+      }
+      ul {
+        li {
+          line-height: 2rem;
+          padding: 0 .8rem;
+          span {
+            font-size: .8rem;
+          }
+          span:first-child {
+            padding: .1rem;
+            border-radius: 20%;
+            font-size: .6rem;
+            font-weight: bold;
+            color: #fff;
+            margin-right: .5rem;
+          }
+        }
+      }
+    }
+    .publicity {
+      margin-top: .8rem;
+      section {
+        padding: .8rem;
+        background-color: #fff;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border-top: .01rem solid #f1f1f1;
+        .publicity-icon {
+          width: 2.5rem;
+          height: 2.5rem;
+          margin-right: 1rem;
+        }
+        .check-result {
+          p {
+            font-size: .7rem;
+            .check-result-well {
+              color: #7ed321;
+            }
+            .check-result-bad {
+              color: red;
+            }
+          }
+        }
+      }
+    }
+    .shop-info {
+      .publicity
+      header {
+        .shop-description-container > .activity > ul;
+        // .a > .b;
+      }
+      ul {
+        padding: 0 .8rem;
+        background-color: #fff;
+        li {
+          padding: .8rem 0;
+          color: #666;
+          font-size: .8rem;
+          border-bottom: .01rem solid #f1f1f1;
+        }
+        .license-li {
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    }
   }
-  .activity > header, .shop-info > header {
-    padding: .8rem;
-    border-bottom: .01rem solid #f1f1f1;
-    background-color: #fff;
-    color: #666;
-  }
-  .activity > ul > li {
-    line-height: 2rem;
-    padding: 0 .8rem;
-  }
-  .activity > ul > li > span {
-    font-size: .8rem;
-  }
-  .activity > ul > li > span:first-child {
-    padding: .1rem;
-    border-radius: 20%;
-    font-size: .6rem;
-    font-weight: bold;
-    color: #fff;
-    margin-right: .5rem;
-  }
-  .publicity, .shop-info {
-    margin-top: .8rem;
-  }
-  .publicity > section {
-    padding: .8rem;
-    background-color: #fff;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    border-top: .01rem solid #f1f1f1;
-  }
-  .publicity-icon {
-    width: 2.5rem;
-    height: 2.5rem;
-    margin-right: 1rem;
-  }
-  .check-result > p{
-    font-size: .7rem;
-  }
-  .check-result-well {
-    color: #7ed321;
-  }
-  .check-result-bad {
-    color: red;
-  }
-  .shop-info > ul {
-    padding: 0 .8rem;
-    background-color: #fff;
-  }
-  .shop-info > ul > li {
-    padding: .8rem 0;
-    color: #666;
-    font-size: .8rem;
-    border-bottom: .01rem solid #f1f1f1;
-  }
-  .link-bar-small-page {
-    border-bottom: .01rem solid #f1f1f1;
-  }
-  .img-painter {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    opacity: 0.5;
-    background-color: #000;
-  }
-  .img-painter > img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  .license-li {
-    display: flex;
-    justify-content: space-between;
-  }
+  // .activity > header, .shop-info > header {
+  //   padding: .8rem;
+  //   border-bottom: .01rem solid #f1f1f1;
+  //   background-color: #fff;
+  //   color: #666;
+  // }
+  // .publicity, .shop-info {
+  //   margin-top: .8rem;
+  // }
 </style>
