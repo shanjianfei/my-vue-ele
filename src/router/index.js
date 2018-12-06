@@ -9,11 +9,11 @@ const city = r => require.ensure([], rquire => r(require('../page/city')), 'city
 const shopsGuide = r => require.ensure([], require => r(require('../page/shopsGuide')), 'shopsGuide')
 const recommendRestaurant = r => require.ensure([], require => r(require('../page/shopsGuide/recommendRestaurant')), 'recommandRestaurant')
 const shopDetail = r => require.ensure([], require => r(require('../page/shopsGuide/shopDetail')), 'shopDetail')
-const shopDescription = r => require.ensure([], require => r(require('../page/shopDetail/shopDescription')), 'shopDescription')
+const shopDescription = r => require.ensure([], require => r(require('../page/shopsGuide/shopDetail/shopDescription')), 'shopDescription')
 const food = r => require.ensure([], require => r(require('../page/shopsGuide/shopDetail/children/food')), 'food')
 const evaluate = r => require.ensure([], require => r(require('../page/shopsGuide/shopDetail/children/evaluate')), 'evaluate')
 
-const publicity = r => require.ensure([], require => r(require('../page/shopDetail/shopDescription/children/publicity')), 'publicity')
+const publicity = r => require.ensure([], require => r(require('../page/shopsGuide/shopDetail/shopDescription/children/publicity')), 'publicity')
 
 const order = r => require.ensure([], require => r(require('../page/order')), 'order')
 
@@ -76,6 +76,7 @@ let router = new Router({
     },
     {
       path: '/shopsGuide/shopDetail',
+      redirect: '/shopsGuide/shopDetail/food',
       name: 'shopDetail',
       component: shopDetail,
       children: [

@@ -2,7 +2,7 @@
   <div class="shop-description-page">
     <head-top>
       <arrow-left slot="head-left"></arrow-left>
-      <span class="point-title" slot="head-center">商家详情</span>
+      <head-title slot="head-center" headTitle="商家详情"></head-title>
     </head-top>
     <div class="shop-description-container" v-if="restaurantDetailInfo">
       <div class="activity">
@@ -57,6 +57,7 @@
 <script>
 import {getRestaurantDetailInfo, getImageUrl} from '@/service/getData'
 import headTop from '@/components/head/head'
+import headTitle from '@/components/head/children/headTitle'
 import arrowLeft from '@/components/common/arrowLeft'
 import linkBar from '@/components/common/linkBar'
 import arrowRight from '@/components/common/arrowRight'
@@ -90,7 +91,7 @@ export default {
       this.show = false
     }
   },
-  components: {headTop, arrowLeft, linkBar, arrowRight}
+  components: {headTop, headTitle, arrowLeft, linkBar, arrowRight}
 }
 </script>
 <style>
