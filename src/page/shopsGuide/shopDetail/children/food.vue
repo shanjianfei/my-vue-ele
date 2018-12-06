@@ -50,7 +50,7 @@
 <script>
 import {getRestaurantDetailInfo, getImageUrl, getFoodMenu} from '@/service/getData'
 import {getStore, setStore} from '@/commonApi/localStorage'
-import {mapState, mapMutations} from 'vuex'
+import {mapMutations} from 'vuex'
 export default {
   data () {
     return {

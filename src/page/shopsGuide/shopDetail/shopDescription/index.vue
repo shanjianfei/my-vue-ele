@@ -6,7 +6,7 @@
     </head-top>
     <div class="shop-description-container" v-if="restaurantDetailInfo">
       <div class="activity">
-        <header class="header">活动与属性</header>
+        <header>活动与属性</header>
         <ul>
           <li v-for="(item, index) in restaurantDetailInfo.supports" :key="index">
             <span :style="{'background-color': '#' + item.icon_color}">{{item.icon_name}}</span>
@@ -18,10 +18,10 @@
         <link-bar contentLeft="食品监督安全公示" :link="'/shopDetail/shopDescription/children/publicity?restaurantId=' + restaurantId" contentRight="企业认证详情"></link-bar>
         <section>
           <svg class="publicity-icon" v-if="restaurantDetailInfo.status == 1">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#res-well"></use>
+              <use xlink:href="#res-well"></use>
           </svg>
           <svg class="publicity-icon" v-else>
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#res-bad"></use>
+              <use xlink:href="#res-bad"></use>
           </svg>
           <section class="check-result">
             <p>监督检查结果：
@@ -94,16 +94,16 @@ export default {
   components: {headTop, headTitle, arrowLeft, linkBar, arrowRight}
 }
 </script>
-<style lang="less">
+<style scoped lang="less">
+  header {
+    padding: .8rem;
+    border-bottom: .01rem solid #f1f1f1;
+    background-color: #fff;
+    color: #666;
+  }
   .shop-description-container {
     padding-top: 3rem;
     .activity {
-      header {
-        padding: .8rem;
-        border-bottom: .01rem solid #f1f1f1;
-        background-color: #fff;
-        color: #666;
-      }
       ul {
         li {
           line-height: 2rem;
@@ -150,11 +150,7 @@ export default {
       }
     }
     .shop-info {
-      .publicity
-      header {
-        .shop-description-container > .activity > ul;
-        // .a > .b;
-      }
+      margin-top: .8rem;
       ul {
         padding: 0 .8rem;
         background-color: #fff;
@@ -171,13 +167,4 @@ export default {
       }
     }
   }
-  // .activity > header, .shop-info > header {
-  //   padding: .8rem;
-  //   border-bottom: .01rem solid #f1f1f1;
-  //   background-color: #fff;
-  //   color: #666;
-  // }
-  // .publicity, .shop-info {
-  //   margin-top: .8rem;
-  // }
 </style>
