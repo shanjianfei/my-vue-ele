@@ -24,19 +24,14 @@ export default {
   components: {buttonSubmit}
 }
 </script>
-<style>
+<style lang="less">
+  @import '~assets/less/common.less';
   .alert-message-page {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    .vertical-center;
+    .flex(@fd: column;);
     width: 20rem;
     background-color: #fff;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
     border-radius: 3%;
-    justify-content: space-between;
   }
   .message-content {
     margin: .6rem 0;

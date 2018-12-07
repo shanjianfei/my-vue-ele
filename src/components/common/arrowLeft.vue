@@ -3,15 +3,11 @@
     <use xlink:href="#arrow-left"></use>
   </svg>
 </template>
-<style>
+<style lang="less">
+  @import "~assets/less/common.less";
   .head-goback {
-    width: 1.2rem;
-    height: 1.5rem;
-    line-height: 2.2rem;
-    left: 0.4rem;
-    margin-left: .4rem;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    .wh(1.2rem, 1.2rem);
+    .center-y;
+    left: 0.5rem;
   }
 </style>

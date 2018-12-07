@@ -19,36 +19,22 @@
   @import "~assets/less/common.less";
   #head-top {
     background-color: @blue;
-    position: fixed;
     width: 100%;
     height: 3.5rem;
     z-index: 1000;
+    .fixed;
     left: 0;
     top: 0;
-    display: flex;
-    justify-content: space-between;
+    right: 0;
     box-sizing: border-box;
-    align-items: center;
   }
   .head-right {
-    position: absolute;
-    top: 50%;
-    right: .5rem;
-    transform: translateY(-50%);
+    .center-y;
+    margin-right: .5rem;
     font-size: 1rem;
     color: #fff;
-    right: .5rem;
   }
   .head-left {
     margin-left: .5rem;
-  }
-  .head-goback {
-    position: absolute;
-    top: 50%;
-    left: .5rem;
-    transform: translateY(-50%);
-    width: 1rem;
-    height: 1.2rem;
-    left: .5rem;
   }
 </style>
