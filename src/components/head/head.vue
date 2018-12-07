@@ -15,9 +15,10 @@
 </template>
 <script>
 </script>
-<style>
+<style scoped lang="less">
+  @import "~assets/less/common.less";
   #head-top {
-    background-color: #3190e8;
+    background-color: @blue;
     position: fixed;
     width: 100%;
     height: 3.5rem;

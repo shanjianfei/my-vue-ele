@@ -56,11 +56,11 @@
 </template>
 <script>
 import {getRestaurantDetailInfo, getImageUrl} from '@/service/getData'
-import headTop from '@/components/head/head'
-import headTitle from '@/components/head/children/headTitle'
-import arrowLeft from '@/components/common/arrowLeft'
-import linkBar from '@/components/common/linkBar'
-import arrowRight from '@/components/common/arrowRight'
+import headTop from 'components/head/head'
+import headTitle from 'components/head/children/headTitle'
+import arrowLeft from 'components/common/arrowLeft'
+import linkBar from 'components/common/linkBar'
+import arrowRight from 'components/common/arrowRight'
 export default {
   data () {
     return {
