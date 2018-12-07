@@ -20,7 +20,7 @@
   #head-top {
     background-color: @blue;
     width: 100%;
-    height: 3.5rem;
+    height: 3rem;
     z-index: 1000;
     .fixed;
     left: 0;

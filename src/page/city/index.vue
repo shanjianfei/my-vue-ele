@@ -3,18 +3,16 @@
     <head-top>
       <arrow-left slot="head-left"></arrow-left>
       <head-title slot="head-center" :headTitle="cityName"></head-title>
-      <section slot="head-right" class="change-city">
-        <router-link to="/">切换城市</router-link>
-      </section>
+      <router-link class="change-city" slot="head-right" to="/">切换城市</router-link>
     </head-top>
     <div class="city-container">
       <form class="city-search">
-        <input-component type="search" placeholder="输入学校、商务楼、地址" ht="3rem" @inputs="input"></input-component>
-        <button-submit text="提交" lh="3rem" bg="#3190e8" @submit="search"></button-submit>
+        <input-component type="search" placeholder="输入学校、商务楼、地址" @inputs="input"></input-component>
+        <button-submit text="提交" bg="#3190e8" @submit="search"></button-submit>
       </form>
-      <div class="search-list" v-if="searchList">
+      <div class="search-result" v-if="searchList">
         <ul v-if="searchList.length > 0">
-          <li class="search-result-li" v-for="(item, index) in searchList" :key="index" @click="select(item)">
+          <li v-for="(item, index) in searchList" :key="index" @click="select(item)">
             <h3>{{item.name}}</h3>
             <p>{{item.address}}</p>
           </li>
@@ -117,55 +115,63 @@ export default {
   }
 }
 </script>
-<style>
-  .change-city {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    text-align: center;
-    transform: translateY(-50%);
+<style scoped lang="less">
+  @import '~assets/less/common.less';
+  ul {
+    li {
+      .bgw;
+      padding: .8rem 1.5rem;
+      border-bottom: 1px solid #f6f6f6;
+      h3 {
+        font: 1rem @typeface-my;
+        margin: 0 0 .6rem 0;
+      }
+      p {
+        color: #999;
+        margin: 0;
+        font: 0.8rem @typeface-my;
+      }
+    }
   }
-  .city-container {
-    padding-top: 3.5rem;
-  }
-  .city-search {
-    border-top: 1px solid #e4e4e4;
-    border-bottom: 1px solid #e4e4e4;
-    background-color: #fff;
-    padding: 1rem 1.5rem;
-  }
-  .input-component {
-    margin-bottom: 1rem;
-  }
-  .search-result-li > h3, .search-history-li > h3 {
-    font: 1rem "Microsoft YaHei";
-    margin: 0 0 .6rem 0;
-  }
-  .search-result-li > p, .search-history-li > p {
-    color: #999;
-    margin: 0;
-    font: 0.8rem "Microsoft YaHei";
-  }
-  .search-result-li, .search-history-li {
-    list-style-type: none;
-    background-color: #fff;
-    padding: .8rem 1.5rem;
-    border-bottom: .01rem solid #f6f6f6;
-  }
-  .search-none-result {
-    background-color: #fff;
-    font: 0.8rem/2rem "Microsoft YaHei";
-    text-indent: 1rem;
-  }
-  .search-history-title {
-    color: #666;
-    font: 0.8rem/2rem "Microsoft YaHei";
-    text-indent: 1rem;
-  }
-  .search-history-content > ul > li:last-child {
-    text-align: center;
-    padding: 1rem;
-    font-size: 1.2rem;
-    color: #666;
+  .city-page {
+    header {
+      .change-city {
+        .head-right;
+      }
+    }
+    .city-container {
+      padding-top: 3rem;
+      .city-search {
+        .bgw;
+        padding: 1rem 1.5rem;
+        input {
+          margin-bottom: 1rem;
+        }
+      }
+      .search-result {
+        div {
+          .bgw;
+          font: 0.8rem/2rem @typeface-my;
+          margin-left: 1rem;
+        }
+      }
+      .search-history {
+        .search-history-title {
+          color: #666;
+          font: 0.8rem/2rem "Microsoft YaHei";
+          margin-left: 1rem;
+        }
+        .search-history-content {
+          ul {
+            li:last-child {
+              text-align: center;
+              padding: 1rem;
+              font-size: 1.2rem;
+              color: #666;
+            }
+          }
+        }
+      }
+    }
   }
 </style>

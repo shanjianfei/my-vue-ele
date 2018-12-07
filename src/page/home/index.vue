@@ -1,13 +1,13 @@
 <template>
   <div class="home-page">
-    <head-top>
+    <head-top class="head-top">
       <span slot="head-left" class="head-left">ele.me</span>
-      <router-link class="head-right" v-if="isLogin()" slot="head-right" to="/profile">
+      <router-link class="login" v-if="isLogin()" slot="head-right" to="/profile">
         <svg class="user-avatar">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#user" stroke="#fff" fill="#fff"></use>
+          <use xlink:href="#user" stroke="#fff" fill="#fff"></use>
         </svg>
       </router-link>
-      <router-link v-else slot="head-right" class="head_login" to="/login">注册|登录</router-link>
+      <router-link v-else slot="head-right" class="logout" to="/login">注册|登录</router-link>
     </head-top>
     <div class="home-container">
       <div class="city_nav">
@@ -15,15 +15,13 @@
           <span>当前定位城市：</span>
           <span>定位不准时，请在城市列表中选择</span>
         </div>
-        <router-link :to="'/city/' + locationCity.id" class="guess_city" @click.native="choseCity(locationCity)">
+        <router-link class="city_guess" :to="'/city/' + locationCity.id"  @click.native="choseCity(locationCity)">
           <span>{{locationCity.name}}</span>
-          <arrow-right>
-              <!-- <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use> -->
-          </arrow-right>
+          <arrow-right></arrow-right>
         </router-link>
       </div>
       <section class="hot_city_container">
-        <h4 class="city_title">热门城市</h4>
+        <h4>热门城市</h4>
         <ul>
           <router-link v-for="(item, index) in hotCityList" :to="'/city/' + item.id" :key="index" tag="li" @click.native="choseCity(item)">
             {{item.name}}
@@ -32,8 +30,9 @@
       </section>
       <section class="group_city_container">
         <div v-for="(item, index) in sortgroupcity" :key="index">
-          <h4 class="city_title">
+          <h4>
             {{index}}
+            <span v-if="index === 'A'">（按字母排序）</span>
           </h4>
           <ul>
             <router-link v-for="(i, d) in item" :key="d" tag="li" :to="'/city/' + i.id" @click.native="choseCity(i)">
@@ -114,112 +113,121 @@ export default {
   }
 }
 </script>
-<style>
-  .head-left {
-    color: #fff;
-    font-weight: bold;
-    margin-left: .5rem;
-    font-size: 1.3rem;
+<style scoped lang="less">
+  @import '~assets/less/common.less';
+  @gray:#e4e4e4;
+  @typeface-hn:"Helvetica Neue";
+  @typeface-my:"Microsoft YaHei";
+  .ul-city {
+    li {
+      padding: .6rem .5rem;
+      float: left;
+      color: #3190e8;
+      text-align: center;
+      font: 0.8rem @typeface-my;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      box-sizing: border-box;
+      .wh(@width: 25%; @height: auto);
+      .border;
+    }
+    &:after {
+      content: '';
+      display: block;
+      clear: both;
+    }
   }
-  .city_nav {
-    padding-top: 3.5rem;
-    border-top: 1px solid #e4e4e4;
-    background-color: #fff;
-    margin-bottom: 0.4rem;
+  .head-top {
+    .relative;
+    .head-left {
+      .head-left;
+      font-weight: bold;
+      font-size: 1.3rem;
+    }
+    .login {
+      .head-right;
+      .wh(@width: 1.5rem; @height: 1.5rem);
+      .user-avatar {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+    .logout {
+      .head-right;
+      .wh(@width: 4.5rem; @height: 1.2rem);
+    }
   }
-
-  .city_tip {
-    line-height: 2rem;
-    padding: 0 0.45rem;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .city_tip > span:first-child {
-    font-size: 0.8rem;
-    color: #666;
-  }
-
-  .city_tip > span:nth-child(2) {
-    font-size: 0.8rem;
-    color: #9f9f9f;
-    font-weight: 900;
-  }
-
-  .guess_city {
-    align-items: center;
-    height: 1.8rem;
-    padding: 0 0.45rem;
-    border-top: 1px solid $bc;
-    border-bottom: 2px solid $bc;
-    display: flex;
-    justify-content: space-between;
-    text-decoration: none;
-  }
-
-  .arrow_right {
-    width: 1rem;
-    height: 1rem;
-    fill: #999;
-  }
-  .city_title {
-    font: 0.8rem/1.8rem "Helvetica Neue";
-    text-indent: 0.5rem;
-    color: #666;
-  }
-
-  .hot_city_container {
-    background-color: #fff;
-  }
-
-  .hot_city_container ul {
-    padding-left: 0;
-  }
-
-  .hot_city_container li {
-    list-style-type: none;
-    float: left;
-    width: 25%;
-    height: 2rem;
-    color: #3190e8;
-    text-align: center;
-    font: 0.8rem/2rem "Microsoft YaHei";
-  }
-
-  .hot_city_container ul:after {
-    content:  '';
-    display: block;
-    clear: both;
-  }
-
-  .group_city_container div {
-    background-color: #fff;
-  }
-
-  .group_city_container ul {
-    padding-left: 0;
-  }
-
-  .group_city_container li {
-    list-style-type: none;
-    float: left;
-    width: 25%;
-    height: 2rem;
-    color: #666;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font: 0.8rem/2rem "Microsoft YaHei";
-  }
-
-  .group_city_container ul:after {
-    content:  '';
-    display: block;
-    clear: both;
-  }
-  .user-avatar {
-    width: 1.2rem;
-    height: 1.2rem;
+  .home-container {
+    padding-top: 3rem;
+    .city_nav {
+      padding-top: .5rem;
+      background-color: #fff;
+      .city_tip {
+        padding: .6rem .5rem;
+        .flex;
+        span:first-child {
+          font-size: .9rem;
+          color: #666;
+        }
+        span:last-child {
+          font-size: 0.7rem;
+          color: #9f9f9f;
+          font-weight: bold;
+        }
+      }
+      .city_guess {
+        .flex;
+        padding: .6rem .5rem;
+        border-top: 1px solid @gray;
+        border-bottom: 2px solid @gray;
+        span:first-child {
+          font-size: 1.1rem;
+          color: @blue;
+        }
+      }
+    }
+    .hot_city_container {
+      margin-top: .5rem;
+      .bgw;
+      h4 {
+        margin: 0;
+        font-family: @typeface-hn;
+        font-size: 1rem;
+        padding: 0.5rem;
+        color: #666;
+      }
+      ul {
+        .ul-city;
+      }
+    }
+    .group_city_container {
+      margin-top: .5rem;
+      .bgw;
+      div {
+        margin-top: .5rem;
+        border-top: 2px solid @gray;
+        h4 {
+          margin: 0;
+          margin-top: .5rem;
+          margin: 0;
+          padding: .5rem;
+          font: .9rem @typeface-my;
+          color: #666;
+          span {
+            font-size: .75rem;
+            color: #999;
+          }
+        }
+        ul {
+          .ul-city;
+          margin-bottom: .5rem;
+          border-bottom: 2px solid @gray;
+          li {
+            color: #666;
+          }
+        }
+      }
+    }
   }
 </style>
