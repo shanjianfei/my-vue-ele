@@ -1,9 +1,16 @@
 @blue: #3190e8;
 @white: #fff;
+@gray: #666;
 @typeface-hn:"Helvetica Neue";
 @typeface-my:"Microsoft YaHei";
 .bgw {
   background-color: @white;
+}
+.bgc(@c) {
+  background-color: @c;
+}
+.br(@p) {
+  border-radius: percentage(@p);
 }
 .wh (@width:1rem;@height:1rem) {
   width: @width;

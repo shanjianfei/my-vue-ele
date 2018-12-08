@@ -1,33 +1,31 @@
 <template>
   <div class="shops-guide-page">
     <head-top>
-      <router-link slot="head-left" class="head-left head-search" :to="'/search/' + geohash">
+      <router-link slot="head-left" class="head-search" :to="'/search/' + geohash">
         <svg class="search-icon">
           <use xlink:href="#search" stroke="#fff" fill="#fff"></use>
         </svg>
       </router-link>
       <head-center-link slot="head-center" link="/" :headTitle="headTitle"></head-center-link>
-      <router-link class="head-right" slot="head-right" to="/login" v-if="!isLogin">
+      <router-link class="login" slot="head-right" to="/login" v-if="!isLogin">
         注册|登录
       </router-link>
-      <router-link class="head-right" slot="head-right" to="/profile" v-else>
+      <router-link class="logout" slot="head-right" to="/profile" v-else>
         <svg class="user-avatar">
           <use xlink:href="#user" stroke="#fff" fill="#fff"></use>
         </svg>
       </router-link>
     </head-top>
     <div class="shops-guide-container">
-      <div class="swiper">
-        <swiper :options="swiperOption">
-          <swiper-slide v-for="(obj, index) in foodsRecommand" :key="index">
-            <router-link class="food-link" :to="{path: '/shopsGuide/recommendRestaurant', query: {title: item.title, geohash}}" v-for="(item, i) in obj" :key="i">
-              <img class="food-img" :src="getImageUrl(item.image_url)">
-              <p>{{item.title}}</p>
-            </router-link>
-          </swiper-slide>
-          <div class="swiper-pagination" slot="pagination"></div>
-        </swiper>
-      </div>
+      <swiper :options="swiperOption">
+        <swiper-slide v-for="(obj, index) in foodsRecommand" :key="index">
+          <router-link class="food-link" :to="{path: '/shopsGuide/recommendRestaurant', query: {title: item.title, geohash}}" v-for="(item, i) in obj" :key="i">
+            <img :src="getImageUrl(item.image_url)">
+            <p>{{item.title}}</p>
+          </router-link>
+        </swiper-slide>
+        <div class="swiper-pagination" slot="pagination"></div>
+      </swiper>
       <div class="food-list">
         <div class="shop-list-title">
           <svg class="shop-list-icon"><use xlink:href="#shop"></use></svg>
@@ -96,55 +94,63 @@ export default {
   }
 }
 </script>
-<style>
-  .head-search {
-    height: 1.4rem;
-    width: 1.4rem;
-  }
-  .shops-guide-container {
-    padding-top: 3.5rem;
-  }
-  .swiper {
-    background-color: #fff;
-  }
-  .food-list {
-    margin-top: 1rem;
-  }
-  .swiper-slide {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  .food-link {
-    width: 25%;
-    text-align: center;
-    margin: 0.6rem 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  .food-img {
-    width: 3rem;
-    height: 3rem;
-  }
-  .user-avatar, .search-icon {
-    width: 1.2rem;
-    height: 1.2rem;
-  }
-  .shop-list-title {
-    display: flex;
-    align-items: center;
-    padding: .5rem 1rem;
-    background-color: #fff;
-  }
-  .shop-list-icon {
-    width: 1rem;
-    height: 1rem;
-    fill: #999;
-    margin-right: .5rem;
-  }
-  .shop-list-title > span {
-    color: #999;
+<style scoped lang="less">
+  @import '~assets/less/common.less';
+  .shops-guide-page {
+    header {
+      .head-search {
+        .head-left;
+        .search-icon {
+          .wh(1.2rem, 1.2rem);
+        }
+      }
+      .login {
+        .head-right;
+      }
+      .logout {
+        .head-right;
+        .user-avatar {
+          .wh(1.2rem, 1.2rem);
+        }
+      }
+    }
+    .shops-guide-container {
+      padding-top: 3rem;
+      .swiper-container {
+        .bgw;
+        .swiper-slide {
+          .flex;
+          flex-wrap: wrap;
+          .food-link {
+            .flex(@fd: column; @jc: center);
+            width: 25%;
+            text-align: center;
+            margin: 0.6rem 0;
+            img {
+              .wh(3rem, 3rem);
+            }
+          }
+        }
+        .swiper-pagination-bullets {
+          bottom: 0;
+        }
+      }
+      .food-list {
+        margin-top: 1rem;
+        .shop-list-title {
+          .bgw;
+          .flex(@jc: flex-start);
+          padding: .5rem 1rem;
+          .shop-list-icon {
+            .wh(1rem, 1rem);
+            fill: #999;
+            margin-right: .5rem;
+          }
+          span {
+            color: #999;
+          }
+        }
+      }
+    }
   }
 </style>

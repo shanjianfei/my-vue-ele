@@ -28,39 +28,34 @@ export default {
   @import '~assets/less/common.less';
   .alert-message-page {
     .vertical-center;
-    .flex(@fd: column;);
-    width: 20rem;
-    background-color: #fff;
+    .flex(@fd: column);
+    .bgw;
+    width: 85%;
     border-radius: 3%;
-  }
-  .message-content {
-    margin: .6rem 0;
-    font-size: 1.2rem;
-    text-align: center;
-  }
-  .tip-icon-container {
-    margin: .5rem .5rem;
-    width: 5rem;
-    height: 5rem;
-    border-radius: 50%;
-    border: .2rem solid #f8cb86;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .tip-icon-container > span:first-child {
-    margin: .5rem 0;
-    height: 3rem;
-    width: .2rem;
-    background-color: #f8cb86;
-  }
-  .tip-icon-container > span:last-child {
-    height: .3rem;
-    width: .3rem;
-    background-color: #f8cb86;
-    border-radius: 50%;
-  }
-  .button-container {
-    width: 100%;
+    .tip-icon-container {
+      .wh(5rem, 5rem);
+      .br(0.5);
+      .flex(@fd: column; @jc: center);
+      border: 5px solid #f8cb86;
+      margin: .5rem .5rem;
+      span:first-child {
+        .bgc(#f8cb86);
+        .wh(.2rem, 3rem);
+        margin: .5rem 0;
+      }
+      span:last-child {
+        .bgc(#f8cb86);
+        .wh(.3rem, .3rem);
+        .br(0.5);
+      }
+    }
+    .message-content {
+      margin: .6rem 0;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+    .button-container {
+      width: 100%;
+    }
   }
 </style>
