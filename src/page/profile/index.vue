@@ -16,11 +16,12 @@
             <router-link to="/accountInfo" tag="p" v-if="username">{{username}}</router-link>
             <router-link to="/login" tag="p" v-else>注册/登录</router-link>
             <section>
-              <img src="@/images/bindphone.png">
+              <svg>
+                <use xlink:href="#mobile"></use>
+              </svg>
               <p v-if="mobile">手机号: {{mobile}}</p>
               <p v-else>暂无绑定手机号</p>
             </section>
-            
           </section>
         </section>
         <arrow-right></arrow-right>
@@ -162,7 +163,7 @@ export default {
         padding: 1.2rem;
         section:first-child {
           .flex;
-          svg {
+          > svg {
             .wh(4rem, 4rem);
             .bgw;
             .br(0.5);
@@ -176,7 +177,14 @@ export default {
             }
             section {
               .flex(@jc: flex-start);
-              p{
+              > svg {
+                .wh(1rem, 1rem);
+                margin-right: .5rem;
+                use {
+                  fill: @white;
+                }
+              }
+              p {
                 color: @white;
                 font-size: .85rem;
               }
