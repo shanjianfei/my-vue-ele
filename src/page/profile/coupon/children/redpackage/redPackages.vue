@@ -55,79 +55,72 @@ export default {
   components: {description}
 }
 </script>
-<style>
-  .red-packages-content {
-    margin: 1rem 0;
-    border-top: .2rem solid #ff5340;
-    border-radius: 0.3rem;
-  }
-  .red-package {
-    padding: 1rem 1rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    border-top: .2rem dashed #ff5340;
-    background-color: #fff;
-  }
-  .red-package > section:first-child {
-    padding-right: 1rem;
-    border-right: .08rem dashed #ccc;
-  }
-  .red-package > section:first-child > p:first-child {
-    font-size: 1.2rem;
-    color: #ff5340;
-  }
-  .red-package > section:first-child > p:last-child {
-    font-size: .7rem;
-    color: #aaa;
-  }
-  .red-package > section:nth-child(2) > p:not(:first-child) {
-    font-size: .7rem;
-    color: #aaa;
-  }
-  .red-package > section:nth-child(2) {
-    /*padding-left: 1rem;*/
-    /*padding-right: 3rem;*/
-  }
-  .red-package > span {
-    color: #ff5340;
-  }
+<style scoped lang="less">
+  @import '~assets/less/common.less';
   .red-packages-container {
     padding: 1rem 1rem;
-  }
-  .red-packages-title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    font-size: .7rem;
-  }
-  .red-packages-title > span > span {
-    color: #ff5340;
-  }
-  .limit-map > li > span {
-    font-size: .7rem;
-    color: #aaa;
-    background-color: #f5f5f5;
-  }
-  .red-packages-title img {
-    width: .8rem;
-    height: .8rem;
-    margin-right: 0.3rem;
-  }
-  .red-packages-title > section {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .history-red-packages-link > svg {
-    width: 0.7rem;
-    height: 0.7rem;
-    margin-left: .5rem;
-  }
-  .history-red-packages-link {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: .7rem;
+    .red-packages-title {
+      .flex;
+      font-size: .7rem;
+      img {
+        .wh(@width: .8rem; @height: .8rem;);
+          margin-right: 0.3rem;
+        }
+      > section {
+        .flex;
+      }
+      > span > span {
+        color: #ff5340;
+      }
+    }
+    .red-packages-content {
+      margin: 1rem 0;
+      border-top: .2rem solid #ff5340;
+      .br(0.02);
+      .red-package {
+        .flex;
+        .bgw;
+        padding: 1rem 1rem;
+        border-top: .2rem dashed #ff5340;
+        > section:first-child {
+          padding-right: 1rem;
+          border-right: .08rem dashed #ccc;
+          > p:first-child {
+            font-size: 1.2rem;
+            color: #ff5340;
+          }
+          > p:last-child {
+            font-size: .7rem;
+            color: #aaa;
+          }
+        }
+        > section:nth-child(2) {
+          > p:not(:first-child) {
+            font-size: .7rem;
+            color: #aaa;
+          }
+        }
+        > span {
+          color: #ff5340;
+        }
+      }
+      .limit-map {
+        > li {
+          > span {
+            font-size: .7rem;
+            color: #aaa;
+            .bgc(#f5f5f5);
+          }
+        }
+      }
+    }
+    .history-red-packages-link {
+      .flex;
+      font-size: .7rem;
+      > svg {
+        .wh(.7rem, .7rem);
+        margin-left: .5rem;
+      }
+    }
   }
 </style>

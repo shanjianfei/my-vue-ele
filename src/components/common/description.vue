@@ -17,19 +17,21 @@ export default {
   props: ['discriptionObj']
 }
 </script>
-<style>
+<style lang="less">
+  @import "~assets/less/common.less";
   .description-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    .flex;
+    .link-description {
+      font-size: .8rem;
+      color: #3190e8;
+    }
+    > img {
+      .wh(1rem, 1rem);
+      margin-right: .5rem;
+    }
   }
   .link-description {
     font-size: .8rem;
     color: #3190e8;
-  }
-  .description-container > img {
-    width: 1rem;
-    height: 1rem;
-    margin-right: .5rem;
   }
 </style>

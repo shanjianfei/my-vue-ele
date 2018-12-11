@@ -1,13 +1,7 @@
 <template>
   <header id="head-top">
-    <slot name="logo"></slot>
     <slot name="head-search"></slot>
     <slot name="login"></slot>
-    <slot name="head-goback"></slot>
-    <slot name="city-name"></slot>
-    <slot name="point-title"></slot>
-    <slot name="head-title"></slot>
-    <slot name="change-city"></slot>
     <slot name="head-left"></slot>
     <slot name="head-right"></slot>
     <slot name="head-center"></slot>

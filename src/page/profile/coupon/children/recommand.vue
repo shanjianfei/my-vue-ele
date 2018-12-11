@@ -2,7 +2,7 @@
   <div class="recommand-page">
     <head-top>
       <arrow-left slot="head-left"></arrow-left>
-      <span class="point-title" slot="head-center">推荐有奖</span>
+      <head-title slot="head-center" headTitle="推荐有奖"></head-title>
     </head-top>
     <div class="recommand-container">
       <img src="@/images/activity.png">
@@ -49,6 +49,7 @@
 </template>
 <script>
 import headTop from '@/components/head/head'
+import headTitle from '@/components/head/children/headTitle'
 import arrowLeft from '@/components/common/arrowLeft'
 import alertMessage from '@/components/common/alertMessage'
 export default {
@@ -65,64 +66,57 @@ export default {
       this.tipShow = false
     }
   },
-  components: {headTop, arrowLeft, alertMessage}
+  components: {headTop, arrowLeft, alertMessage, headTitle}
 }
 </script>
-<style>
+<style scoped lang="less">
+  @import '~assets/less/common.less';
   .recommand-container {
-    padding-top: 2.2rem;
-  }
-  .recommand-container > img {
-    width: 100%;
-    height: 15rem;
-  }
-  .recommand-ways {
-    display: flex;
-    justify-content: space-between;
-    background-color: #fff;
-    padding: 1.5rem 0;
-  }
-  .recommand-ways > span {
-    text-align: center;
-    width: 100%;
-  }
-  .recommand-ways img {
-    width: 4rem;
-    height: 4rem;
-  }
-  .recommand-container > section:last-of-type {
-    display: flex;
-    justify-content: space-between;
-    padding: 1.5rem 1rem;
-  }
-  .recommand-container > section:last-of-type > span {
-    width: 100%;
-    text-align: center;
-  }
-  .recommand-container > section:last-of-type > span:first-child {
-    border-right: .1rem dashed #ccc;
-  }
-  .recommand-container > section:last-of-type > span:first-child > p:last-child > span:first-child {
-    color: #ff5633;
-    font-weight: bold;
-    font-size: 1.5rem;
-  }
-  .recommand-container > section:last-of-type > span:last-child > p:last-child > span:first-child {
-    color: #666;
-    font-weight: bold;
-    font-size: 1.5rem;
-  }
-  .gains-detail > section {
-    margin-top: 2rem;
-  }
-  .gains-detail > section > img {
-    width: 2rem;
-    height: 3rem;
-  }
-  .gains-detail > section > p {
-    color: #ccc;
-  }
-  .gains-detail {
-    text-align: center;
+    padding-top: 3rem;
+    > img {
+      .wh(100%, 15rem);
+    }
+    .recommand-ways {
+      .flex;
+      .bgw;
+      padding: 1.5rem 0;
+      > span {
+        text-align: center;
+        width: 100%;
+      }
+      img {
+        .wh(4rem, 4rem);
+      }
+    }
+    > section:last-of-type {
+      .flex;
+      padding: 1.5rem 1rem;
+      > span {
+        width: 100%;
+        text-align: center;
+      }
+      > span:first-child {
+        border-right: .1rem dashed #ccc;
+        > p:last-child {
+          > span:first-child {
+            color: #ff5633;
+            font-weight: bold;
+            font-size: 1.5rem;
+          }
+        }
+      }
+    }
+    .gains-detail {
+      text-align: center;
+      > section {
+        margin-top: 2rem;
+        > img {
+          .wh(2rem, 3rem);
+        }
+        > p {
+          color: #ccc;
+        }
+      }
+    }
   }
 </style>

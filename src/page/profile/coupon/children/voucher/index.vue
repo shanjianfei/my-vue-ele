@@ -28,34 +28,32 @@ export default {
   }
 }
 </script>
-<style>
-  .voucher-description-container > div:first-child {
-    display: flex;
-    flex-direction: row-reverse;
-    padding: 1rem;
-  }
-  .voucher-description-container > div:last-child {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  .voucher-description-container > div:last-child > img {
-    width: 9rem;
-    height: 5.2rem;
-  }
-  .voucher-description-container > div:last-child > p:first-of-type {
-    font-size: 1.2rem;
-  }
-  .voucher-description-container > div:last-child > p:last-of-type {
-    color: #999;
-    margin: 0.5rem 0;
-  }
-  .link-download {
-    background-color: #56d176;
-    color: #fff;
-    padding: .7rem .5rem;
-    font-size: 1.2rem;
-    border-radius: 0.3rem;
+<style scoped lang="less">
+  @import "~assets/less/common.less";
+  .voucher-description-container {
+    > div:first-child {
+      .flex(@fd: row-reverse;);
+      padding: 1rem;
+    }
+    > div:last-child {
+      .flex(@fd: column;);
+      > img {
+        .wh(@width: 9rem; @height: 5,2rem);
+      }
+      > p:first-of-type {
+        font-size: 1.2rem;
+      }
+      > p:last-of-type {
+        color: #999;
+        margin: 0.5rem 0;
+      }
+      .link-download {
+        .bgc(@green);
+        color: #fff;
+        padding: .7rem .5rem;
+        font-size: 1.2rem;
+        border-radius: 0.3rem;
+      }
+    }
   }
 </style>

@@ -2,7 +2,7 @@
   <div class="overdue-red-packages-page">
     <head-top>
       <arrow-left slot="head-left"></arrow-left>
-      <span class="point-title" slot="head-center">历史红包</span>
+      <head-title slot="head-center" headTitle="历史红包"></head-title>
     </head-top>
     <div class="overdue-red-packages-container">
       <ul>
@@ -38,6 +38,7 @@
 </template>
 <script>
 import headTop from '@/components/head/head'
+import headTitle from '@/components/head/children/headTitle'
 import arrowLeft from '@/components/common/arrowLeft'
 import {getStore} from '@/commonApi/localStorage'
 import {getOverdueRedPackage} from '@/service/getData'
@@ -63,7 +64,7 @@ export default {
       return a.split('.')[index]
     }
   },
-  components: {headTop, arrowLeft}
+  components: {headTop, arrowLeft, headTitle}
 }
 </script>
 <style>

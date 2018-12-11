@@ -36,14 +36,19 @@ const balance = r => require.ensure([], require => r(require('../page/profile/ba
 const balanceDescription = r => require.ensure([], require => r(require('../page/profile/balance/children/balanceDescription')), 'balanceDescription')
 
 const coupon = r => require.ensure([], require => r(require('../page/profile/coupon')), 'coupon')
-const redPackageDescription = r => require.ensure([], require => r(require('../page/profile/coupon/children/redPackageDescription')), 'redPackageDescription')
-// const voucherDescription = r => require.ensure([], require => r(require('../page/profile/children/voucher/children/voucherDescription')), 'voucherDescription')
-const overdueRedPackages = r => require.ensure([], require => r(require('../page/profile/coupon/children/overdueRedPackages')), 'overdueRedPackages')
-const redPackages = r => require.ensure([], require => r(require('../page/profile/coupon/children/redPackages')), 'redPackages')
+
+const points = r => require.ensure([], require => r(require('../page/profile/points')), 'points')
+const pointsDescription = r => require.ensure([], require => r(require('../page/profile/points/children/pointsDescription')), 'pointsDescription')
+
+const overdueRedPackages = r => require.ensure([], require => r(require('../page/profile/coupon/children/redpackage/overdueRedPackages')), 'overdueRedPackages')
+const redPackages = r => require.ensure([], require => r(require('../page/profile/coupon/children/redpackage/redPackages')), 'redPackages')
+const redPackageDescription = r => require.ensure([], require => r(require('../page/profile/coupon/children/redpackage/children/redPackageDescription')), 'redPackageDescription')
+
 const voucher = r => require.ensure([], require => r(require('../page/profile/coupon/children/voucher/')), 'voucher')
 const voucherDescription = r => require.ensure([], require => r(require('../page/profile/coupon/children/voucher/children/voucherDescription')), 'voucherDescription')
 
-const convertRedPackages = r => require.ensure([], require => r(require('../page/profile/children/children/convertRedPackages')), 'convertRedPackages')
+const convertRedPackages = r => require.ensure([], require => r(require('../page/profile/coupon/children/convertRedPackages')), 'convertRedPackages')
+const recommand = r => require.ensure([], require => r(require('../page/profile/coupon/children/recommand')), 'recommand')
 
 const membershipCard = r => require.ensure([], require => r(require('../page/membershipCard')), 'membershipCard')
 const purchaseRecord = r => require.ensure([], require => r(require('../page/membershipCard/children/purchaseRecord')), 'purchaseRecord')
@@ -54,18 +59,6 @@ const exchangeMembership = r => require.ensure([], require => r(require('../page
 const serviceCenter = r => require.ensure([], require => r(require('../page/serviceCenter')), 'serviceCenter')
 const servceDescription = r => require.ensure([], require => r(require('../page/serviceCenter/children/serviceDescription')), 'servceDescription')
 const download = r => require.ensure([], require => r(require('../page/download')), 'download')
-// const balance = r => require.ensure([], require => r(require('../page/balance')), 'balance')
-// const balanceDescription = r => require.ensure([], require => r(require('../page/profile/balance/children/balanceDescription')), 'balanceDescription')
-const points = r => require.ensure([], require => r(require('../page/points')), 'points')
-const pointsDescription = r => require.ensure([], require => r(require('../page/points/children/pointsDescription')), 'pointsDescription')
-// const coupon = r => require.ensure([], require => r(require('../page/profile/children/coupon')), 'coupon')
-// const redPackageDescription = r => require.ensure([], require => r(require('../page/profile/children/children/redPackageDescription')), 'redPackageDescription')
-// const voucherDescription = r => require.ensure([], require => r(require('../page/profile/children/voucher/children/voucherDescription')), 'voucherDescription')
-// const overdueRedPackages = r => require.ensure([], require => r(require('../page/profile/children/children/overdueRedPackages')), 'overdueRedPackages')
-// const redPackages = r => require.ensure([], require => r(require('../page/profile/children/children/redPackages')), 'redPackages')
-// const voucher = r => require.ensure([], require => r(require('../page/profile/children/voucher/voucher')), 'voucher')
-// const convertRedPackages = r => require.ensure([], require => r(require('../page/profile/children/children/convertRedPackages')), 'convertRedPackages')
-const recommand = r => require.ensure([], require => r(require('../page/profile/children/children/recommand')), 'recommand')
 
 let router = new Router({
   routes: [

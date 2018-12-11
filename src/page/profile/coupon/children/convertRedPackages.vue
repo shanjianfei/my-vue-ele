@@ -2,7 +2,7 @@
   <div class="convert-red-packages-page">
     <head-top>
       <arrow-left slot="head-left"></arrow-left>
-      <span class="point-title" slot="head-center">兑换红包</span>
+      <head-title slot="head-center" headTitle="兑换红包"></head-title>
     </head-top>
     <div class="convert-red-packages-container">
       <input-component :placeholder="placeholder" :bg="bg" :ht="ht" @inputs="getConvertCode"></input-component>
@@ -16,6 +16,7 @@
 </template>
 <script>
 import headTop from '@/components/head/head'
+import headTitle from '@/components/head/children/headTitle'
 import arrowLeft from '@/components/common/arrowLeft'
 import inputComponent from '@/components/common/input'
 import captcha from '@/components/common/captcha'
@@ -92,14 +93,14 @@ export default {
       this.alertShow = false
     }
   },
-  components: {headTop, arrowLeft, inputComponent, captcha, buttonSubmit, alertMessage}
+  components: {headTop, arrowLeft, inputComponent, captcha, buttonSubmit, alertMessage, headTitle}
 }
 </script>
-<style>
+<style scoped lang="less">
   .convert-red-packages-container {
     padding: 4rem 1rem;
-  }
-  .captcha {
-    margin: 1rem 0;
+    .captcha {
+      margin: 1rem 0;
+    }
   }
 </style>
