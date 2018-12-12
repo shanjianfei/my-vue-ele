@@ -16,24 +16,20 @@ export default {
   props: ['contentLeft', 'contentRight', 'link']
 }
 </script>
-<style>
+<style lang="less">
+  @import '~assets/less/common.less';
   .link-bar-page {
-    background-color: #fff;
-    display: flex;
-    justify-content: space-between;
+    .bgw;
+    .flex;
     padding: 0 .5rem;
     height: 2.5rem;
-    align-items: center;
-  }
-  .link-bar-right {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-right: .3rem;
-  }
-  .link-bar-right > span {
-    margin-right: .5rem;
-    color: #bbb;
+    .link-bar-right {
+      .flex;
+      margin-right: .3rem;
+      > span {
+        margin-right: .5rem;
+        color: #bbb;
+      }
+    }
   }
 </style>

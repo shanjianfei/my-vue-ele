@@ -1,10 +1,10 @@
 <template>
   <div class="shop-detail-header-container">
     <img :src="getImageUrl(restaurantInfo.image_path)">
+    <svg class="goback-icon" @click="$router.go(-1)">
+      <use xlink:href="#arrow-left"></use>
+    </svg>
     <div class="head-top">
-      <svg class="goback-icon" @click="$router.go(-1)">
-        <use xlink:href="#arrow-left"></use>
-      </svg>
       <router-link class="arrow-right-container" tag="div" :to="{path: '/shopsGuide/shopDetail/shopDescription', query: {'restaurantId': restaurantId}}">
         <arrow-right></arrow-right>
       </router-link>
@@ -21,6 +21,7 @@
 </template>
 <script>
 import arrowRight from '@/components/common/arrowRight'
+import arrowLeft from '@/components/common/arrowLeft'
 import {getRestaurantDetailInfo, getImageUrl} from '@/service/getData'
 export default {
   data () {
@@ -43,105 +44,71 @@ export default {
     }
   },
   props: ['restaurantId'],
-  components: {arrowRight}
+  components: {arrowLeft, arrowRight}
 }
 </script>
-<style>
-  .shop-detail-header-container > img:nth-child(1) {
-    width: 100%;
-    height: 30rem;
-    position: absolute;
-    z-index: 9;
-    filter: blur(10px);
-  }
-
-  .head-top {
-    position: absolute;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    z-index: 11;
-    height: 100%;
-  }
-  .goback-icon {
-    position: absolute;
-    top: .2rem;
-    left: .2rem;
-    width: 1.5rem;
-    height: 1.5rem;
-  }
-  .arrow-right-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .head-top-back-icon {
-    height: 3rem;
-    width: 3rem;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-
-  .head-top > div:nth-child(2) {
-    position: absolute;
-    right: 0;
-    height: 100%;
-    width: 3rem;
-  }
-
-  .description_arrow {
-    width: 1rem;
-    height: 1rem;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .shop-introduction {
-    height: 8rem;
-    width: 100%;
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: row;
-  }
-
-  .shop-introduction > img {
-    height: 5.5rem;
-    width: 5.5rem;
-    margin-left: 1rem;
-    border-radius: 0.5rem;
-  }
-
-  .shop-introduction > section {
-    display: flex;
-    flex-direction: column;
-    margin-left: 1rem;
-  }
-
-  .shop-introduction > section > p {
-    margin: 0;
-    color: #fff;
-    margin-bottom: 0.3rem;
-  }
-
-  .shop-introduction > section > p:nth-child(1) {
-    font-size: 1.6rem;
-    font-weight: bold;
-  }
+<style scoped lang="less">
+  @import '~assets/less/common.less';
   .shop-detail-header-container {
+    .wh(100%, 7rem);
+    .relative;
+    .flex(@fd: column; @ai: flex-start);
     flex-shrink: 0;
-    height: 13rem;
-    position: relative;
     z-index: 11;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border: 0.1rem solid #ebebeb;
-    background-color: #fff;
+    .bgw;
+    > img:nth-child(1) {
+      .wh(100%, 100%);
+      .absolute;
+      z-index: 9;
+      filter: blur(10px);
+      opacity: 0.5;
+    }
+    .goback-icon {
+      .absolute;
+      .wh(1.5rem, 1.5rem);
+      top: .2rem;
+      left: .2rem;
+      z-index: 12;
+    }
+    .head-top {
+      .absolute;
+      .flex;
+      .wh(100%, 100%);
+      .bgc(rgba(119, 103, 137, 0.43));
+      padding-top: .5rem;
+      z-index: 11;
+      .arrow-right-container {
+        .absolute;
+        .flex(@jc: center);
+        .wh(3rem, 100%);
+        right: 0;
+      }
+      .shop-introduction {
+        .wh(100%, 8rem);
+        .flex(@ai: flex-start);
+        margin-top: 1rem;
+        > img {
+          .wh(4.5rem, 4.5rem);
+          margin-left: 1rem;
+          .br(0.05);
+        }
+        > section {
+          .flex(@fd: column; @ai: flex-start; @jc: flex-start);
+          padding-left: .5rem;
+          padding-right: 3rem;
+          > p {
+            color: #fff;
+            margin-bottom: 0.3rem;
+            font-size: .75rem;
+          }
+          > p:nth-child(1) {
+            font-size: 1.3rem;
+            font-weight: bold;
+          }
+        }
+      }
+
+    }
   }
 </style>

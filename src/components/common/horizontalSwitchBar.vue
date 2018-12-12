@@ -10,23 +10,22 @@ export default {
   props: ['items']
 }
 </script>
-<style>
+<style lang="less">
+  @import '~assets/less/common.less';
   .horizontal-switch-bar-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    background-color: #fff;
+    .flex;
+    .bgw;
     line-height: 3rem;
     border: .01rem solid #f1f1f1;
-  }
-  .horizontal-switch-bar-container > a {
-    text-align: center;
-    width: 100%;
-    /*padding: .8rem 0;*/
-  }
-  .router-link-active > span {
-    /*padding-bottom: .3rem;*/
-    border-bottom: .2rem solid #3190e8;
-    color: #3190e8;
+    > a {
+      text-align: center;
+      width: 100%;
+    }
+    .router-link-active {
+      > span {
+        border-bottom: .2rem solid #3190e8;
+        color: #3190e8;
+      }
+    }
   }
 </style>

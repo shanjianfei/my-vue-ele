@@ -3,9 +3,9 @@
     <use xlink:href="#arrow-right"></use>
   </svg>
 </template>
-<style>
+<style lang="less">
+  @import '~assets/less/common.less';
   .arrow-right {
-    width: 1rem;
-    height: 1rem;
+    .wh;
   }
 </style>

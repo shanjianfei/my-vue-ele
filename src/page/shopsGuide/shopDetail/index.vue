@@ -35,25 +35,16 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="less">
+  @import '~assets/less/common.less';
   .shop-detail-container {
-    position: absolute;
+    .absolute;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    width: 100%;
-  }
-
-  .menu-food-container {
-    display: flex;
-    flex-direction: row;
-    height: 100%;
-    width: 100%;
-    padding-bottom: 4rem;
-    position: relative;
-  }
-  .switch-bar {
-    position: relative;
-    height: 100%;
+    .wh(100%, 100%);
+    .switch-bar {
+      .relative;
+      height: 100%;
+    }
   }
 </style>

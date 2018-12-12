@@ -1,9 +1,7 @@
 <template>
   <div class="profile-page">
     <head-top>
-      <svg class="goback" slot="head-goback" @click="$router.go(-1)">
-        <use xlink:href="#arrow-left"></use>
-      </svg>
+      <arrow-left slot="head-left"></arrow-left>
       <head-title slot="head-center" headTitle="我的"></head-title>
     </head-top>
     <div class="profile-container">
@@ -105,6 +103,7 @@
 <script>
 import headTop from '@/components/head/head'
 import headTitle from '@/components/head/children/headTitle'
+import arrowLeft from '@/components/common/arrowLeft'
 import arrowRight from '@/components/common/arrowRight'
 import footerGuide from '@/components/footer/footer'
 import {getUserInfo, isLogin} from '@/service/getData'
@@ -134,7 +133,7 @@ export default {
         })
     }
   },
-  components: {headTop, arrowRight, footerGuide, headTitle}
+  components: {headTop, arrowLeft, arrowRight, footerGuide, headTitle}
 }
 </script>
 <style scoped lang="less">

@@ -6,14 +6,13 @@ export default {
   props: ['headTitle']
 }
 </script>
-<style>
+<style lang="less">
+  @import '~assets/less/common.less';
   .head-title {
-    position: absolute;
-    top: 50%;
+    .absolute;
+    .vertical-center;
     color: #fff;
     font-size: 1.2rem;
     font-weight: bold;
-    left: 50%;
-    transform: translate(-50%, -50%);
   }
 </style>

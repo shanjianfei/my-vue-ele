@@ -67,58 +67,63 @@ export default {
   components: {headTop, arrowLeft, headTitle}
 }
 </script>
-<style>
+<style scoped lang="less">
+  @import '~assets/less/common.less';
   .overdue-red-packages-container {
     padding-top: 3rem;
-  }
-  .red-packages-li {
-    margin: 1rem;
-    background-color: #fff;
-    border-radius: 0.5rem;
-    border-top: .3rem solid #ccc;
-  }
-  .red-packages-li > section {
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem;
-    border-top: .3rem dashed #ccc;
-  }
-  .red-packages-li > section > section:first-child {
-    border-right: .08rem dashed #ccc;
-    padding-right: 1rem;
-  }
-  .red-packages-li > section > section:first-child > p:first-child > span {
-    color: #ccc;
-  }
-  .red-packages-li > section > section:first-child > p:first-child > span:nth-child(2) {
-    font-size: 2.5rem;
-    font-weight: bold;
-  }
-  .red-packages-li > section > section:first-child > p:first-child > span:nth-child(4) {
-    font-weight: bold;
-  }
-  .red-packages-li > section > section:first-child > p:last-child {
-    font-size: .5rem;
-    color: #aaa;
-  }
-  .red-packages-li > section > section:nth-child(2) > p:first-child {
-    font-size: 1rem;
-  }
-  .red-packages-li > section > section:nth-child(2) > p:not(:first-child) {
-    font-size: .5rem;
-    color: #aaa;
-  }
-  .red-packages-li > section > section:last-child > svg {
-    width: 3.5rem;
-    height: 3.5rem;
-  }
-  .limit-map {
-    padding: .5rem;
-    background-color: #f9f9f9;
-  }
-  .limit-map > li {
-    background-color: #f9f9f9;
-    font-size: .6rem;
-    color: #aaa;
+    .red-packages-li {
+      .bgw;
+      .br(0.04);
+      margin: 1rem;
+      border-top: .3rem solid #ccc;
+      > section {
+        .flex;
+        padding: 1rem;
+        border-top: .3rem dashed #ccc;
+        > section:first-child {
+          border-right: .08rem dashed #ccc;
+          padding-right: 1rem;
+          > p:first-child {
+            > span {
+              color: #ccc;
+            }
+            > span:nth-child(2) {
+              font-size: 2.5rem;
+              font-weight: bold;
+            }
+            > span:nth-child(4) {
+              font-weight: bold;
+            }
+          }
+          > p:last-child {
+            font-size: .5rem;
+            color: #aaa;
+          }
+        }
+        > section:nth-child(2) {
+          > p:first-child {
+            font-size: 1rem;
+          }
+          > p:not(:first-child) {
+            font-size: .5rem;
+            color: #aaa;
+          }
+        }
+        > section:last-child {
+          > svg {
+            .wh(3.5rem, 3.5rem);
+          }
+        }
+      }
+      .limit-map {
+        .bgc(#f9f9f9);
+        padding: .5rem;
+        > li {
+          .bgc(#f9f9f9);
+          color: #aaa;
+          font-size: .6rem;
+        }
+      }
+    }
   }
 </style>

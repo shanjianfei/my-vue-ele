@@ -16,21 +16,19 @@ export default {
   props: ['contentLeft', 'contentRight', 'link']
 }
 </script>
-<style>
+<style lang="less">
+  @import '~assets/less/common.less';
   .link-bar-small-page {
-    background-color: #fff;
-    display: flex;
-    justify-content: space-between;
+    .bgw;
+    .flex;
     padding: 0 .5rem;
-    line-height: 2.5rem;
-  }
-  .link-bar-small-left {
-    font-size: .8rem;
-  }
-  .link-bar-small-right {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-right: .3rem;
+    height: 2.5rem;
+    .link-bar-small-left {
+      font-size: .8rem;
+    }
+    .link-bar-small-right {
+      .flex;
+      margin-right: .3rem;
+    }
   }
 </style>
