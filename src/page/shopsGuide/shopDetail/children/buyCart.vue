@@ -62,11 +62,11 @@ export default {
   .buy-cart-container {
     display: flex;
     justify-content: space-between;
-    flex: row;
-    position: absolute;
-    bottom: 0;
+    flex-direction: row;
+    // position: absolute;
+    // bottom: 0;
     width: 100%;
-    height: 4rem;
+    height: 5.5rem;
     background-color: #3d3d3f;
     .icon-price {
       div:nth-child(2) {

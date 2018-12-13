@@ -155,10 +155,11 @@ export default {
     display: flex;
     flex-direction: row;
     position: absolute;
-    bottom: 4rem;
+    bottom: 0rem;
     top: 3rem;
     left: 0;
     right: 0;
+    overflow: auto;
     .food-left {
       height: 100%;
       overflow-y: auto;

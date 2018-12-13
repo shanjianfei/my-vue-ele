@@ -1,5 +1,6 @@
 <template>
-  <div class="shop-info-container">
+  <div class="evaluate-container-wrap">
+  <div class="evaluate-container">
     <section class="comprehensive-assessment">
       <section>
         <p>{{foodScore}}</p>
@@ -62,6 +63,7 @@
       </ul>
     </section>
   </div>
+  </div>
 </template>
 <script>
 import {getAssessmentInfo, getScore, getImageUrlByCdn, getImageUrl, getRatingsTags} from '@/service/getData'
@@ -78,14 +80,14 @@ export default {
       assessmentTags: []
     }
   },
-  props: ['restaurantId'],
   mounted: function () {
+    let restaurantId = this.$route.query.id
     let self = this
-    if (this.restaurantId !== 0) {
-      getAssessmentInfo(this.restaurantId).then(function (data) {
+    if (restaurantId !== 0) {
+      getAssessmentInfo(restaurantId).then(function (data) {
         self.assessmentInfo = data
       })
-      getScore(this.restaurantId).then(function (data) {
+      getScore(restaurantId).then(function (data) {
         self.compareRating = data.compare_rating.toFixed(3) * 100
         self.foodScore = data.food_score.toFixed(1)
         self.serviceScore = data.service_score.toFixed(1)
@@ -93,7 +95,7 @@ export default {
         self.deliverTime = data.deliver_time
       })
     }
-    getRatingsTags(this.restaurantId).then(function (data) {
+    getRatingsTags(restaurantId).then(function (data) {
       self.assessmentTags = data
     })
   },
@@ -110,184 +112,150 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="less">
+  @import '~assets/less/common.less';
   .user-assessment-ul {
     margin-left: 1.5rem;
-  }
-
-  .user-assessment-ul > li {
-    display: flex;
-  }
-
-  .user-assessment-ul > li > section {
-    margin-left: 1rem;
-    width: 100%;
-  }
-
-  .user-assessment-ul > li > img:first-child {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 1.5rem;
+    > li {
+      display: flex;
+      padding-top: 1rem;
+      padding-bottom: 2rem;
+      border-bottom: 0.1rem solid #f1f1f1;
+      > section {
+        margin-left: 1rem;
+        width: 100%;
+      }
+      > img:first-child {
+        .wh(3rem, 3rem);
+        .br(0.05);
+      }
+    }
   }
 
   .user-info {
-    display: flex;
-    justify-content: space-between;
+    .flex(@ai: flex-start);
+    > section {
+      p:nth-child(2) {
+        .flex;
+      }
+    }
+    > div {
+      font-size: 0.8rem;
+      color: #999;
+      margin-right: 1.2rem;
+    }
   }
-
-  .user-info > section > p:nth-child(2) {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  .evaluate-container-wrap {
+    overflow: hidden;
   }
-
-  .user-info > div {
-    font-size: 0.8rem;
-    color: #999;
-    margin-right: 1.2rem;
-  }
-
-  .shop-info-container {
-    margin-top: 0.1rem;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
+  .evaluate-container {
+    position: absolute;
+    top: 3rem;
+    bottom: 0;
+    left: 0;
+    right: -18px;
+    .flex(@fd: column; @ai: flex-start;);
     overflow: auto;
-  }
-
-  .shop-info-container > section {
-    flex-shrink: 0;
+    > section {
+      flex-shrink: 0;
+    }
   }
   .comprehensive-assessment {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    background-color: #fff;
+    .flex(@jc: space-around; @ai: flex-start;);
+    .bgw;
+    width: 100%;
     padding-bottom: 1rem;
-  }
-
-  .comprehensive-assessment p {
-    margin: 0;
-    margin-top: 0.6rem;
-  }
-
-  .comprehensive-assessment > section:nth-child(1) > p:first-child {
-    font-size: 2rem;
-    color: #ff9a0d;
-  }
-
-  .comprehensive-assessment > section:nth-child(1) > p:nth-child(3) {
-    font-size: 0.7rem;
-    color: #999;
-  }
-
-  .comprehensive-assessment > section:nth-child(2) > p:first-child {
-    display: flex;
-    flex-direction: row;
-  }
-
-  .comprehensive-assessment > section:nth-child(2) > p:first-child > span {
-    margin-right: 0.3rem;
-  }
-
-  .comprehensive-assessment > section:nth-child(2) > p:nth-child(2) {
-    display: flex;
-    flex-direction: row;
-  }
-
-  .comprehensive-assessment > section:nth-child(2) > p:nth-child(2) > span {
-    margin-right: 0.3rem;
-  }
-
-  .comprehensive-assessment > section:nth-child(2) > p:nth-child(3) > span {
-    margin-right: 0.3rem;
-  }
-
-  .comprehensive-assessment > section:nth-child(2) > p:nth-child(3) > span:nth-child(2) {
-    font-size: 0.7rem;
-    color: #999;
+    p {
+      margin-top: 0.6rem;
+    }
+    > section:nth-child(1) {
+      > p:first-child {
+        font-size: 2rem;
+        color: #ff9a0d;
+      }
+      > p:nth-child(3) {
+        font-size: 0.7rem;
+        color: #999;
+      }
+    }
+    > section:nth-child(2) {
+      > p:first-child {
+        display: flex;
+        > span {
+          margin-right: 0.3rem;
+        }
+      }
+      > p:nth-child(2) {
+        display: flex;
+        > span {
+          margin-right: 0.3rem;
+        }
+      }
+      p:nth-child(3) {
+        > span {
+          margin-right: 0.3rem;
+        }
+        > span:nth-child(2) {
+          font-size: 0.7rem;
+          color: #999;
+        }
+      }
+    }
   }
 
   .assessment-tags {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
-    background-color: #fff;
-    margin-bottom: 0.2rem;
-    margin-top: 0.2rem;
+    .bgw;
+    margin: 0.2rem 0;
     padding-bottom: 0.5rem;
-  }
-
-  .assessment-tags > span {
-    font-size: 1.1rem;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    background-color: #ebf5ff;
-    margin-left: 1rem;
-    margin-top: 0.8rem;
-  }
-
-  ul {
-    margin: 0;
-    padding: 0;
+    > span {
+      font-size: 1.1rem;
+      padding: 0.5rem;
+      margin-left: 1rem;
+      margin-top: 0.8rem;
+      .br(0.05);
+      .bgc(#ebf5ff);
+    }
   }
 
   .food-img-ul {
-    display: flex;
-    flex-direction: row;
+    .flex(@ai: flex-start; @jc: flex-start;);
     flex-wrap: wrap;
     margin-top: 0.5rem;
+    > li {
+      margin-right: 0.5rem;
+    }
+    > li:nth-child(3) {
+      .absolute;
+      right: 0.5rem;
+    }
+    img {
+      .wh(5rem, 5rem);
+    }
   }
-
-  .food-img-ul > li {
-    margin-right: 0.5rem;
-  }
-
-  .user-info-ul > li:nth-child(3) {
-    position: absolute;
-    right: 0.5rem;
-  }
-
-  .food-img-ul img {
-    width: 5rem;
-    height: 5rem;
-  }
-
   .food-name-ul {
-    margin-bottom: 1rem;
-    display: flex;
-    flex-direction: row;
-    margin-top: 1rem;
-  }
-
-  .food-name-ul span {
-    display: block;
-    width: 5rem;
-    text-overflow : ellipsis;
-    white-space:nowrap;
-    overflow: hidden;
-    color: #999;
-    border: 0.05rem solid #999;
-    margin-right: 0.3rem;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
+    margin: 1rem 0;
+    .flex(@ai: flex-start; @jc: flex-start;);
+    span {
+      display: block;
+      width: 5rem;
+      text-overflow: ellipsis;
+      white-space:nowrap;
+      overflow: hidden;
+      color: #999;
+      border: 0.05rem solid #999;
+      margin-right: 0.3rem;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+    }
   }
 
   .user-assessment-container {
+    .bgw;
     margin-top: 1rem;
-    background-color: #fff;
-  }
-
-  .user-assessment-container li {
-    list-style: none;
-  }
-
-  .user-assessment-ul > li {
-    padding-top: 1rem;
-    padding-bottom: 2rem;
-    border-bottom: 0.1rem solid #f1f1f1;
+    margin-bottom: 0rem;
+    width: 100%
   }
 
 </style>
