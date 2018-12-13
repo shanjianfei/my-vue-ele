@@ -151,10 +151,11 @@ export default {
 }
 </script>
 <style scoped lang="less">
+  @import '~assets/less/common.less';
   .food-container {
     display: flex;
     flex-direction: row;
-    position: absolute;
+    .absolute;
     bottom: 0rem;
     top: 3rem;
     left: 0;
@@ -164,32 +165,33 @@ export default {
       height: 100%;
       overflow-y: auto;
       overflow-x: hidden;
-      flex: 3;
-      background-color: #fff;
+      flex: 2.5;
       .active {
         border-left: 0.3rem solid #3190e8;
-        background-color: #fff;
+        .bgw;
+        > span {
+          font-weight: bold;
+        }
       }
       li {
-        background-color: #f8f8f8;
+        .bgc(#f8f8f8);
         border-bottom: 0.1rem solid #ebebeb;
-        padding: 1.7rem 1rem;
-        font-size: 1.3rem;
-        display: flex;
-        align-items: center;
-        position: relative;
+        padding: 1rem .5rem;
+        font-size: .9rem;
+        .flex(@jc: flex-start;);
+        .relative;
         .category-name {
           word-break:break-all;
           white-space:normal;
         }
         .food-count {
-          position: absolute;
+          .absolute;
           top: 0;
           right: 0;
-          background-color: red;
+          .bgc(red);
           line-height: 1.15rem;
           width: 1.15rem;
-          border-radius: 50%;
+          .br(0.5);
           color: #fff;
           font-size: .8rem;
           text-align: center;
@@ -197,16 +199,16 @@ export default {
       }
     }
     .food-right {
-      width: 100%;
-      height: 100%;
-      overflow: auto;
+      .wh(100%, 100%);
+      overflow-y: auto;
+      overflow-x: hidden;
       flex: 7;
       header {
-        height: 4rem;
+        height: 2.5rem;
         padding-left: 1rem;
         span:nth-child(1) {
           font-weight: bold;
-          font-size: 1.5rem;
+          font-size: 1.3rem;
           margin-right: 0.5rem;
         }
       }
@@ -218,7 +220,7 @@ export default {
         position: relative;
         div:first-child {
           .new-icon {
-            position: absolute;
+            .absolute;
             top: -1.6rem;
             left: -1.6rem;
             border-width: 1.6rem;
@@ -232,29 +234,26 @@ export default {
             font-size: 0.7rem;
             font-weight: bold;
             color: #fff;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            width: 3.2rem;
-            height: 3.2rem;
+            .flex(@ai: flex-end; @jc: center);
+            .wh(3.2rem, 3.2rem);
             top: -1.6rem;
             left: -1.6rem;
-            position: absolute;
+            .absolute;
             transform:rotate(-45deg);
           }
           .specialty {
-            position: absolute;
+            .absolute;
             top: 1rem;
-            right: 2.5rem;
-            font-size: 0.6rem;
-            border: 0.07rem solid;
-            border-radius: 0.55rem;
-            padding: 0.15rem;
+            right: .75rem;
+            font-size: 0.4rem;
+            border: 1px solid;
+            .br(0.3);
+            padding: 0.1rem;
           }
         }
         .food-icon > img {
-          height: 4.2rem;
-          width: 4.2rem;
+          height: 3.5rem;
+          width: 3.5rem;
           padding-right: 1rem;
         }
         .food-description {
@@ -262,9 +261,10 @@ export default {
           p {
             margin: 0.3rem 0 0.3rem 0;
             color: #000;
+            font-size: .8rem;
           }
           p:nth-child(1) {
-            font-size: 1.3rem;
+            font-size: 1rem;
             font-weight: bold;
           }
           p:nth-child(2) {
@@ -291,7 +291,7 @@ export default {
                 color: #f60;
               }
               span:last-child {
-                font-size: 1.4rem;
+                font-size: 1rem;
                 font-weight: bold;
               }
             }
@@ -299,21 +299,20 @@ export default {
               display: flex;
               align-items: center;
               .add-food {
-                height: 1.8rem;
-                width: 1.8rem;
-                fill: #3190e8;
-                margin-right: 2rem;
+                height: 1.3rem;
+                width: 1.3rem;
+                fill: @blue;
               }
               .food-num {
                 display: inline-block;
                 text-align: center;
-                width: 1.8rem;
-                font-size: 1.3rem;
+                width: 1.3rem;
+                font-size: .9rem;
               }
               .remove-food {
-                height: 1.8rem;
-                width: 1.8rem;
-                fill: #3190e8;
+                height: 1.3rem;
+                width: 1.3rem;
+                fill: @blue;
               }
             }
           }

@@ -38,10 +38,8 @@ export default {
 <style lang="less">
   @import '~assets/less/common.less';
   .shop-detail-container {
-    // .absolute;
     .flex(@ai: flex-start; @jc: flex-start; @fd: column;);
     .wh(100%, 100%);
-    // overflow: hidden;
     .switch-bar {
       .relative;
       .wh(100%, 100%);
