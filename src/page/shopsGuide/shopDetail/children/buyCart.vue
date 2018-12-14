@@ -1,18 +1,18 @@
 <template>
   <div class="buy-cart-container">
     <section class="icon-price">
-      <div class="cart-icon-container">
+      <div class="cart-icon-container" :class="{'cart-icon-container-active': getCount > 0}">
         <svg class="cart-icon">
           <use xlink:href="#cart-icon"></use>
         </svg>
-        <span class="total-count">{{getCount}}</span>
+        <span class="total-count" v-if="getCount > 0">{{getCount}}</span>
       </div>
       <div>
         <p class="total-price">￥{{totalPrice}}</p>
         <p class="delivery-fee">配送费￥{{deliveryFee}}</p>
       </div>
     </section>
-    <span class="pay" v-if="distanceOrderAmount > 0">还差￥{{distanceOrderAmount}}起送</span>
+    <div class="pay" v-if="distanceOrderAmount > 0">还差￥{{distanceOrderAmount}}起送</div>
     <router-link class="pay pay-active" :to="{path: '/confirmOrder', query: {restaurantId}}" v-else>去下单</router-link>
   </div>
 </template>
@@ -36,13 +36,17 @@ export default {
       return this.floatMinimumOrderAmount - this.totalPrice
     },
     getCount: function () { // 一共点了几分菜品
-      return this.selectFood.length
+      let count = 0
+      for (let i in this.selectFood) {
+        count += this.selectFood[i].quantity
+      }
+      return count
     },
     totalPrice: { // 本家店总的点餐费用
       get: function () {
         let totalPrice = 0
         for (let i in this.selectFood) {
-          totalPrice += this.selectFood[i].specfoods[0].price
+          totalPrice += this.selectFood[i].specfoods[0].price * this.selectFood[i].quantity
         }
         return totalPrice
       }
@@ -59,69 +63,69 @@ export default {
 }
 </script>
 <style scoped lang="less">
+  @import '~assets/less/common.less';
   .buy-cart-container {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    // position: absolute;
-    // bottom: 0;
-    width: 100%;
-    height: 5.5rem;
-    background-color: #3d3d3f;
+    .flex;
+    .wh(100%, 4.5rem);
+    .bgc(#3d3d3f);
     .icon-price {
-      div:nth-child(2) {
-        position: absolute;
-        left: 6.5rem;
+      flex: 7;
+      > div:nth-child(2) {
+        margin-left: 5rem;
+        .flex(@fd: column; @ai: flex-start;);
+        height: 100%;
         .total-price {
-          font-size: 1.5rem;
+          font-size: 1.2rem;
           font-weight: bold;
         }
         .delivery-fee {
-          font-size: .7rem;
+          font-size: .5rem;
         }
         p {
           color: #fff;
         }
       }
       .cart-icon-container {
-        background-color: #3d3d3f;
-        border-radius: 2.4rem;
-        position: absolute;
+        .bgc(#3d3d3f);
+        .br(0.5);
+        .absolute;
+        .wh(2.8rem, 2.8rem);
+        .flex(@jc: center);
         bottom: .6rem;
         left: 1.2rem;
-        border: 0.4rem solid #666;
+        border: 0.25rem solid #444;
         .cart-icon {
-          width: 2rem;
-          height: 2rem;
-          margin: 0.5rem;
-          text-align: center;
+          .wh(1.5rem, 1.5rem);
         }
         .total-count {
-          position: absolute;
+          .absolute;
           top: -.6rem;
-          left: 2.8rem;
-          background-color: red;
-          border-radius: 0.1rem;
-          line-height: 1.3rem;
-          height: 1.3rem;
-          width: 1.3rem;
+          left: 2rem;
+          .bgc(red);
+          line-height: 1rem;
+          width: 1rem;
           text-align: center;
-          border-radius: 1.3rem;
+          .br(0.5);
           color: #fff;
+          font-size: .7rem;
         }
+      }
+      .cart-icon-container-active {
+        .bgc(#3190e8);
       }
     }
     .pay {
-      font-size: 1.15rem;
+      font-size: 1rem;
       font-weight: bold;
-      width: 8rem;
-      line-height: 4rem;
-      background-color: #535356;
+      flex: 4;
+      height: 100%;
+      .flex(@jc: center);
+      .bgc(#535356);
       color: #fff;
       text-align: center;
     }
     .pay-active {
-      background-color: #4cd964;
+      .bgc(#4cd964);
     }
   }
 </style>

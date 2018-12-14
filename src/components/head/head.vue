@@ -23,9 +23,10 @@
     box-sizing: border-box;
   }
   .head-right {
+    .absolute;
     .center-y;
-    margin-right: .5rem;
-    font-size: 1rem;
+    right: .5rem;
+    font-size: .9rem;
     color: #fff;
   }
   .head-left {

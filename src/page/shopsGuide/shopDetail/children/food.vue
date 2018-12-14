@@ -96,19 +96,19 @@ export default {
       let count = 0
       for (let i = 0; i < this.selectFood.length; i++) {
         if (this.selectFood[i].category_id === id) {
-          count++
+          return this.selectFood[i].quantity
         }
       }
-      return count
+      return 0
     },
     getFoodCount: function (id) {
       let count = 0
       for (let i in this.selectFood) {
         if (this.selectFood[i].item_id === id) {
-          count += 1
+          return this.selectFood[i].quantity
         }
       }
-      return count
+      return 0
     },
     getImageUrl: function (imgPath) {
       return getImageUrl(imgPath)
@@ -117,14 +117,27 @@ export default {
       let order = JSON.parse(getStore('order'))
       if (order) {
         if (this.restaurantId in order) {
-          order[this.restaurantId].foodsInfo.push(item)
+          let _exist = 0
+          for (let i in order[this.restaurantId].foodsInfo) {
+            if (order[this.restaurantId].foodsInfo[i].item_id === item.item_id) {
+              order[this.restaurantId].foodsInfo[i].quantity += 1
+              _exist = 1
+              break
+            }
+          }
+          if (_exist !== 1) {
+            item.quantity = 1
+            order[this.restaurantId].foodsInfo.push(item)
+          }
           setStore('order', JSON.stringify(order))
         } else {
+          item.quantity = 1
           order[this.restaurantId] = {foodsInfo: [item]}
           setStore('order', JSON.stringify(order))
         }
       } else {
         order = {}
+        item.quantity = 1
         order[this.restaurantId] = {foodsInfo: [item]}
         setStore('order', JSON.stringify(order))
       }
@@ -137,7 +150,15 @@ export default {
         if (this.restaurantId in order) {
           for (let i in order[this.restaurantId].foodsInfo) {
             if (order[this.restaurantId].foodsInfo[i].item_id === item.item_id) {
-              order[this.restaurantId].foodsInfo.splice(i, 1)
+              order[this.restaurantId].foodsInfo[i].quantity -= 1
+              if (order[this.restaurantId].foodsInfo[i].quantity === 0) {
+                order[this.restaurantId].foodsInfo.splice(i, 1)
+              }
+              if (order[this.restaurantId].foodsInfo.length === 0) {
+                delete(order[this.restaurantId])
+                this.selectFood = []
+                return
+              }
               break
             }
           }

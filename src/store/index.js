@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 const shopDetail = {
   state: {
-    selectFood: {} // {restaurantId: [{id:1, specfoods:[]}]}
+    selectFood: [] // {restaurantId: [{id:1, specfoods:[]}]}
   },
   mutations: {
     updateSelectFood: function (state, selectFood) {

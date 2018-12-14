@@ -1,19 +1,22 @@
 <template>
   <div class="order-page-container">
     <head-top class="header">
-      <span slot="login" class="head-login">注册|登录</span>
-      <section slot="head-goback" class="head-goback" @click="$router.go(-1)">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
-          <polyline points="12,18 4,9 12,0" style="fill:none;stroke:rgb(255,255,255);stroke-width:2"/>
+      <router-link class="login" slot="head-right" to="/login" v-if="!isLogin">
+        注册|登录
+      </router-link>
+      <router-link class="logout" slot="head-right" to="/profile" v-else>
+        <svg class="user-avatar">
+          <use xlink:href="#user" stroke="#fff" fill="#fff"></use>
         </svg>
-      </section>
-      <span class="point-title" slot="point-title">确认订单</span>
+      </router-link>
+      <arrow-left slot="head-left"></arrow-left>
+      <head-title slot="head-center" headTitle="确认订单"></head-title>
     </head-top>
     <section class="order-container" v-if="checkData">
       <router-link to="/chooseDeliveryAddress" class="add-delivery-address-container">
         <section>
-          <svg data-v-4e0d5034="" class="location_icon">
-            <use data-v-4e0d5034="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#location"></use>
+          <svg class="location_icon">
+            <use xlink:href="#location"></use>
           </svg>
           <section v-if="deliveryAddress">
             <p>
@@ -29,7 +32,7 @@
           <span v-else>请添加一个收货地址</span>
         </section>
         <svg class="arrow_right">
-            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+            <use xlink:href="#arrow-right"></use>
         </svg>
       </router-link>
       <section class="delivery-time-container">
@@ -60,10 +63,10 @@
           <span>{{shopInfo.name}}</span>
         </header>
         <ul class="food-list-ul">
-          <li class="food-list-li" v-for="item in dishes[shopInfo.id]" :key="item.restaurant_id">
+          <li class="food-list-li" v-for="(item, index) in selectFood" :key="index">
             <span class="food-name">{{item.name}}</span>
             <section class="num-price-container">
-              <span>x {{item.numberDishes}}</span>
+              <span>x {{item.quantity}}</span>
               <span>￥{{item.specfoods[0].price}}</span>
             </section>
           </li>
@@ -125,32 +128,34 @@
   </div>
 </template>
 <script>
-import {mapState} from 'vuex'
 import headTop from '@/components/head/head'
-import {getImageUrl, addToCart, getDeliveryAddress} from '@/service/getData'
+import {getImageUrl, addToCart, getDeliveryAddress, getRestaurantDetailInfo, isLogin} from '@/service/getData'
 import {getStore} from '@/commonApi/localStorage'
+import arrowLeft from '@/components/common/arrowLeft'
+import headTitle from '@/components/head/children/headTitle'
 export default {
   data () {
     return {
-      restaurantId: null,
       checkData: null,
       deliveryAddress: null,
       payayId: 1,
-      paywayShow: false
+      paywayShow: false,
+      shopInfo: {},
+      order: {},
+      selectFood: [],
+      isLogin: false
     }
   },
-  computed: {
-    ...mapState({
-      shopInfo: state => state.shopDetail.currentRestaurantDetailInfo,
-      dishes: state => state.shopDetail.dishes
-    })
-  },
   mounted: function () {
+    this.isLogin = isLogin()
     let self = this
     let restaurantId = this.$route.query.restaurantId + ''
-    // let geohash = this.shopInfo.latitude + ',' + this.shopInfo.longitude
     let entities = []
     let userId = getStore('user_id')
+    getRestaurantDetailInfo(restaurantId)
+      .then(function (data) {
+        self.shopInfo = data
+      })
     getDeliveryAddress(userId)
       .then(function (data) {
         let deliveryAddressChoosedId = getStore('deliveryAddressChoosedId')
@@ -160,29 +165,27 @@ export default {
           }
         }
       })
-    let order = JSON.parse(getStore('order'))
-    if (restaurantId in order) {
-      let selectFood = order[restaurantId].foodsInfo
-      console.log(selectFood)
-      for (let i in selectFood) {
+    this.order = JSON.parse(getStore('order'))
+    if (restaurantId in this.order) {
+      this.selectFood = this.order[restaurantId].foodsInfo
+      for (let i in this.selectFood) {
         let foodInfo = {attrs: [], extra: {}}
-        foodInfo.id = selectFood[i].item_id
-        foodInfo.name = selectFood[i].name
-        foodInfo.packing_fee = selectFood[i].specfoods[0].packing_fee
-        foodInfo.price = selectFood[i].specfoods[0].price
-        foodInfo.quantity = selectFood[i].numberDishes
-        foodInfo.sku_id = selectFood[i].specfoods[0].sku_id
-        foodInfo.specs = selectFood[i].specfoods[0].specs
-        foodInfo.stock = selectFood[i].specfoods[0].stock
+        foodInfo.id = this.selectFood[i].item_id
+        foodInfo.name = this.selectFood[i].name
+        foodInfo.packing_fee = this.selectFood[i].specfoods[0].packing_fee
+        foodInfo.price = this.selectFood[i].specfoods[0].price
+        foodInfo.quantity = this.selectFood[i].quantity
+        foodInfo.sku_id = this.selectFood[i].specfoods[0].sku_id
+        foodInfo.specs = this.selectFood[i].specfoods[0].specs
+        foodInfo.stock = this.selectFood[i].specfoods[0].stock
         entities.push([foodInfo])
       }
     }
-    let geohash = JSON.parse(getStore('geohash'))
-    console.log(geohash)
+    let geohash = getStore('geohash')
     addToCart(restaurantId, geohash, entities)
       .then(function (data) {
-        console.log(geohash)
         if (!('status' in data && data.status === 0)) {
+          console.log(data.cart.extra)
           self.checkData = data
         }
       })
@@ -204,36 +207,19 @@ export default {
       }
     }
   },
-  components: {headTop}
+  components: {headTop, arrowLeft, headTitle}
 }
 </script>
-<style>
-  .head-login {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #fff;
-    right: 0.55rem;
-    font-size: 0.8rem;
+<style scoped lang="less">
+  @import '~assets/less/common.less';
+  .login {
+    .head-right;
   }
-  .head-goback {
-    left: 0.4rem;
-    width: 1.2rem;
-    height: 1.5rem;
-    line-height: 2.2rem;
-    margin-left: .4rem;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  .point-title {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    text-align: center;
-    transform: translate(-50%, -50%);
-    color: #fff;
-    font-size: 1.5rem;
+  .logout {
+    .head-right;
+    .user-avatar {
+      .wh(1.2rem, 1.2rem);
+    }
   }
   .order-container {
     margin-top: 2.8rem;

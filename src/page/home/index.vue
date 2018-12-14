@@ -126,7 +126,6 @@ export default {
       text-align: center;
       font: 0.8rem @typeface-my;
       text-overflow: ellipsis;
-      overflow: hidden;
       white-space: nowrap;
       box-sizing: border-box;
       .wh(@width: 25%; @height: auto);
