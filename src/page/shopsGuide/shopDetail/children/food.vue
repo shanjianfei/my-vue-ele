@@ -93,7 +93,6 @@ export default {
       this.food = item
     },
     getCategoryCount: function (id) {
-      let count = 0
       for (let i = 0; i < this.selectFood.length; i++) {
         if (this.selectFood[i].category_id === id) {
           return this.selectFood[i].quantity
@@ -102,7 +101,6 @@ export default {
       return 0
     },
     getFoodCount: function (id) {
-      let count = 0
       for (let i in this.selectFood) {
         if (this.selectFood[i].item_id === id) {
           return this.selectFood[i].quantity
@@ -155,8 +153,10 @@ export default {
                 order[this.restaurantId].foodsInfo.splice(i, 1)
               }
               if (order[this.restaurantId].foodsInfo.length === 0) {
-                delete(order[this.restaurantId])
+                delete (order[this.restaurantId])
                 this.selectFood = []
+                setStore('order', JSON.stringify(order))
+                this.updateSelectFood(this.selectFood)
                 return
               }
               break

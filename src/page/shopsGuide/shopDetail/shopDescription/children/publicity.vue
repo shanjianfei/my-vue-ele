@@ -2,17 +2,17 @@
   <div class="publicity-page">
     <head-top>
       <arrow-left slot="head-left"></arrow-left>
-      <span class="point-title" slot="head-center">食品监督安全公示</span>
+      <head-title slot="head-center" headTitle="食品监督安全公示"></head-title>
     </head-top>
     <div class="publicity-container" v-if="restaurantDetailInfo">
       <div class="publicity-info">
         <header>食品监督安全公示</header>
         <section>
           <svg class="publicity-icon" v-if="restaurantDetailInfo.status == 1">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#res-well"></use>
+              <use xlink:href="#res-well"></use>
           </svg>
           <svg class="publicity-icon" v-else>
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#res-bad"></use>
+              <use xlink:href="#res-bad"></use>
           </svg>
           <section class="check-result">
             <p>监督检查结果：
@@ -23,7 +23,7 @@
           </section>
         </section>
       </div>
-      <div class="business-registration-information">
+      <div class="business-registration-information baseinfo">
         <header>食品监督安全公示</header>
         <ul>
           <li>
@@ -56,7 +56,7 @@
           </li>
         </ul>
       </div>
-      <div class="catering-license">
+      <div class="catering-license baseinfo">
         <header>餐饮许可证</header>
         <ul>
           <li>
@@ -94,6 +94,7 @@
 <script>
 import {getRestaurantDetailInfo, getImageUrl} from '@/service/getData'
 import headTop from '@/components/head/head'
+import headTitle from '@/components/head/children/headTitle'
 import arrowLeft from '@/components/common/arrowLeft'
 export default {
   data () {
@@ -114,52 +115,52 @@ export default {
       return getImageUrl(img)
     }
   },
-  components: {headTop, arrowLeft}
+  components: {headTop, arrowLeft, headTitle}
 }
 </script>
-<style>
-  .publicity-container {
-    padding-top: 3rem;
-  }
-  .publicity-info > header, .catering-license > header, .business-registration-information > header, .license > header {
+<style scoped lang="less">
+  @import '~assets/less/common.less';
+  header {
+    .bgw;
     padding: .8rem;
     border-bottom: .01rem solid #f1f1f1;
-    background-color: #fff;
     color: #666;
   }
-  .publicity-info > section {
-    padding: .8rem;
-    background-color: #fff;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    border-top: .01rem solid #f1f1f1;
-  }
-  .publicity-icon {
-    width: 2.5rem;
-    height: 2.5rem;
-    margin-right: 1rem;
-  }
-  .check-result > p{
-    font-size: .7rem;
-  }
-  .check-result-well {
-    color: #7ed321;
-  }
-  .check-result-bad {
-    color: red;
-  }
-  .catering-license, .business-registration-information, .license {
+  .baseinfo {
     margin-top: .5rem;
+    li {
+      .flex;
+      line-height: 1.8rem;
+      padding: 0 .8rem;
+      span {
+        font-size: .8rem;
+      }
+    }
   }
-  .catering-license > ul > li, .business-registration-information > ul > li {
-    line-height: 1.8rem;
-    padding: 0 .8rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .catering-license > ul > li > span, .business-registration-information > ul > li > span {
-    font-size: .8rem;
+  .publicity-container {
+    padding-top: 3rem;
+    .publicity-info {
+      > section {
+        .flex;
+        .bgw;
+        padding: .8rem;
+        border-top: 1px solid #f1f1f1;
+      }
+      .publicity-icon {
+        .wh(2.5rem, 2.5rem);
+        margin-right: 1rem;
+      }
+      .check-result {
+        p {
+          font-size: .7rem;
+          .check-result-well {
+            color: #7ed321;
+          }
+          .check-result-bad {
+            color: red;
+          }
+        }
+      }
+    }
   }
 </style>

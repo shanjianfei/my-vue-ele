@@ -1,5 +1,4 @@
 <template>
-  <div class="evaluate-container-wrap">
   <div class="evaluate-container">
     <section class="comprehensive-assessment">
       <section>
@@ -29,40 +28,37 @@
       </section>
     </section>
     <section class="assessment-tags">
-      <span v-for="(item, index) in assessmentTags" :key="index">
+      <span :class="{'activeTag': index === activeTag}" v-for="(item, index) in assessmentTags" :key="index" @click="selectTag(index)">
         {{item.name}}({{item.count}})
       </span>
     </section>
-    <section class="user-assessment-container">
-      <ul class="user-assessment-ul">
-        <li v-for="(item, index) in assessmentInfo" :key="index">
-          <img :src="getImageUrlByCdn(item.avatar)">
-          <section>
-            <header class="user-info">
-              <section>
-                <p>{{item.username}}</p>
-                <p>
-                  <rating-star :rating="item.rating_star"></rating-star>
-                  <span>{{item.time_spent_desc}}</span>
-                </p>
-              </section>
-              <div>{{item.rated_at}}</div>
-            </header>
-            <ul class="food-img-ul">
-              <li v-for="(item_rating, index_rating) in item.item_ratings" :key="index_rating" v-if="item_rating.image_hash">
-                <img :src="getImageUrlByCdn(item_rating.image_hash)">
-              </li>
-            </ul>
-            <ul class="food-name-ul">
-              <li v-for="(item_rating, index_rating) in item.item_ratings" :key="index_rating">
-                <span>{{item_rating.food_name}}</span>
-              </li>
-            </ul>
-          </section>
-        </li>
-      </ul>
-    </section>
-  </div>
+    <ul class="user-assessment">
+      <li v-for="(item, index) in assessmentInfo" :key="index">
+        <img :src="getImageUrlByCdn(item.avatar)">
+        <section>
+          <header class="user-info">
+            <section>
+              <p>{{item.username}}</p>
+              <p>
+                <rating-star :rating="item.rating_star"></rating-star>
+                <span>{{item.time_spent_desc}}</span>
+              </p>
+            </section>
+            <div>{{item.rated_at}}</div>
+          </header>
+          <ul class="food-img-ul">
+            <li v-for="(item_rating, index_rating) in item.item_ratings" :key="index_rating" v-if="item_rating.image_hash">
+              <img :src="getImageUrlByCdn(item_rating.image_hash)">
+            </li>
+          </ul>
+          <ul class="food-name-ul">
+            <li v-for="(item_rating, index_rating) in item.item_ratings" :key="index_rating">
+              <div>{{item_rating.food_name}}</div>
+            </li>
+          </ul>
+        </section>
+      </li>
+    </ul>
   </div>
 </template>
 <script>
@@ -77,7 +73,8 @@ export default {
       serviceScore: 0,
       overallScore: 0,
       deliverTime: 0,
-      assessmentTags: []
+      assessmentTags: [],
+      activeTag: null
     }
   },
   mounted: function () {
@@ -105,6 +102,9 @@ export default {
     },
     getImageUrl: function (path) {
       return getImageUrl(path)
+    },
+    selectTag: function (index) {
+      this.activeTag = index
     }
   },
   components: {
@@ -114,40 +114,6 @@ export default {
 </script>
 <style lang="less">
   @import '~assets/less/common.less';
-  .user-assessment-ul {
-    margin-left: 1.5rem;
-    > li {
-      display: flex;
-      padding-top: 1rem;
-      padding-bottom: 2rem;
-      border-bottom: 0.1rem solid #f1f1f1;
-      > section {
-        margin-left: 1rem;
-        width: 100%;
-      }
-      > img:first-child {
-        .wh(3rem, 3rem);
-        .br(0.05);
-      }
-    }
-  }
-
-  .user-info {
-    .flex(@ai: flex-start);
-    > section {
-      p:nth-child(2) {
-        .flex;
-      }
-    }
-    > div {
-      font-size: 0.8rem;
-      color: #999;
-      margin-right: 1.2rem;
-    }
-  }
-  .evaluate-container-wrap {
-    overflow: hidden;
-  }
   .evaluate-container {
     position: absolute;
     top: 3rem;
@@ -159,103 +125,128 @@ export default {
     > section {
       flex-shrink: 0;
     }
-  }
-  .comprehensive-assessment {
-    .flex(@jc: space-around; @ai: flex-start;);
-    .bgw;
-    width: 100%;
-    padding-bottom: 1rem;
-    p {
-      margin-top: 0.6rem;
-    }
-    > section:nth-child(1) {
-      > p:first-child {
-        font-size: 2rem;
-        color: #ff9a0d;
+    .comprehensive-assessment {
+      .flex(@jc: space-around; @ai: flex-start;);
+      .bgw;
+      width: 100%;
+      margin-top: 1px;
+      padding: 1rem;
+      box-sizing: border-box;
+      p {
+        margin-top: 0.3rem;
       }
-      > p:nth-child(3) {
-        font-size: 0.7rem;
-        color: #999;
-      }
-    }
-    > section:nth-child(2) {
-      > p:first-child {
-        display: flex;
-        > span {
-          margin-right: 0.3rem;
+      > section:first-child {
+        .flex(@fd: column);
+        > p:first-child {
+          font-size: 1.7rem;
+          color: #f60;
         }
-      }
-      > p:nth-child(2) {
-        display: flex;
-        > span {
-          margin-right: 0.3rem;
+        > p:nth-child(2) {
+          font-size: 1rem;
         }
-      }
-      p:nth-child(3) {
-        > span {
-          margin-right: 0.3rem;
-        }
-        > span:nth-child(2) {
-          font-size: 0.7rem;
+        > p:nth-child(3) {
+          font-size: 0.6rem;
           color: #999;
         }
       }
+      > section:last-child {
+        span {
+          font-size: .9rem;
+          margin-right: 0.3rem;
+        }
+        p {
+          display: flex;
+        }
+        p:nth-child(3) {
+          > span:nth-child(2) {
+            font-size: 0.7rem;
+            color: #999;
+          }
+        }
+      }
+    }
+    .assessment-tags {
+      display: flex;
+      flex-wrap: wrap;
+      .bgw;
+      margin: 0.2rem 0;
+      padding-bottom: 0.5rem;
+      > span {
+        font-size: .9rem;
+        padding: 0.4rem;
+        margin: .5rem;
+        .br(0.05);
+        .bgc(#ebf5ff);
+      }
+      .activeTag {
+        .bgc(@blue);
+        color: @white;
+      }
+    }
+    .user-assessment {
+      .bgw;
+      margin-top: 1rem;
+      width: 100%;
+      > li {
+        display: flex;
+        margin: 1rem;
+        border-bottom: 2px solid #f1f1f1;
+        box-sizing: border-box;
+        > section {
+          margin-left: 1rem;
+          width: 100%;
+        }
+        > img:first-child {
+          .wh(2.2rem, 2.2rem);
+          .br(0.5);
+        }
+        .user-info {
+          .flex(@ai: flex-start);
+          > section {
+            p {
+              font-size: .85rem;
+            }
+            p:nth-child(2) {
+              .flex;
+            }
+          }
+          > div {
+            font-size: 0.7rem;
+            color: #999;
+          }
+        }
+        .food-img-ul {
+          .flex(@ai: flex-start; @jc: flex-start;);
+          flex-wrap: wrap;
+          margin-top: 0.5rem;
+          > li {
+            margin-right: 0.5rem;
+          }
+          > li:nth-child(3) {
+            .absolute;
+            right: 0.5rem;
+          }
+          img {
+            .wh(4rem, 4rem);
+          }
+        }
+        .food-name-ul {
+          margin: 1rem 0;
+          .flex(@ai: flex-start; @jc: flex-start;);
+          div {
+            width: 3rem;
+            text-overflow: ellipsis;
+            white-space:nowrap;
+            overflow: hidden;
+            color: #999;
+            border: 1px solid #ebebeb;
+            margin-right: 0.3rem;
+            padding: 0.2rem;
+            font-size: .8rem;
+            .br(0.05);
+          }
+        }
+      }
     }
   }
-
-  .assessment-tags {
-    display: flex;
-    flex-wrap: wrap;
-    .bgw;
-    margin: 0.2rem 0;
-    padding-bottom: 0.5rem;
-    > span {
-      font-size: 1.1rem;
-      padding: 0.5rem;
-      margin-left: 1rem;
-      margin-top: 0.8rem;
-      .br(0.05);
-      .bgc(#ebf5ff);
-    }
-  }
-
-  .food-img-ul {
-    .flex(@ai: flex-start; @jc: flex-start;);
-    flex-wrap: wrap;
-    margin-top: 0.5rem;
-    > li {
-      margin-right: 0.5rem;
-    }
-    > li:nth-child(3) {
-      .absolute;
-      right: 0.5rem;
-    }
-    img {
-      .wh(5rem, 5rem);
-    }
-  }
-  .food-name-ul {
-    margin: 1rem 0;
-    .flex(@ai: flex-start; @jc: flex-start;);
-    span {
-      display: block;
-      width: 5rem;
-      text-overflow: ellipsis;
-      white-space:nowrap;
-      overflow: hidden;
-      color: #999;
-      border: 0.05rem solid #999;
-      margin-right: 0.3rem;
-      padding: 0.5rem;
-      border-radius: 0.5rem;
-    }
-  }
-
-  .user-assessment-container {
-    .bgw;
-    margin-top: 1rem;
-    margin-bottom: 0rem;
-    width: 100%
-  }
-
 </style>

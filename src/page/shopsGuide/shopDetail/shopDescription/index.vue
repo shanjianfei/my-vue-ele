@@ -15,7 +15,7 @@
         </ul>
       </div>
       <div class="publicity">
-        <link-bar contentLeft="食品监督安全公示" :link="'/shopDetail/shopDescription/children/publicity?restaurantId=' + restaurantId" contentRight="企业认证详情"></link-bar>
+        <link-bar contentLeft="食品监督安全公示" :link="'/shopsGuide/shopDetail/shopDescription/children/publicity?restaurantId=' + restaurantId" contentRight="企业认证详情"></link-bar>
         <section>
           <svg class="publicity-icon" v-if="restaurantDetailInfo.status == 1">
               <use xlink:href="#res-well"></use>

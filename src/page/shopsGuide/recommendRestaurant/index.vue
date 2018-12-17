@@ -1,5 +1,5 @@
 <template>
-  <div class="food-head-page">
+  <div class="recommend-restaurant-page">
     <head-top>
       <arrow-left slot="head-left"></arrow-left>
       <head-title slot="head-center" :headTitle="textTitle"></head-title>
@@ -324,53 +324,14 @@ export default {
   }
 }
 </script>
-<style>
-  span {
-    font-family: "Mircsoft Yahei"
-  }
-
-  .head-goback {
-    left: 0.4rem;
-    width: 1.2rem;
-    height: 1.5rem;
-    line-height: 2.2rem;
-    margin-left: .4rem;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .header {
-    position: fixed;
-    left: 0;
-    top: 0;
-    display: flex;
-    justify-content: space-between;
-    z-index: 100;
-  }
-
-  .point-title {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    text-align: center;
-    transform: translate(-50%, -50%);
-  }
-
-  .title-text {
-    font-size: 1.3rem;
-    color: #fff;
-  }
-
+<style scoped lang="less">
+  @import '~assets/less/common.less';
   .food-head-container {
-    position: fixed;
-    top: 2.8rem;
-    height: 3rem;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+    .wh(100%, 3rem);
+    .bgw;
+    .flex;
+    padding-top: 3rem;
     border-bottom: 2px solid #f1f1f1;
-    background-color: #fff;
     z-index: 13;
   }
 
