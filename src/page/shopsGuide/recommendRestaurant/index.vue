@@ -10,28 +10,28 @@
           <span>
             {{textTitle}}
           </span>
-          <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg" version="1.1" class="classification-icon">
+          <svg>
             <polygon points="0,3 10,3 5,8"/>
           </svg>
         </div>
         <transition name="category">
-          <div class="food-category-content" v-show="contentShow == 'category'">
-            <ul>
-              <li class="category-li-left" :class="{active: currentSubCategory===index}" v-for="(item, index) in foodCategory" :key="index" @click="changeSubCategories(item, index)">
+          <div class="food-category-content item-content" v-show="contentShow == 'category'">
+            <ul class="category-left">
+              <li :class="{active: currentSubCategory===index}" v-for="(item, index) in foodCategory" :key="index" @click="changeSubCategories(item, index)">
                 <section>
                   <img :src="getImgPath(item.image_url)">
                   <span class="category-name">{{item.name}}</span>
                 </section>
                 <section>
                   <span class="category-count">{{item.count}}</span>
-                  <svg width="8" height="8" xmlns="http://www.w3.org/2000/svg" version="1.1" class="category_arrow" >
+                  <svg width="8" height="8" class="category_arrow" >
                     <path d="M0 0 L6 4 L0 8"  stroke="#bbb" stroke-width="1" fill="none"/>
                   </svg>
                 </section>
               </li>
             </ul>
-            <ul class="category-li-right">
-              <li class="subCategories" v-for="(item_s, index_s) in subCategories" :key="index_s" @click="getSubCategoryShops(item_s.id, item_s.name)">
+            <ul class="category-right">
+              <li v-for="(item_s, index_s) in subCategories" :key="index_s" @click="getSubCategoryShops(item_s.id, item_s.name)">
                 <span>{{item_s.name}}</span>
                 <span>{{item_s.count}}</span>
               </li>
@@ -47,55 +47,43 @@
           </svg>
         </div>
         <transition name="showlist">
-          <div class="food-sort-content" v-show="contentShow == 'sort'">
+          <div class="food-sort-content item-content" v-show="contentShow == 'sort'">
             <ul>
               <li class="sort-item" @click="sort(4)">
-                <section>
-                  <svg>
-                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#default"></use>
-                  </svg>
-                  <span>智能排序</span>
-                </section>
+                <svg>
+                  <use xlink:href="#default"></use>
+                </svg>
+                <span>智能排序</span>
               </li>
               <li class="sort-item" @click="sort(5)">
-                <section>
-                  <svg>
-                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#distance"></use>
-                  </svg>
-                  <span>距离最近</span>
-                </section>
+                <svg>
+                  <use xlink:href="#distance"></use>
+                </svg>
+                <span>距离最近</span>
               </li>
               <li class="sort-item" @click="sort(6)">
-                <section>
-                  <svg>
-                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#hot"></use>
-                  </svg>
-                  <span>销量最高</span>
-                </section>
+                <svg>
+                  <use xlink:href="#hot"></use>
+                </svg>
+                <span>销量最高</span>
               </li>
               <li class="sort-item" @click="sort(1)">
-                <section>
-                  <svg>
-                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#price"></use>
-                  </svg>
-                  <span>起送价最低</span>
-                </section>
+                <svg>
+                  <use xlink:href="#price"></use>
+                </svg>
+                <span>起送价最低</span>
               </li>
               <li class="sort-item" @click="sort(2)">
-                <section>
-                  <svg>
-                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#speed"></use>
-                  </svg>
-                  <span>配送速度最快</span>
-                </section>
+                <svg>
+                  <use xlink:href="#speed"></use>
+                </svg>
+                <span>配送速度最快</span>
               </li>
               <li class="sort-item" @click="sort(3)">
-                <section>
-                  <svg>
-                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#rating"></use>
-                  </svg>
-                  <span>评分最高</span>
-                </section>
+                <svg>
+                  <use xlink:href="#rating"></use>
+                </svg>
+                <span>评分最高</span>
               </li>
             </ul>
           </div>
@@ -106,27 +94,27 @@
           <span>
             筛选
           </span>
-          <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg" version="1.1" class="classification-icon">
+          <svg width="10" height="10" class="classification-icon">
             <polygon points="0,3 10,3 5,8"/>
           </svg>
         </div>
         <transition name="select">
-          <div class="food-select-content" v-show="contentShow == 'select'">
+          <div class="food-select-content item-content" v-show="contentShow == 'select'">
             <div class="options">
               <div class="shipping-method-container">
                 <div class="shipping-method-label">
                   <span>配送方式</span>
                 </div>
                 <ul>
-                  <li class="shipping-method-li" v-for="(item, index) in shippingMethods" @click="selectShippingMethods(index)" :key="index">
+                  <li v-for="(item, index) in shippingMethods" @click="selectShippingMethods(index)" :key="index">
                     <svg v-show="shippingMethodsStatus[index].status" class="activity-svg">
-                      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
+                      <use xlink:href="#selected"></use>
                     </svg>
                     <svg v-if="!shippingMethodsStatus[index].status && item.id===1">
-                      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#fengniao"></use>
+                      <use xlink:href="#fengniao"></use>
                     </svg>
                     <svg v-else-if="!shippingMethodsStatus[index].status && item.id!==1">
-                      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#default"></use>
+                      <use xlink:href="#default"></use>
                     </svg>
                     <span :style="{color: '#' + item.color}">{{item.text}}</span>
                   </li>
@@ -137,7 +125,7 @@
                 <ul class="marketers-property">
                   <li class="marketers-property-li" v-for="(item, index) in activities" @click="selectActivities(index)" :key="index">
                     <svg v-show="activitiesStatus[index].status" class="activity-svg">
-                      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#selected"></use>
+                      <use xlink:href="#selected"></use>
                     </svg>
                     <span class="marketers-property-icon" v-show="!activitiesStatus[index].status" :style="{color: '#' + item.icon_color, borderColor: '#' + item.icon_color}">{{item.icon_name}}</span>
                     <span :class="{activity_select: activitiesStatus[index].status}">{{item.name}}</span>
@@ -326,107 +314,137 @@ export default {
 </script>
 <style scoped lang="less">
   @import '~assets/less/common.less';
+  .classification-item {
+    .relative;
+    line-height: 2.2rem;
+    z-index: 14;
+    span {
+      font-size: .75rem;
+      color: @black;
+    }
+    svg {
+      .wh(.5rem, .5rem);
+    }
+  }
+  .item-content {
+    .bgw;
+    // .flex;
+    .absolute;
+    top: 3rem;
+    left:0rem;
+    width: 100%;
+  }
   .food-head-container {
-    .wh(100%, 3rem);
+    .wh(100%, 2.2rem);
     .bgw;
     .flex;
     padding-top: 3rem;
     border-bottom: 2px solid #f1f1f1;
-    z-index: 13;
-  }
-
-  .food-head-container>div {
-    width: 100%;
-    text-align: center;
-    font: 1.1rem "Mircsoft Yahei";
-    border: 0.1rem solid #f1f1f1;
-  }
-
-  .food-sort-content {
-    background-color: #fff;
-    display: flex;
-    position: absolute;
-    top: 3rem;
-    left:0rem;
-    width: 100%;
-  }
-
-  .food-category-content {
-    background-color: #fff;
-    position: absolute;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    top: 3rem;
-    left:0rem;
-  }
-
-  .food-category-content>ul:first-child {
-    background-color: #f1f1f1;
-  }
-
-  .food-category-content > ul {
-    width: 100%;
-  }
-
-  .classification-item {
-    position: relative;
-    line-height: 3rem;
-    z-index: 14;
-  }
-
-  ul {
-    padding-left: 0;
-  }
-
-  .sort-item > section {
-    display: flex;
-    align-items: center;
-    height: 5rem;
-  }
-
-  .category-li-left>section {
-    display: flex;
-    height: 4rem;
-    align-items: center;
-  }
-
-  .category-li-left {
-    display: flex;
-    height: 3rem;
-    justify-content: space-between;
-  }
-
-  .sort-item svg {
-    height: 100%;
-    width: 1rem;
-    margin: 0 1.5rem 0 2rem;
-  }
-
-  .category-li-left img {
-    height: 1.5rem;
-    width: 1.5rem;
-    margin: 0 1rem 0 2rem;
-  }
-
-  .category-count {
-    font-size: 0.8rem;
-    color: #fff;
-    background-color: #ccc;
-    border: 0.25rem solid #ccc;
-    border-radius: 0.5rem;
-    margin-right: 1rem;
-  }
-
-  .category-li-left svg {
-    margin-right: 1rem;
-  }
-
-  .sort-item span, .category-name {
-    line-height: 5rem;
-    font-family: "Microsoft Yahei";
-    color: #666;
-    font-size: 1rem;
+    z-index: 100;
+    > div {
+      text-align: center;
+      border: 2px solid #f1f1f1;
+      width: 100%;
+    }
+    .food-category {
+      z-index: 100;
+      .food-category-content {
+        margin-top: 2.2rem;
+        display: flex;
+        flex-direction: row;
+        .category-left {
+          .bgc(#f1f1f1);
+          flex: 1;
+          li {
+            .flex;
+            padding: .5rem 1rem;
+            section {
+              .flex(@ai: flex-start);
+              img {
+                .wh(1.2rem, 1.2rem);
+                margin-right: .5rem;
+              }
+              .category-name {
+                font-size: .65rem;
+              }
+              .category-count {
+                font-size: 0.65rem;
+                color: #fff;
+                .bgc(#ccc);
+                .br(0.3);
+                margin-right: .7rem;
+                padding: 0 .1rem;
+                line-height: .8rem;
+              }
+            }
+          }
+        }
+        .category-right {
+          flex: 1;
+          li > {
+            .flex;
+            box-sizing: border-box;
+            padding: .8rem .3rem;
+            margin: 0 .5rem;
+            border-bottom: 0.1rem solid #ccc;
+            span {
+              font-size: .75rem;
+            }
+          }
+        }
+      }
+    }
+    .food-sort {
+      .flex(@fd: column);
+      z-index: 100;
+      .food-sort-content {
+        margin-top: 2.2rem;
+        width: 100%;
+        ul {
+          width: 100%;
+          padding: 0 1rem;
+        }
+        .sort-item {
+          .flex(@jc: flex-start);
+          padding: 1rem 0;
+          border-bottom: 1px solid #ccc;
+          svg {
+            .wh(1rem, 1rem);
+            margin-right: 1rem;
+          }
+          > span {
+            font-size: .75rem;
+          }
+        }
+      }
+    }
+    .food-filter {
+      span {
+        font-size: .6rem;
+        color: @black;
+      }
+      .food-select-content {
+        margin-top: 2.2rem;
+        z-index: 100;
+        .options {
+          .shipping-method-container {
+            li {
+              .flex(@jc: flex-start);
+              .br(0.1);
+              padding: .3rem;
+              width: 5rem;
+              border: 0.05rem solid #eee;
+              svg {
+                .wh(1.1rem, 1.1rem);
+              }
+            }
+          }
+        }
+        .food-select-footer {
+        
+        }
+      }
+    }
   }
 
   .showlist-enter-active,
@@ -479,17 +497,6 @@ export default {
   .shipping-method-container svg {
     height: 1.6rem;
     width: 1.6rem;
-  }
-
-  .shipping-method-li {
-    list-style: none;
-    display: flex;
-    height: 3rem;
-    width: 8rem;
-    justify-content: center;
-    align-items: center;
-    border: 0.1rem solid #eee;
-    border-radius: 0.5rem;
   }
 
   .food-select-content {
@@ -582,10 +589,6 @@ export default {
     border-radius: 0.5rem;
     border: 0.1rem solid #ccc;
     font-size: 1.6rem;
-  }
-
-  .options {
-    font-size: 0.8rem;
   }
 
   .clear {
