@@ -10,11 +10,11 @@
           <span>
             {{textTitle}}
           </span>
-          <svg>
+          <svg viewBox="0 0 10 9">
             <polygon points="0,3 10,3 5,8"/>
           </svg>
         </div>
-        <transition name="category">
+        <transition name="options">
           <div class="food-category-content item-content" v-show="contentShow == 'category'">
             <ul class="category-left">
               <li :class="{active: currentSubCategory===index}" v-for="(item, index) in foodCategory" :key="index" @click="changeSubCategories(item, index)">
@@ -42,11 +42,11 @@
       <div :class="['food-sort', {'choose-type': contentShow == 'sort'}]" >
         <div class="classification-item" @click="chooseClassification('sort')">
           <span>排序</span>
-          <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg" version="1.1" class="classification-icon">
+          <svg viewBox="0 0 10 9">
             <polygon points="0,3 10,3 5,8"/>
           </svg>
         </div>
-        <transition name="showlist">
+        <transition name="options">
           <div class="food-sort-content item-content" v-show="contentShow == 'sort'">
             <ul>
               <li class="sort-item" @click="sort(4)">
@@ -94,11 +94,11 @@
           <span>
             筛选
           </span>
-          <svg width="10" height="10" class="classification-icon">
+          <svg viewBox="0 0 10 9">
             <polygon points="0,3 10,3 5,8"/>
           </svg>
         </div>
-        <transition name="select">
+        <transition name="options">
           <div class="food-select-content item-content" v-show="contentShow == 'select'">
             <div class="options">
               <div class="shipping-method-container">
@@ -107,7 +107,7 @@
                 </div>
                 <ul>
                   <li v-for="(item, index) in shippingMethods" @click="selectShippingMethods(index)" :key="index">
-                    <svg v-show="shippingMethodsStatus[index].status" class="activity-svg">
+                    <svg v-show="shippingMethodsStatus[index].status">
                       <use xlink:href="#selected"></use>
                     </svg>
                     <svg v-if="!shippingMethodsStatus[index].status && item.id===1">
@@ -121,10 +121,10 @@
                 </ul>
               </div>
               <div class="marketers-property-container">
-                <span class="marketers-property-label">商家属性（可以多选）</span>
-                <ul class="marketers-property">
-                  <li class="marketers-property-li" v-for="(item, index) in activities" @click="selectActivities(index)" :key="index">
-                    <svg v-show="activitiesStatus[index].status" class="activity-svg">
+                <span>商家属性（可以多选）</span>
+                <ul>
+                  <li v-for="(item, index) in activities" @click="selectActivities(index)" :key="index">
+                    <svg v-show="activitiesStatus[index].status">
                       <use xlink:href="#selected"></use>
                     </svg>
                     <span class="marketers-property-icon" v-show="!activitiesStatus[index].status" :style="{color: '#' + item.icon_color, borderColor: '#' + item.icon_color}">{{item.icon_name}}</span>
@@ -150,18 +150,15 @@ import headTop from '@/components/head/head'
 import headTitle from '@/components/head/children/headTitle'
 import arrowLeft from '@/components/common/arrowLeft'
 import shopList from '@/components/common/shopList'
-import axios from 'axios'
-import {getShopList, getShippingMethod} from '@/service/getData'
+import {getShopList, getShippingMethod, getFoodCategory, getImageUrlByCdn, getShopActivityList} from '@/service/getData'
 export default {
   data () {
     return {
       restaurantsList: [],
       textTitle: '',
       contentShow: '',
-      typeFlag: '',
       latitude: '',
       longitude: '',
-      urlRestaurantBase: 'https://elm.cangdu.org/shopping/restaurants',
       foodCategory: [],
       subCategories: [],
       currentSubCategory: 0,
@@ -171,9 +168,6 @@ export default {
       activeActivitiesNum: 0, // 一共选了几个商家属性
       shippingMethods: [] // 配送方式
     }
-  },
-  computed: {
-
   },
   mounted: function () {
     var self = this
@@ -187,38 +181,21 @@ export default {
         self.shippingMethodsStatus[index] = {id: item.id, status: false}
       })
     })
-    var orderBy = '4'
-    var urlRestaurant = this.urlRestaurantBase + '?latitude=' + this.latitude + '&longitude=' + this.longitude + '&order_by=' + orderBy
-    axios.get(urlRestaurant)
-      .then(function (response) {
-        if (response.status === 200) {
-          self.restaurantsList = response.data
-        }
+    getShopList(this.latitude, this.longitude, 0, '', '', '4')
+      .then(function (data) {
+        self.restaurantsList = data
       })
-    let urlActivity = 'https://elm.cangdu.org/shopping/v1/restaurants/activity_attributes' + '?latitude=' + this.latitude + '&longitude=' + this.longitude
-    axios.get(urlActivity)
-      .then(function (response) {
-        if (response.status === 200) {
-          self.activities = response.data
-          self.activities.forEach(function (item, index) {
-            self.activitiesStatus[index] = {status: false, id: item.id}
-          })
-        }
+    getShopActivityList(this.latitude, this.longitude)
+      .then(function (data) {
+        self.activities = data
+        self.activities.forEach(function (item, index) {
+          self.activitiesStatus[index] = {status: false, id: item.id}
+        })
       })
   },
   methods: {
     getImgPath: function (path) {
-      if (!path) {
-        return '//elm.cangdu.org/img/default.jpg'
-      }
-      let suffix = ''
-      if (path.indexOf('jpeg') > -1) {
-        suffix = '.jpeg'
-      } else {
-        suffix = '.png'
-      }
-      let url = '/' + path.substr(0, 1) + '/' + path.substr(1, 2) + '/' + path.substr(3) + suffix
-      return 'https://fuss10.elemecdn.com' + url
+      return getImageUrlByCdn(path)
     },
     chooseClassification: function (type) {
       let self = this
@@ -228,25 +205,19 @@ export default {
         this.contentShow = ''
       }
       if (type === 'category') {
-        let url = 'https://elm.cangdu.org/shopping/v2/restaurant/category' + '?latitude=' + this.latitude + '&longitude=' + this.longitude
-        axios.get(url)
-          .then(function (response) {
-            if (response.status === 200) {
-              self.foodCategory = response.data
-              self.subCategories = response.data[0].sub_categories
-              self.currentSubCategory = 0
-            }
+        getFoodCategory(this.latitude, this.longitude)
+          .then(function (data) {
+            self.foodCategory = data
+            self.subCategories = data[0].sub_categories
+            self.currentSubCategory = 0
           })
       }
     },
     sort: function (type) {
-      var urlRestaurant = this.urlRestaurantBase + '?latitude=' + this.latitude + '&longitude=' + this.longitude + '&order_by=' + type
       var self = this
-      axios.get(urlRestaurant)
-        .then(function (response) {
-          if (response.status === 200) {
-            self.restaurantsList = response.data
-          }
+      getShopList(this.latitude, this.longitude, 0, '', '', type + '')
+        .then(function (data) {
+          self.restaurantsList = data
         })
       this.contentShow = ''
     },
@@ -257,13 +228,10 @@ export default {
     getSubCategoryShops: function (id, name) {
       this.contentShow = ''
       this.textTitle = name
-      let url = 'https://elm.cangdu.org/shopping/restaurants?latitude=' + this.latitude + '&longitude=' + this.longitude + '&restaurant_category_ids[]=' + id
       let self = this
-      axios.get(url)
-        .then(function (response) {
-          if (response.status === 200) {
-            self.restaurantsList = response.data
-          }
+      getShopList(this.latitude, this.longitude, 0, '', id)
+        .then(function (data) {
+          self.restaurantsList = data
         })
     },
     selectActivities: function (index) {
@@ -316,20 +284,31 @@ export default {
   @import '~assets/less/common.less';
   .classification-item {
     .relative;
+    .bgw;
+    width: 100%;
+    z-index: 10;
     line-height: 2.2rem;
-    z-index: 14;
     span {
       font-size: .75rem;
       color: @black;
     }
     svg {
       .wh(.5rem, .5rem);
+      fill: blue;
+    }
+  }
+  .choose-type {
+    .classification-item {
+      svg {
+        transform: rotate(180deg);
+        fill: #666;
+      }
     }
   }
   .item-content {
     .bgw;
-    // .flex;
     .absolute;
+    transition: all 0.3s;
     top: 3rem;
     left:0rem;
     width: 100%;
@@ -339,22 +318,22 @@ export default {
     .bgw;
     .flex;
     padding-top: 3rem;
-    border-bottom: 2px solid #f1f1f1;
-    z-index: 100;
+    margin-bottom: .2rem;
     > div {
       text-align: center;
-      border: 2px solid #f1f1f1;
       width: 100%;
     }
     .food-category {
-      z-index: 100;
       .food-category-content {
+        .flex(@ai: flex-start);
         margin-top: 2.2rem;
-        display: flex;
-        flex-direction: row;
+        z-index: 5;
         .category-left {
           .bgc(#f1f1f1);
           flex: 1;
+          .active {
+            .bgw;
+          }
           li {
             .flex;
             padding: .5rem 1rem;
@@ -396,10 +375,13 @@ export default {
     }
     .food-sort {
       .flex(@fd: column);
-      z-index: 100;
+      > div {
+        border-left: 1px solid #f1f1f1;
+        border-right: 1px solid #f1f1f1;
+      }
       .food-sort-content {
         margin-top: 2.2rem;
-        width: 100%;
+        z-index: 5;
         ul {
           width: 100%;
           padding: 0 1rem;
@@ -419,15 +401,21 @@ export default {
       }
     }
     .food-filter {
+      z-index: 5;
       span {
         font-size: .6rem;
         color: @black;
       }
       .food-select-content {
-        margin-top: 2.2rem;
-        z-index: 100;
+        margin-top: 2.5rem;
+        .bgc(#f1f1f1);
         .options {
+          .bgw;
+          padding: 0 1rem;
           .shipping-method-container {
+            .shipping-method-label {
+              text-align: left;
+            }
             li {
               .flex(@jc: flex-start);
               .br(0.1);
@@ -439,167 +427,66 @@ export default {
               }
             }
           }
+          .marketers-property-container {
+            text-align: left;
+            margin-top: .5rem;
+            ul {
+              display: flex;
+              flex-wrap: wrap;
+              margin-top: .3rem;
+              li {
+                .flex(@jc: flex-start);
+                .br(0.05);
+                width: 28%;
+                padding: .3rem .2rem;
+                border: 1px solid #eee;
+                margin-bottom: 0.5rem;
+                margin-right: 0.5rem;
+                .marketers-property-icon {
+                  .flex(@jc: center);
+                  .br(0.1);
+                  padding: .1rem .2rem;
+                  border: 1px solid rgb(63, 189, 230);
+                  margin-right: .3rem;
+                }
+                .activity_select {
+                  color: #3190e8;
+                }
+                svg {
+                  .wh(.8rem, .8rem);
+                }
+              }
+            }
+          }
         }
         .food-select-footer {
-        
+          .flex;
+          padding: .5rem;
+          button {
+            .br(0.03);
+            padding: .3rem 0;
+            width: 100%;
+            border: 0;
+            font-size: 1.1rem;
+          }
+          .clear {
+            .bgw;
+            margin-right: .5rem;
+          }
+          .confirm {
+            .bgc(#56d176);
+          }
         }
       }
     }
   }
 
-  .showlist-enter-active,
-  .showlist-leave-active {
-    transition: all 0.3s;
+  .options-enter,
+  .options-leave-to {
+    transform: translateY(-100%);
+  }
+  .options-leave,
+  .options-enter-to {
     transform: translateY(0);
-  }
-  .showlist-enter,
-  .showlist-leave-active {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-
-  .category-enter-active {
-    transition: all 0.3s;
-  }
-
-  .category-enter {
-    transform: translateY(-100%);
-  }
-
-  .shop-list {
-    margin-top: 7rem;
-  }
-
-  .choose-type .classification-icon {
-    transform: rotate(180deg);
-    fill: blue;
-  }
-
-  .classification-icon {
-    vertical-align: middle;
-    transition: all 0.3s;
-    fill: #666;
-  }
-
-  .active {
-    background-color: #fff;
-  }
-
-  .subCategories {
-    line-height: 4rem;
-    display: flex;
-    justify-content: space-between;
-    margin-left: 1rem;
-    margin-right: 1rem;
-    border-bottom: 0.1rem solid #ccc;
-  }
-
-  .shipping-method-container svg {
-    height: 1.6rem;
-    width: 1.6rem;
-  }
-
-  .food-select-content {
-    background-color: #fff;
-    position: absolute;
-    width: 100%;
-    top: 3rem;
-    left:0rem;
-    padding-top: 1.5rem;
-  }
-
-  .shipping-method-container {
-    padding-left: 2rem;
-    margin-bottom: 1rem;
-  }
-
-  .shipping-method-label {
-    text-align: left
-  }
-
-  .fengniao {
-    display: flex;
-    height: 3rem;
-    width: 8rem;
-    justify-content: center;
-    align-items: center;
-    border: 0.1rem solid #eee;
-    border-radius: 0.5rem;
-  }
-
-  .marketers-property-label {
-    text-align: left;
-  }
-
-  .marketers-property-container {
-    text-align: left;
-    padding-left: 2rem;
-  }
-
-  .marketers-property {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .marketers-property-li {
-    display: flex;
-    border: 0.1rem solid #eee;
-    height: 3rem;
-    width: 8rem;
-    align-items: center;
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
-    border-radius: 0.5rem;
-  }
-
-  .marketers-property-icon {
-    padding: 0.1rem;
-    border: 0.1rem solid rgb(63, 189, 230);
-    height: 2.2rem;
-    width: 2.2rem;
-    text-align: center;
-    margin-right: 0.5rem;
-    margin-left: 0.5rem;
-    border-radius: 0.5rem;
-    line-height: 1.8rem;
-  }
-
-  .activity-svg {
-    height: 2.2rem;
-    width: 2.2rem;
-    margin-right: 0.5rem;
-    margin-left: 0.5rem;
-  }
-
-  .marketers-property-li > span:nth-child(3) {
-    line-height: 3rem;
-  }
-
-  .food-select-footer {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1.5rem;
-  }
-
-  .food-select-footer > button{
-    width: 100%;
-    margin-right: 1rem;
-    margin-left: 1rem;
-    height: 4rem;
-    border-radius: 0.5rem;
-    border: 0.1rem solid #ccc;
-    font-size: 1.6rem;
-  }
-
-  .clear {
-    background-color: #fff;
-  }
-
-  .confirm {
-    background-color: #56d176;
-  }
-
-  .activity_select {
-    color: #3190e8;
   }
 </style>

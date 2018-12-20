@@ -1,25 +1,25 @@
 <template>
   <div class="service-center-container">
     <head-top>
-      <arrow-left slot="head-goback"></arrow-left>
-      <span class="point-title" slot="point-title">服务中心</span>
+      <arrow-left slot="head-left"></arrow-left>
+      <head-title slot="head-center" headTitle="服务中心"></head-title>
     </head-top>
     <div class="service-items">
       <section class="online-customer-service">
         <section>
-          <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#human"></use></svg>
+          <svg><use xlink:href="#human"></use></svg>
           <span>在线客服</span>
         </section>
         <section>
-          <svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#phone"></use></svg>
+          <svg><use xlink:href="#phone"></use></svg>
           <span>在线客服</span>
         </section>
       </section>
       <ul>
-        <header class="service-items-header">
+        <header>
           热门问题
         </header>
-        <li v-for="(item, index) in explain" v-if="index.indexOf('Caption') !== -1" :key="index" class="service-li" @click="showContent(index)">
+        <li v-for="(item, index) in explain" v-if="index.indexOf('Caption') !== -1" :key="index" @click="showContent(index)">
           <span>{{item}}</span>
           <arrow-right></arrow-right>
         </li>
@@ -29,6 +29,7 @@
 </template>
 <script>
 import headTop from '@/components/head/head'
+import headTitle from '@/components/head/children/headTitle'
 import arrowLeft from '@/components/common/arrowLeft'
 import arrowRight from '@/components/common/arrowRight'
 import {getProfileExplain} from '@/service/getData'
@@ -50,55 +51,48 @@ export default {
       this.$router.push({path: '/serviceCenter/servceDescription', query: {key: index}})
     }
   },
-  components: {headTop, arrowLeft, arrowRight}
+  components: {headTop, arrowLeft, arrowRight, headTitle}
 }
 </script>
-<style>
+<style scoped lang="less">
+  @import '~assets/less/common.less';
+  .border-bottom {
+    border-bottom: 1px solid #f1f1f1;
+  }
   .service-items {
     margin-top: 2.8rem;
-  }
-  .point-title {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    text-align: center;
-    transform: translate(-50%, -50%);
-    color: #fff;
-    font-size: 1.7rem;
-    font-weight: bold;
-  }
-  .online-customer-service {
-    display: flex;
-    flex-direction: row;
-
-  }
-  .online-customer-service > section {
-    width: 100%;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-bottom: 0.05rem solid #f1f1f1;
-    background-color: #fff;
-  }
-  .online-customer-service > section:nth-child(1) {
-    border-right: 0.05rem solid #f1f1f1;
-  }
-  .online-customer-service > section > svg {
-    width: 1.5rem;
-    height: 1.5rem;
-  }
-  .service-items-header {
-    padding: 1rem;
-    background-color: #fff;
-    border-bottom: 0.1rem solid #f1f1f1;
-    color: #222;
-    font-size: 1.2rem;
-  }
-  .service-li {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem 1rem;
-    border-bottom: 0.1rem solid #f1f1f1;
+    span {
+      font-size: .85rem;
+    }
+    .online-customer-service {
+      .flex;
+      > section {
+        .flex(@fd: column);
+        .bgw;
+        width: 100%;
+        padding: 1rem;
+        .border-bottom;
+        svg {
+          .wh(1.5rem, 1.5rem);
+        }
+      }
+      > section:first-child {
+        border-right: 1px solid #f1f1f1;
+      }
+    }
+    ul {
+      header {
+        .bgw;
+        padding: 1rem;
+        .border-bottom;
+        color: #222;
+        font-size: 1.1rem;
+      }
+      li {
+        .flex;
+        padding: 0.5rem 1rem;
+        .border-bottom;
+      }
+    }
   }
 </style>

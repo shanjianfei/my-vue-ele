@@ -4,40 +4,38 @@
       <section>
         <img class="shop-img" :src="getImageUrl(item.image_path)">
       </section>
-      <section class="shop-info">
-        <ul>
-          <li class="brand">
-            <section>
-              <span>品牌</span>
-              <h3>{{item.name}}</h3>
-            </section>
-            <section>
-              <span v-for="(d, i) in item.supports" :key="i" :style="{'color': '#' + d.icon_color, 'border': '.05rem solid ' + '#' + d.icon_color}">
-                {{d.icon_name}}
-              </span>
-            </section>
-          </li>
-          <li class="evaluation">
-            <section>
-              <rating-star :rating="item.rating"></rating-star>
-              <span class="score">{{item.rating}}</span>
-              <span class="orders">月销售{{item.recent_order_num}}单</span>
-            </section>
-            <section>
-              <span v-if="item.delivery_mode" class="express">{{item.delivery_mode.text}}</span>
-              <span v-if="schedule(item.supports)" class="schedule">准时达</span>
-            </section>
-          </li>
-          <li class="fee-distance">
-            <span class="fee">
-              ￥{{item.float_minimum_order_amount}}起送 / 配送费约{{item.float_delivery_fee}}
+      <ul class="shop-info">
+        <li class="brand">
+          <section>
+            <span>品牌</span>
+            <span>{{item.name}}</span>
+          </section>
+          <section>
+            <span v-for="(d, i) in item.supports" :key="i" :style="{'color': '#' + d.icon_color, 'border': '.05rem solid ' + '#' + d.icon_color}">
+              {{d.icon_name}}
             </span>
-            <span class="distance">
-              {{item.distance}} / <span class="order-time">{{item.order_lead_time}}</span>
-            </span>
-          </li>
-        </ul>
-      </section>
+          </section>
+        </li>
+        <li class="evaluation">
+          <section>
+            <rating-star :rating="item.rating"></rating-star>
+            <span class="score">{{item.rating}}</span>
+            <span class="orders">月销售{{item.recent_order_num}}单</span>
+          </section>
+          <section>
+            <span v-if="item.delivery_mode" class="express">{{item.delivery_mode.text}}</span>
+            <span v-if="schedule(item.supports)" class="schedule">准时达</span>
+          </section>
+        </li>
+        <li class="fee-distance">
+          <span>
+            ￥{{item.float_minimum_order_amount}}起送 / 配送费约{{item.float_delivery_fee}}
+          </span>
+          <span>
+            {{item.distance}} / <span class="order-time">{{item.order_lead_time}}</span>
+          </span>
+        </li>
+      </ul>
     </router-link>
   </ul>
 </template>
@@ -68,100 +66,92 @@ export default {
 </script>
 <style lang="less">
   @import '~assets/less/common.less';
-  h3 {
-    padding: 0;
-    margin: 0;
-  }
   .restaurants-list {
     > li {
       display: flex;
       flex-direction: row;
-      padding: 1.3rem 0.8rem;
-      border-bottom: 0.1rem solid #f1f1f1;
+      padding: 1rem 0.8rem;
+      border-bottom: 1px solid #f1f1f1;
       .shop-info {
         width: 100%;
         margin-left: 1rem;
-        > ul {
-          > li {
-            margin-bottom: 1rem;
-          }
-          .brand {
+        > li {
+          margin-bottom: .6rem;
+        }
+        .brand {
+          .flex;
+          > section:first-child {
             .flex;
-            > section:first-child {
-              .flex;
-              > span {
-                  .bgc(#ffd930);
-                  .br(0.1);
-                  margin-right: .5rem;
-                  padding: .1rem .2rem;
-                  color: #000;
-                  font-weight: bold;
-                  font-size: .9rem;
-              }
-            }
-            > section:last-child {
-              > span {
+            span:first-child {
+                .bgc(#ffd930);
                 .br(0.1);
+                margin-right: .5rem;
+                padding: .1rem .2rem;
+                color: @black;
+                font-weight: bold;
                 font-size: .6rem;
-                margin-left: .1rem;
-              }
+            }
+            span:last-child {
+              font-weight: bold;
+              font-size: .9rem;
+              color: @black;
             }
           }
-          .evaluation {
-            .flex;
-            > section:nth-child(1) {
-              display: flex;
+          > section:last-child {
+            > span {
+              .br(0.1);
+              font-size: .5rem;
+              margin-left: .1rem;
             }
-            > section:nth-child(2) {
-              font-size: 0.6rem;
-              > span {
-                .br(0.08);
-                padding: 0 .1rem;
-              }
-            }
+          }
+        }
+        .evaluation {
+          .flex;
+          > section:first-child {
+            display: flex;
             .score {
               color: #ff6000;
               margin-left: 0.2rem;
               font-size: 0.6rem;
             }
-
             .orders {
               color: #666;
               margin-left: 0.2rem;
-              font-size: 0.6rem;
+              font-size: 0.5rem;
             }
-
+          }
+          > section:last-child {
+            font-size: 0.5rem;
+            > span {
+              .br(0.08);
+              padding: .1rem 0;
+              border: 0.05rem solid @blue;
+            }
             .express {
               color: #fff;
               .bgc(@blue);
-              border: 0.05rem solid @blue;
             }
-
             .schedule {
               color: @blue;
-              border: 0.05rem solid @blue;
             }
           }
-          .fee-distance {
-            .flex;
-            .fee {
-              color: #666;
-              font-size: 0.7rem;
-            }
-            .distance {
-              color: #666;
-              font-size: 0.7rem;
-              .order-time {
-                color: @blue;
-              }
+        }
+        .fee-distance {
+          .flex;
+          span {
+            font-size: 0.6rem;
+            color: #666;
+          }
+          > span:last-child {
+            span {
+              color: @blue;
             }
           }
-
         }
       }
     }
     .shop-img {
-      .wh(5rem, 5rem);
+      .wh(4rem, 4rem);
     }
   }
 </style>

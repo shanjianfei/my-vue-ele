@@ -20,6 +20,16 @@ export const getCityInfo = cityId => {
   })
 }
 
+export const getShopActivityList = (latitude, longitude) => {
+  let url = 'https://elm.cangdu.org/shopping/v1/restaurants/activity_attributes' + '?latitude=' + latitude + '&longitude=' + longitude
+  return new Promise(function (resolve, reject) {
+    axios.get(url)
+      .then(function (response) {
+        resolve(response.data)
+      })
+  })
+}
+
 export const getShopList = (latitude, longitude, offset, restaurantCategoryId = '', restaurantCategoryIds = '', orderBy = '', deliveryMode = '', supportIds = []) => {
   let supportStr = ''
   supportIds.forEach(item => {
@@ -34,9 +44,9 @@ export const getShopList = (latitude, longitude, offset, restaurantCategoryId = 
     limit: '20',
     'extras[]': 'activities',
     keyword: '',
-    restaurantCategoryId,
+    'restaurant_category_id': restaurantCategoryId,
     'restaurant_category_ids[]': restaurantCategoryIds,
-    orderBy,
+    'order_by': orderBy,
     'delivery_mode[]': deliveryMode + supportStr
   }
 
@@ -61,6 +71,18 @@ export const getShopList = (latitude, longitude, offset, restaurantCategoryId = 
 
 export const getFoodClassificationList = () => {
   let url = 'https://elm.cangdu.org/v2/index_entry'
+  return new Promise(function (resolve, reject) {
+    axios.get(url)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  })
+}
+
+export const getFoodCategory = (latitude, longitude) => {
+  let url = 'https://elm.cangdu.org/shopping/v2/restaurant/category' + '?latitude=' + latitude + '&longitude=' + longitude
   return new Promise(function (resolve, reject) {
     axios.get(url)
       .then(function (response) {
