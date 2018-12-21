@@ -2,7 +2,7 @@
   <div class="search-food-page">
     <head-top>
       <arrow-left slot="head-left"></arrow-left>
-      <head-title slot="point-title" headTitle="搜索"></head-title>
+      <head-title slot="head-center" headTitle="搜索"></head-title>
     </head-top>
     <div class="search-food-container">
       <div class="search-food-form">
@@ -10,8 +10,8 @@
         <input type="submit" name="submit" value="submit" @click="search('')">
       </div>
       <div class="search-results" v-if="showSearchResults">
-        <ul class="search-results-ul" v-if="searchResults.length">
-          <li class="search-results-li" v-for="(item, index) in searchResults" :key="index">
+        <ul v-if="searchResults.length">
+          <li v-for="(item, index) in searchResults" :key="index">
             <p>{{item.name}}</p>
             <p>{{item.address}}</p>
           </li>
@@ -19,9 +19,9 @@
         <div class="search-tips" v-else>很抱歉！无搜索结果</div>
       </div>
       <div class="search-history" v-else-if="searchHistory.length">
-        <ul class="search-history-ul">
-          <header class="search-history-title">搜索历史</header>
-          <li class="search-history-li" v-for="(item, index) in searchHistory" :key="index" @click="search(item)">
+        <ul>
+          <header>搜索历史</header>
+          <li v-for="(item, index) in searchHistory" :key="index" @click="search(item)">
             {{item}}
           </li>
           <li class="clear-history" @click="clearHistory">清空历史记录</li>
@@ -101,72 +101,74 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped lang="less">
+  @import '~assets/less/common.less';
   .search-food-container {
     padding-top: 4rem;
-  }
-  .search-food-form {
-    padding: 0 0.5rem;
-    background-color: #fff;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .search-food-form > input {
-    height: 2.5rem;
-    border-radius: 0.25rem;
-    font-weight: bold;
-    font-size: 1rem;
-    border: 0;
-    padding: 0;
-  }
-  .search-food-form > input:first-child {
-    width: 100%;
-    flex: 7;
-    border: 0.05rem solid #e1e1e1;
-    background-color: #f2f2f2;
-    padding: 0 0.5rem;
-  }
-  .search-food-form > input:last-child {
-    background-color: #3190e8;
-    margin-left: 0.5rem;
-    flex: 1.5;
-    color: #fff;
-    border: 0;
-  }
-  .search-results-li {
-    padding: 1rem;
-    border-bottom: 0.1rem solid #f1f1f1;
-  }
-  .search-results-li > p:first-child {
-    color: #555;
-    font-size: 1.2rem;
-  }
-  .search-results-li > p:last-child {
-    color: #999;
-  }
-  .search-results {
-    margin-top: .3rem;
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .search-tips {
-    margin: 1rem 0;
-    font-size: 1.3rem;
-  }
-  .search-history-li, .clear-history, .search-history-title {
-    padding: 0.5rem;
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
-  .search-history-li {
-    border-bottom: 0.05rem solid #f1f1f1;
-  }
-  .clear-history {
-    text-align: center;
-    color: #3190e8;
+    .search-food-form {
+      .bgw;
+      .flex;
+      padding: 0 0.5rem;
+      input {
+        .br(0.25rem);
+        height: 2.5rem;
+        font-weight: bold;
+        font-size: .9rem;
+        border: 0;
+        padding: 0;
+      }
+      input:first-child {
+        .bgc(#f2f2f2);
+        flex: 7;
+        border: 1px solid #e1e1e1;
+        padding: 0 0.5rem;
+      }
+      input:last-child {
+        .bgc(@blue);
+        margin-left: 0.5rem;
+        flex: 1.5;
+        color: #fff;
+      }
+    }
+    .search-results {
+      .flex(@jc: center);
+      .bgw;
+      margin-top: .3rem;
+      li {
+        padding: 1rem;
+        border-bottom: 0.1rem solid #f1f1f1;
+        p:first-child {
+          color: #555;
+          font-size: 1.2rem;
+        }
+        p:last-child {
+          color: #999;
+        }
+      }
+      .search-tips {
+        margin: 1rem 0;
+        font-size: 1.3rem;
+      }
+    }
+    .search-history {
+      li, .clear-history {
+        padding: 0.5rem;
+        font-size: 1rem;
+      }
+      header {
+        padding: 0.5rem;
+        font-size: .9rem;
+        color: #666;
+        font-weight: bold;
+      }
+      li {
+        border-bottom: 0.05rem solid #f1f1f1;
+      }
+      .clear-history {
+        text-align: center;
+        color: #3190e8;
+        font-weight: bold;
+      }
+    }
   }
 </style>

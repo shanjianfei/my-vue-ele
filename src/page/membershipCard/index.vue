@@ -1,13 +1,13 @@
 <template>
   <div class="membership-card-page">
     <head-top>
-      <arrow-left slot="head-goback"></arrow-left>
-      <span class="point-title" slot="point-title">会员中心</span>
+      <arrow-left slot="head-left"></arrow-left>
+      <head-title slot="head-center" headTitle="会员中心"></head-title>
     </head-top>
     <div class="membership-card-container">
-      <p>为账户<span>{{username}}</span>购买会员</p>
+      <p>为账户<span> {{username}} </span>购买会员</p>
       <section class="vip-privilege">
-        <router-link to="/membershipCard/vipDescription" class="vip-description">
+        <router-link to="/membershipCard/vipDescription" class="vip-description description-item">
           <span>会员特权</span>
           <section>
             <span>会员说明</span>
@@ -35,17 +35,17 @@
         <p>开通会员</p>
         <div>
           <span>1个月<span>¥20</span></span>
-          <div @click="buy">购买</div>
+          <span @click="buy">购买</span>
         </div>
       </section>
-      <router-link to="/membershipCard/exchangeMembership" class="exchange-membership">
+      <router-link to="/membershipCard/exchangeMembership" class="exchange-membership description-item">
         <span>兑换会员</span>
         <section>
           <span>使用卡号卡密</span>
           <arrow-right></arrow-right>
         </section>
       </router-link>
-      <router-link to="/membershipCard/purchaseRecord" class="purchase-history">
+      <router-link to="/membershipCard/purchaseRecord" class="purchase-history description-item">
         <span>购买记录</span>
         <section>
           <span>开发票</span>
@@ -57,6 +57,7 @@
 </template>
 <script>
 import headTop from '@/components/head/head'
+import headTitle from '@/components/head/children/headTitle'
 import arrowLeft from '@/components/common/arrowLeft'
 import arrowRight from '@/components/common/arrowRight'
 import {getStore} from '@/commonApi/localStorage'
@@ -74,83 +75,86 @@ export default {
       this.$router.push('/membershipCard/payOnline')
     }
   },
-  components: {headTop, arrowLeft, arrowRight}
+  components: {headTop, arrowLeft, arrowRight, headTitle}
 }
 </script>
-<style>
-.membership-card-container {
-  padding-top: 3rem;
-}
-.membership-card-container > p:first-child {
-  padding: 1.1rem .8rem;
-}
-.vip-privilege, .open-membership {
-  background-color: #fff;
-  padding: 0 1rem;
-}
-.vip-description, .exchange-membership, .purchase-history {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  line-height: 3rem;
-  border-bottom: 0.05rem solid #f1f1f1;
-}
-.vip-description > span:first-child {
-  font-size: 1.2rem;
-}
-.vip-description > section, .exchange-membership > section, .purchase-history > section {
-  display: flex;
-  align-items: center;
-}
-.vip-description > section > span, .exchange-membership > section > span, .purchase-history > section > span {
-  margin-right: 0.5rem;
-}
-.delivery-reduction {
-  padding: 2rem 0;
-  display: flex;
-  flex-direction: row;
-  border-bottom: 0.05rem solid #f1f1f1;
-}
-.delivery-reduction > img {
-  width: 3rem;
-  height: 3rem;
-  margin-right: .5rem;
-}
-.delivery-reduction > section > p:first-child {
-  font-size: 1.3rem;
-  color: #333;
-}
-.open-membership > p, .open-membership > div {
-  border-bottom: 0.05rem solid #f1f1f1;
-  line-height: 3rem;
-}
-.open-membership > div {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  align-items: center;
-}
-.open-membership > div > span > span {
-  color: #f60;
-  font-weight: bold;
-}
-.open-membership > div > div {
-  color: #f60;
-  border: 0.05rem solid #f60;
-  height: 2rem;
-  line-height: 2rem;
-  border-radius: 0.5rem;
-  width: 4rem;
-  text-align: center;
-}
-.exchange-membership, .purchase-history {
-  background-color: #fff;
-  margin-top: 1rem;
-  padding: 0 1rem;
-}
-.membership-card-container > p > span {
-  font-weight: bold;
-  color: #000;
-}
-
+<style scoped lang="less">
+  @import '~assets/less/common.less';
+  .membership-card-container {
+    padding-top: 3rem;
+    span {
+      font-size: .8rem;
+    }
+    p {
+      font-size: .75rem;
+      color: #999;
+    }
+    img {
+      .wh(2.3rem, 2.3rem);
+      margin-right: .5rem;
+    }
+    > p {
+      padding: 1.1rem .8rem;
+      font-size: .8rem;
+      color: #666;
+    }
+    .description-item {
+      .flex;
+      .bgw;
+      padding: .8rem 1rem;
+      border-bottom: 1px solid #f1f1f1;
+      > section {
+        .flex;
+        span {
+          margin-right: 0.5rem;
+        }
+      }
+    }
+    .vip-privilege {
+      .bgw;
+      .delivery-reduction {
+        .flex(@jc: flex-start);
+        padding: 1.2rem 1rem;
+        section {
+          > p:first-child {
+            font-size: 1rem;
+            color: #333;
+          }
+        }
+      }
+    }
+    .open-membership {
+      .bgw;
+      padding: 0 1rem;
+      span:last-child {
+        color: #f60;
+        font-weight: bold;
+        font-size: 1rem;
+      }
+      p {
+        padding: 1rem 0;
+        font-size: .8rem;
+        color: @black;
+        border-bottom: 0.05rem solid #f1f1f1;
+      }
+      > div {
+        padding: 1rem 0;
+        border-bottom: 0.05rem solid #f1f1f1;
+        .flex;
+        > span:last-child {
+          padding: .1rem .3rem;
+          color: #f60;
+          border: 1px solid #f60;
+          .br(.2rem);
+          font-size: .8rem;
+        }
+      }
+    }
+    .vip-description {
+      > span {
+        font-size: .9rem;
+        color: @black;
+      }
+    }
+  }
 </style>

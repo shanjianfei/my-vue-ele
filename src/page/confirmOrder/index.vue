@@ -1,5 +1,5 @@
 <template>
-  <div class="order-page-container">
+  <div class="order-page">
     <head-top class="header">
       <router-link class="login" slot="head-right" to="/login" v-if="!isLogin">
         注册|登录
@@ -36,7 +36,7 @@
         </svg>
       </router-link>
       <section class="delivery-time-container">
-        <h2>送达时间</h2>
+        <h5>送达时间</h5>
         <section>
           <span>尽快送达 | 预计{{checkData.delivery_reach_time}}</span>
           <span class="delivery-mode" :style="{'background-color': '#' + shopInfo.delivery_mode.color}">{{shopInfo.delivery_mode.text}}</span>
@@ -48,7 +48,7 @@
           <section @click="showPayWay">
             <span>在线支付</span>
             <svg class="arrow_right">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+              <use xlink:href="#arrow-right"></use>
             </svg>
           </section>
         </section>
@@ -89,12 +89,12 @@
       </section>
       <section class="order-content-footer">
         <section class="order-remarks">
-          <router-link :to="{path: '/orderComments', query: checkData.cart.id}" tag="span">订单备注</router-link>
+          <router-link :to="{path: '/confirmOrder/orderComments', query: checkData.cart.id}" tag="span">订单备注</router-link>
           <span class="order-remarks-right">
             <span>口味、偏好等</span>
             <span>
               <svg class="arrow_right">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+                <use xlink:href="#arrow-right"></use>
               </svg>
             </span>
           </span>
@@ -105,7 +105,7 @@
             <span>不需要开发票</span>
             <span>
               <svg class="arrow_right">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
+                <use xlink:href="#arrow-right"></use>
               </svg>
             </span>
           </span>
@@ -116,11 +116,12 @@
       <span>待支付￥{{checkData.cart.total}}</span>
       <router-link to="/membershipCard/payOnline">确认下单</router-link>
     </div>
+    <div class="cover" v-show="coverShow"></div>
     <div class="pay-way" v-if="checkData && paywayShow">
       <p>支付方式</p>
       <ul>
         <li class="pay-way-li" v-for="(item, index) in checkData.payments" @click="choosePayWay(item)" :key="index">
-          <span>{{item.name}}<span v-if="!item.is_online_payment">（{{item.disabled_reason}}）</span></span>
+          <span :class="{'unsupport-pay-way': !item.is_online_payment}">{{item.name}}<span v-if="!item.is_online_payment">（{{item.disabled_reason}}）</span></span>
           <svg>
             <use :class="item.select_state === 1 ? 'choosed' : 'select_icon'" xlink:href="#select"></use>
           </svg>
@@ -145,7 +146,8 @@ export default {
       shopInfo: {},
       order: {},
       selectFood: [],
-      isLogin: false
+      isLogin: false,
+      coverShow: false
     }
   },
   mounted: function () {
@@ -201,11 +203,13 @@ export default {
     },
     showPayWay: function () {
       this.paywayShow = true
+      this.coverShow = true
     },
     choosePayWay: function (payway) {
       if (payway.is_online_payment) {
         this.payayId = payway.id
         this.paywayShow = false
+        this.coverShow = false
       }
     }
   },
@@ -219,7 +223,7 @@ export default {
     .flex;
     .bgw;
     font-size: 1.5rem;
-    padding: 1.5rem 1rem;
+    padding: 1rem 1rem;
   }
   .login {
     .head-right;
@@ -273,31 +277,33 @@ export default {
     .delivery-time-container {
       .flex;
       .bgw;
-      padding: 1rem;
+      padding: 0 1rem;
       margin-top: 0.5rem;
       border-left: 0.3rem solid @blue;
       > section {
         .flex(@fd: column; @ai: flex-end);
         > span:first-child {
-          font-size: 1.2rem;
+          font-size: 1rem;
           color: @blue;
         }
         .delivery-mode {
           .br(0.05);
-          padding: 0.2rem;
+          padding: 0.1rem;
           margin-top: 0.3rem;
           color: @white;
-          font-size: 1rem;
+          font-size: .7rem;
         }
       }
     }
     .pay-mode-container {
       .pay-mode {
         .item;
+        > span {
+          font-size: .9rem;
+        }
         > section {
           > span {
             color: @gray;
-            font-size: 1.3rem;
           }
         }
       }
@@ -306,7 +312,6 @@ export default {
         border-top: 0.1rem solid #f1f1f1;
         > span {
           color: @gray;
-          font-size: 1.3rem;
         }
       }
     }
@@ -317,30 +322,29 @@ export default {
       padding: 1rem;
       > header {
         width: 100%;
-        .flex;
+        .flex(@jc: flex-start);
         padding: 1rem 0;
         border-bottom: 1px solid #f1f1f1;
         .shop-icon {
-          .wh(3rem, 3rem);
+          .wh(1.8rem, 1.8rem);
         }
         > span {
-          font-size: 1.8rem;
+          font-size: 1rem;
           color: @black;
-          margin-left: 1rem;
+          margin-left: .5rem;
         }
       }
       .food-list {
         width: 100%;
         li {
           .flex;
-          padding: 1rem 0;
+          padding: .5rem 0;
           span {
-            font-size: 1.5rem;
             color: @gray;
           }
           .num-price-container {
             > span:first-child {
-              margin-right: 2rem;
+              margin-right: .8rem;
               color: #f60;
             }
           }
@@ -351,9 +355,6 @@ export default {
       margin-top: 2px;
       padding: 1rem;
       .bgw;
-      p {
-        font-size: 1.3rem;
-      }
       > p:first-child {
         .flex;
         > span:nth-child(2) {
@@ -361,6 +362,7 @@ export default {
         }
       }
       > p:last-child {
+        margin-top: .5rem;
         color: #f60;
         text-align: right;
       }
@@ -372,11 +374,7 @@ export default {
       .order-remarks, .order-invoice-title {
         .flex;
         padding: .5rem 0;
-        > span {
-          font-size: 1.3rem;
-        }
         .order-remarks-right > span, .order-invoice-title-right > span {
-          font-size: 1rem;
           color: @gray;
         }
       }
@@ -385,20 +383,30 @@ export default {
   .order-footer {
     .fixed;
     .flex;
-    .wh(100%, 4rem);
+    .wh(100%, 3rem);
     bottom: 0;
-    > span, > a {
+    span, a {
       .bgc(#3d3d3f);
-      padding: 1rem;
-      font-size: 1.3rem;
+      padding: .8rem;
+      font-size: 1.1rem;
       color: #fff;
       flex: 7;
     }
-    > a {
+    a {
       .bgc(#4cd964);
       text-align: center;
       flex: 3;
     }
+  }
+  .cover {
+    .fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    .bgc(@black);
+    opacity: .3;
   }
   .pay-way {
     .fixed;
@@ -407,16 +415,23 @@ export default {
     left: 0;
     right: 0;
     height: 15rem;
+    z-index: 110;
     > p {
       .bgc(#fafafa);
       color: #333;
-      line-height: 3rem;
-      font-size: 1.2rem;
+      padding: .8rem 0;
+      font-size: 1rem;
       text-align: center;
     }
     .pay-way-li {
       .flex;
       padding: 1rem .5rem;
+      .unsupport-pay-way {
+        color: #ccc;
+        span {
+          color: #ccc;
+        }
+      }
       > svg {
         .wh(1rem, 1rem);
       }

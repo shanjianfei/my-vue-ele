@@ -11,7 +11,10 @@
 .bgc(@c) {
   background-color: @c;
 }
-.br(@p) {
+.br(@p) when (isunit(@p, rem)) {
+  border-radius: @p;
+}
+.br(@p) when not (isunit(@p, rem)) {
   border-radius: percentage(@p);
 }
 .wh (@width:1rem;@height:1rem) {

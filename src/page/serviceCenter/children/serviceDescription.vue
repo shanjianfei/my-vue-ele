@@ -1,15 +1,16 @@
 <template>
-  <div class="service-description-container">
+  <div class="service-description-page">
     <head-top>
-      <span class="point-title" slot="point-title">{{title}}</span>
-      <arrow-left slot="head-goback"></arrow-left>
+      <arrow-left slot="head-left"></arrow-left>
+      <head-title slot="head-center" :headTitle="title"></head-title>
     </head-top>
-    <div class="service-description-content" v-html="content">
+    <div v-html="content">
     </div>
   </div>
 </template>
 <script>
 import headTop from '@/components/head/head'
+import headTitle from '@/components/head/children/headTitle'
 import arrowLeft from '@/components/common/arrowLeft'
 import {getProfileExplain} from '@/service/getData'
 export default {
@@ -29,24 +30,15 @@ export default {
         self.content = data[contentKey]
       })
   },
-  components: {headTop, arrowLeft}
+  components: {headTop, arrowLeft, headTitle}
 }
 </script>
-<style>
-  .service-description-content {
+<style scoped lang="less">
+  @import '~assets/less/common.less';
+  .service-description-page {
     margin-top: 3.3rem;
     margin-bottom: 1.5rem;
     font-size: 1.2rem;
     color: #333;
-  }
-  .point-title {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    text-align: center;
-    transform: translate(-50%, -50%);
-    color: #fff;
-    font-size: 1.7rem;
-    font-weight: bold;
   }
 </style>

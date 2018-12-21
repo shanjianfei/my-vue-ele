@@ -2,7 +2,7 @@
   <div class="purchase-record-page">
     <head-top>
       <arrow-left slot="head-left"></arrow-left>
-      <span class="point-title" slot="head-center">购买记录</span>
+      <head-title slot="head-center" headTitle="购买记录"></head-title>
     </head-top>
     <div class="purchase-record-container">
       <img src="@/images/no-log.png">
@@ -12,30 +12,30 @@
 </template>
 <script>
 import headTop from '@/components/head/head'
+import headTitle from '@/components/head/children/headTitle'
 import arrowLeft from '@/components/common/arrowLeft'
 export default {
-  components: {headTop, arrowLeft}
+  components: {headTop, arrowLeft, headTitle}
 }
 </script>
-<style>
+<style scoped lang="less">
+  @import '~assets/less/common.less';
   .purchase-record-container {
-    position: fixed;
+    .fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    .bgw;
+    .flex(@fd: column; @jc: center);
   }
-  .purchase-record-container > img {
-    width: 13rem;
-    height: 9rem;
+  img {
+    width: 11rem;
+    height: 7rem;
   }
-  .purchase-record-container > p {
-    margin-top: 1rem;
+  p {
+    margin-top: .8rem;
     color: #999;
+    font-size: .8rem;
   }
 </style>

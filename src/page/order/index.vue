@@ -5,7 +5,7 @@
       <head-title slot="head-center" headTitle="订单列表" ></head-title>
     </head-top>
     <ul class="order-container">
-      <li v-for="(item, index) in orders" :key="index" class="order-li">
+      <li v-for="(item, index) in orders" :key="index">
         <img :src="getImageUrl(item.restaurant_image_url)">
         <section>
           <router-link to="">
@@ -27,9 +27,9 @@
               <span>￥{{item.total_amount}}</span>
             </section>
           </router-link>
-          <section class="order-again">
-            <div>再来一单</div>
-          </section>
+          <div class="order-again">
+            <span>再来一单</span>
+          </div>
         </section>
       </li>
     </ul>
@@ -64,68 +64,67 @@ export default {
   components: {headTop, arrowLeft, headTitle, arrowRight}
 }
 </script>
-<style>
+<style scoped lang="less">
+  @import '~assets/less/common.less';
   .order-container {
     padding-top: 3rem;
-  }
-  .order-li {
-    padding: 1rem 1rem;
-    margin-bottom: 2rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  .order-li > img {
-    width: 3.5rem;
-    height: 3.5rem;
-  }
-  .order-li > section {
-    width: 100%;
-    padding-left: 1rem;
-  }
-  .info-top {
-    padding-bottom: 1rem;
-    border-bottom: .01rem solid #f1f1f1;
-  }
-  .info-top > section {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  .info-bottom {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 1rem 0;
-    border-bottom: .01rem solid #f1f1f1;
-  }
-  .info-bottom > span:last-child {
-    color: #f60;
-    font-weight: bold;
-  }
-  .restaurant-name {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-  .restaurant-name > span {
-    font-size: 1.2rem;
-    color: #000;
-  }
-  .created-time {
-    font-size: .8rem;
-    color: #999;
-  }
-  .order-again {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: .5rem;
-  }
-  .order-again > div {
-    line-height: 1.6rem;
-    padding: 0 .3rem;
-    border: .01rem solid #3190e8;
-    color: #3190e8;
-    border-radius: .2rem;
+    li {
+      .flex(@jc: flex-start; @ai: flex-start);
+      padding: 1rem;
+      margin-bottom: .5rem;
+      > section {
+        width: 100%;
+      }
+    }
+    img {
+      .wh(3rem, 3rem);
+      margin-right: .5rem;
+    }
+    .info-top {
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #f1f1f1;
+      > section {
+        .flex;
+      }
+    }
+    .info-bottom {
+      .flex;
+      padding: 1rem 0;
+      border-bottom: 1px solid #f1f1f1;
+      span {
+        font-size: .85rem;
+      }
+      > span:last-child {
+        color: #f60;
+        font-weight: bold;
+      }
+    }
+    .restaurant-name {
+      .flex;
+      > span {
+        font-size: 1rem;
+        color: @black;
+      }
+    }
+    .status-title {
+      font-size: .8rem;
+      color: @black;
+    }
+    .created-time {
+      font-size: .8rem;
+      color: #999;
+    }
+    .order-again {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: .5rem;
+      span {
+        .br(.3rem);
+        padding: 0 .3rem;
+        font-size: .75rem;
+        border: 1px solid @blue;
+        color: @blue;
+      }
+    }
   }
 </style>
