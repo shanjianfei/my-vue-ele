@@ -7,7 +7,7 @@
     <div class="choose-delivery-address-container">
       <ul>
         <li class="address-item" v-for="(item, index) in deliveryAddress" :key="index" @click="choose(index, item.id)">
-          <svg class="link-bar-right" :class="{'choosed' : choosed === index}" fill="#f1f1f1"><use xlink:href="#select"></use></svg>
+          <svg :class="{'choosed' : choosed === index}" fill="#f1f1f1"><use xlink:href="#select"></use></svg>
           <section>
             <p>
               <span>{{item.name}}</span>

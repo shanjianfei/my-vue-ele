@@ -263,6 +263,29 @@ export const getUserInfo = userId => {
   })
 }
 
+export const addDeliveryAddress = (user_id, address,address_detail, geohash, name, phone, tag, sex, phone_bk, tag_type) => {
+  let url = 'https://elm.cangdu.org/v1/users/' + userId + '/addresses'
+  let data = {
+    user_id,
+    address,address_detail,
+    geohash, 
+    name,
+    phone,
+    tag,
+    sex,
+    phone_bk,
+    tag_type
+  }
+  return new Promise(function (resolve, reject) {
+    axios.post(url, data)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  })
+}
+
 export const getDeliveryAddress = userId => {
   let url = 'https://elm.cangdu.org/v1/users/' + userId + '/addresses'
   return new Promise(function (resolve, reject) {
