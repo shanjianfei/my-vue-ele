@@ -205,8 +205,8 @@ export const addToCart = (restaurantId, geohash, entities) => {
   })
 }
 
-export const searchAddress = (cityId, keyword, type) => {
-  let url = 'https://elm.cangdu.org/v1/pois?city_id=' + cityId + '&keyword=' + keyword + '&type=' + type
+export const searchAddress = (keyword, type) => {
+  let url = 'https://elm.cangdu.org/v1/pois?&keyword=' + keyword + '&type=' + type
   return new Promise(function (resolve, reject) {
     axios.get(url)
       .then(function (response) {
@@ -263,18 +263,18 @@ export const getUserInfo = userId => {
   })
 }
 
-export const addDeliveryAddress = (user_id, address,address_detail, geohash, name, phone, tag, sex, phone_bk, tag_type) => {
+export const addDeliveryAddress = (userId, address, addressDetail, geohash, name, phone, tag, sex, phoneBk, tagType) => {
   let url = 'https://elm.cangdu.org/v1/users/' + userId + '/addresses'
   let data = {
-    user_id,
-    address,address_detail,
-    geohash, 
+    address,
+    address_detail: addressDetail,
+    geohash,
     name,
     phone,
     tag,
     sex,
-    phone_bk,
-    tag_type
+    phone_bk: phoneBk,
+    tag_type: tagType
   }
   return new Promise(function (resolve, reject) {
     axios.post(url, data)

@@ -32,57 +32,130 @@
         <section class="contact-right contact-input">
           <section>
             <input type="text" name="contact-tel" placeholder="你的手机号码" v-model="telNum">
-            <img src="@/images/add_phone.png">
+            <img src="@/images/add_phone.png" @click="showPhoneBk">
           </section>
-          <input class="contact-right contact-input" type="text" name="contact-tel" placeholder="备用号码" v-model="telNum">
+          <input class="contact-right contact-input" type="text" name="contact-tel" placeholder="备用号码" v-model="phone_bk" v-if="phone_bk_show">
         </section>
       </p>
       <p class="contact delivery-address">
         <span class="contact-left">送餐地址</span>
         <span class="contact-right">
           <router-link class="search-contact-address" to="/searchAddress" tag="div">
-            <span v-if="deliveryAddress">{{deliveryAddress.name}}</span>
+            <span v-if="addAddressInfo.deliveryAddress">{{addAddressInfo.deliveryAddress.name}}</span>
             <span v-else>小区/写字楼/学校等</span>
           </router-link>
-          <input class="contact-input contact-address" type="text" name="contact-address" placeholder="详细地址（如门牌号等）">
+          <input class="contact-input contact-address" type="text" name="contact-address" placeholder="详细地址（如门牌号等）" v-model="address_detail">
         </span>
       </p>
       <p class="contact">
         <span class="contact-left">标签</span>
-        <input class="contact-right contact-input" type="text" placeholder="无/家/学校/公司" v-model="address">
+        <input class="contact-right contact-input" type="text" placeholder="无/家/学校/公司" v-model="tag">
       </p>
     </div>
     <div class="contact-submit" @click="submit">确定</div>
+    <alert-message :message="alertMessage" :show="alertMessageShow" @closeTip="closeTip"></alert-message>
   </div>
 </template>
 <script>
 import headTop from '@/components/head/head'
 import arrowLeft from '@/components/common/arrowLeft'
 import headTitle from '@/components/head/children/headTitle'
+import alertMessage from '@/components/common/alertMessage'
 import {addDeliveryAddress} from '@/service/getData'
-import {mapState} from 'vuex'
+import {mapState, mapMutations} from 'vuex'
+import {deepCopy} from '@/commonApi/util'
+import {getStore} from '@/commonApi/localStorage'
 export default {
   data () {
     return {
       username: null,
       sex: 1,
       telNum: null,
-      address: null, // 标签类型，2:家，3:学校，4:公司
-      phone_bk: null // 备用电话
+      address_detail: '',
+      phone_bk: '', // 备用电话
+      phone_bk_show: false,
+      tag: null,
+      alertMessage: '',
+      alertMessageShow: false
     }
   },
+  beforeRouteLeave (to, from, next) {
+    let data = deepCopy(this.addAddressInfo)
+    data.username = this.username
+    data.sex = this.sex
+    data.telNum = this.telNum
+    data.address_detail = this.address_detail
+    data.phone_bk = this.phone_bk
+    data.tag = this.tag
+    this.updateDeliveryAddress(data)
+    next()
+  },
+  mounted: function () {
+    this.username = this.addAddressInfo.username
+    this.sex = this.addAddressInfo.sex
+    this.telNum = this.addAddressInfo.telNum
+    this.address_detail = this.addAddressInfo.address_detail
+    this.phone_bk = this.addAddressInfo.phone_bk
+    this.tag = this.addAddressInfo.tag
+  },
   computed: mapState({
-    deliveryAddress: state => state.addAddress.deliveryAddress
+    addAddressInfo: state => state.addAddress.addAddressInfo
   }),
   methods: {
+    ...mapMutations(['updateDeliveryAddress']),
     click: function (sex) {
       this.sex = sex
     },
+    showPhoneBk: function () {
+      this.phone_bk_show = true
+    },
+    filter: function () {
+      if (!this.username) {
+        this.alertMessage = '请输入姓名'
+        this.alertMessageShow = true
+        return false
+      }
+      if (!this.telNum) {
+        this.alertMessage = '请输入电话号码'
+        this.alertMessageShow = true
+        return false
+      }
+      if (!this.addAddressInfo.deliveryAddress) {
+        this.alertMessage = '请输入送餐地址'
+        this.alertMessageShow = true
+        return false
+      }
+      if (!this.address_detail) {
+        this.alertMessage = '请输入送餐地址详细地址'
+        this.alertMessageShow = true
+        return false
+      }
+      if (!this.tag) {
+        this.alertMessage = '标签错误'
+        this.alertMessageShow = true
+        return false
+      }
+      return true
+    },
     submit: function () {
-      addDeliveryAddress(user_id, address, address_detail, geohash, this.username, this.telNum, tag, this.sex, this.phone_bk, this.address)
+      if (!this.filter()) {
+        return
+      }
+      let self = this
+      let userId = getStore('user_id')
+      let geohash = this.addAddressInfo.deliveryAddress.geohash
+      let address = this.addAddressInfo.deliveryAddress.name
+      addDeliveryAddress(userId, address, this.address_detail, geohash, this.username, this.telNum, this.tag, this.sex, this.phone_bk, 1)
+        .then(function (data) {
+          self.$router.go(-1)
+        })
+    },
+    closeTip: function () {
+      this.alertMessage = ''
+      this.alertMessageShow = false
     }
   },
-  components: {headTop, headTitle, arrowLeft}
+  components: {headTop, headTitle, arrowLeft, alertMessage}
 }
 </script>
 <style scoped lang="less">

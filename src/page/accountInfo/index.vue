@@ -1,12 +1,8 @@
 <template>
   <div class="account-info-page">
     <head-top class="header">
-      <section slot="head-goback" class="head-goback" @click="$router.go(-1)">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
-          <polyline points="12,18 4,9 12,0" style="fill:none;stroke:rgb(255,255,255);stroke-width:2"/>
-        </svg>
-      </section>
-      <span class="point-title" slot="point-title">账户信息</span>
+      <head-title slot="head-center" headTitle="账户信息"></head-title>
+      <arrow-left slot="head-left"></arrow-left>
     </head-top>
     <div class="account-info-container">
       <section class="base-info">
@@ -57,7 +53,9 @@
 </template>
 <script>
 import headTop from '@/components/head/head'
+import headTitle from '@/components/head/children/headTitle'
 import arrowRight from '@/components/common/arrowRight'
+import arrowLeft from '@/components/common/arrowLeft'
 import buttonSubmit from '@/components/common/buttonSubmit'
 import {isLogin, getUserInfo, getImageUrl, uploadProfilePhoto} from '@/service/getData'
 import {getStore, setStore, clearStore} from '@/commonApi/localStorage'
@@ -118,38 +116,29 @@ export default {
       this.alertMessage = ''
     }
   },
-  components: {headTop, arrowRight, alertMessage, buttonSubmit}
+  components: {headTop, arrowRight, alertMessage, buttonSubmit, headTitle, arrowLeft}
 }
 </script>
-<style>
+<style scoped lang="less">
+  @import '~assets/less/common.less';
   .account-info-container {
     padding-top: 3.5rem;
   }
   .item {
-    padding: 0 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    line-height: 3.5rem;
-    background-color: #fff;
+    .flex;
+    .bgw;
+    padding: .8rem 1rem;
     border-bottom: 0.05rem solid #ccc;
   }
   .profile-photo {
     border-top: 0.05rem solid #ccc;
-    line-height: 4.5rem;
-  }
-  .profile-photo img {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
+    img {
+      .wh(2.8rem, 2.8rem);
+      .br(0.5);
+    }
   }
   .item-right {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-  .arrow-right {
-    margin-left: 0.5rem;
+    .flex;
   }
   .account-bind img {
     margin-right: 0.5rem;
@@ -159,11 +148,8 @@ export default {
     padding: 0 1rem;
   }
   .account-bind > a, .security-setting > a {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #fff;
+    .flex;
+    .bgw;
     border-bottom: 0.05rem solid #ccc;
     border-top: 0.05rem solid #ccc;
   }
@@ -171,9 +157,7 @@ export default {
     font-size: 0.8rem;
   }
   .account-bind > a > section, .security-setting > a > section {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    .flex;
   }
   .button-submit {
     margin: 2rem 0.7rem 0 0.7rem;

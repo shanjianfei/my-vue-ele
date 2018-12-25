@@ -55,7 +55,6 @@ export default {
     },
     choose: function (index, id) {
       this.choosed = index
-      console.log(1)
       setStore('deliveryAddressChoosedId', id)
       this.$router.go(-1)
     }
@@ -101,7 +100,7 @@ export default {
             border-radius: 15%;
           }
         }
-      } 
+      }
     }
   }
   .cda-add-address {

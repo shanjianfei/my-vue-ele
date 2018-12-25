@@ -1,21 +1,17 @@
 <template>
-  <div class="search-address">
-    <head-top class="header">
-      <section slot="head-goback" class="head-goback" @click="$router.go(-1)">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
-          <polyline points="12,18 4,9 12,0" style="fill:none;stroke:rgb(255,255,255);stroke-width:2"/>
-        </svg>
-      </section>
-      <span class="point-title" slot="point-title">搜索</span>
+  <div class="search-address-page">
+    <head-top>
+      <arrow-left slot="head-left"></arrow-left>
+      <head-title slot="head-center" headTitle="搜索"></head-title>
     </head-top>
     <form class="search-container" @submit.prevent>
       <input class="search-address-input" type="text" name="search-address" placeholder="请输入小区/写字楼/学校等" v-model="keyword">
       <input type="submit" class="search-address-button" @click="search">
     </form>
     <div class="search-results" v-if="searchResults.length > 0">
-      <div class="search-address-tip">为了满足商家的送餐要求，建议您从列表中选择地址</div>
-      <ul class="search-results-ul">
-        <li class="search-results-li" v-for="(item, index) in searchResults" :key="index" @click="choose(item)">
+      <div>为了满足商家的送餐要求，建议您从列表中选择地址</div>
+      <ul>
+        <li v-for="(item, index) in searchResults" :key="index" @click="choose(item)">
           <p>{{item.name}}</p>
           <p>{{item.address}}</p>
         </li>
@@ -30,8 +26,11 @@
 </template>
 <script>
 import headTop from '@/components/head/head'
+import arrowLeft from '@/components/common/arrowLeft'
+import headTitle from '@/components/head/children/headTitle'
 import {searchAddress} from '@/service/getData'
 import {mapState, mapMutations} from 'vuex'
+import {deepCopy} from '@/commonApi/util'
 export default {
   data () {
     return {
@@ -40,7 +39,7 @@ export default {
     }
   },
   computed: mapState({
-    deliveryAddress: state => state.addAddress.deliveryAddress
+    addAddressInfo: state => state.addAddress.addAddressInfo
   }),
   methods: {
     ...mapMutations({
@@ -48,98 +47,77 @@ export default {
     }),
     search: function () {
       let self = this
-      searchAddress('', this.keyword, 'nearby')
+      searchAddress(this.keyword, 'nearby')
         .then(function (data) {
           self.searchResults = data
         })
     },
     choose: function (item) {
-      this.chooseDeliveryAddress(item)
+      let data = deepCopy(this.addAddressInfo)
+      data.deliveryAddress = item
+      this.chooseDeliveryAddress(data)
       this.$router.go(-1)
     }
   },
-  components: {headTop}
+  components: {headTop, arrowLeft, headTitle}
 }
 </script>
-<style>
-  .search-address {
+<style scoped lang="less">
+  @import '~assets/less/common.less';
+  .search-address-page {
     height: 100%;
-    /*background-color: #fff;*/
-  }
-  .head-goback {
-    left: 0.4rem;
-    width: 1.2rem;
-    height: 1.5rem;
-    line-height: 2.2rem;
-    margin-left: .4rem;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  .point-title {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    text-align: center;
-    transform: translate(-50%, -50%);
-    color: #fff;
-    font-size: 1.5rem;
   }
   .search-container {
+    .bgw;
     display: flex;
     flex-direction: row;
-    height: 3rem;
     padding: 4rem .5rem 1rem .5rem;
-    background-color: #fff;
-  }
-  .search-address-input {
-    flex: 8;
-    font-size: 1.2rem;
-    margin: 0 1rem;
-    border-radius: 0.5rem;
-    border: 0;
-    background-color: #f2f2f2;
-    color: #999;
-    padding: 0 0.5rem;
-  }
-  .search-address-button {
-    flex: 2;
-    margin-right: 1rem;
-    border-radius: 0.5rem;
-    border: 0;
-    background-color: #3190e8;
-    font-size: 1.2rem;
-    color: #fff;
+    input {
+      height: 2.2rem;
+      font-size: .9rem;
+      .br(.2rem);
+      margin-right: 1rem;
+      border: 0;
+    }
+    input:first-child {
+      .bgc(#f2f2f2);
+      padding-left: .5rem;
+      flex: 8;
+      color: #999;
+    }
+    input:last-child {
+      .bgc(@blue);
+      flex: 2;
+      color: #fff;
+    }
   }
   .search-tips {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%
+    .vertical-center;
+    .flex(@fd: column);
+    width: 100%;
+    p {
+      color: #aaa;
+    }
   }
-  .search-tips > p {
-    color: #aaa;
-  }
-  .search-results-li {
-    padding: 1rem;
-    border-bottom: 0.1rem solid #f1f1f1;
-  }
-  .search-results-li > p:first-child {
-    color: #555;
-    font-size: 1.2rem;
-  }
-  .search-results-li > p:last-child {
-    color: #999;
-  }
-  .search-address-tip {
-    line-height: 2rem;
-    color: #FF883F;
-    background-color: #FFF6E4;
-    text-align: center;
-    font-size: 1.2rem;
+  .search-results {
+    div {
+      line-height: 2rem;
+      color: #FF883F;
+      .bgc(#FFF6E4);
+      text-align: center;
+      font-size: .8rem;
+    }
+    li {
+      padding: 1rem;
+      border-bottom: 1px solid #f1f1f1;
+      p:first-child {
+        color: #555;
+        font-size: 1rem;
+      }
+      p:last-child {
+        color: #999;
+        font-size: .8rem;
+      }
+    }
   }
 </style>

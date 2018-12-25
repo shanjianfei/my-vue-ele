@@ -1,12 +1,8 @@
 <template>
   <div class="reset-password-page">
     <head-top class="header">
-      <section slot="head-goback" class="head-goback" @click="$router.go(-1)">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
-          <polyline points="12,18 4,9 12,0" style="fill:none;stroke:rgb(255,255,255);stroke-width:2"/>
-        </svg>
-      </section>
-      <span class="point-title" slot="point-title">编辑地址</span>
+      <head-title slot="head-center" headTitle="编辑地址"></head-title>
+      <arrow-left slot="head-left"></arrow-left>
       <span class="head-right" slot="head-right">编辑</span>
     </head-top>
     <form class="reset-password-container">
@@ -22,6 +18,8 @@
 </template>
 <script>
 import headTop from '@/components/head/head'
+import headTitle from '@/components/head/children/headTitle'
+import arrowLeft from '@/components/common/arrowLeft'
 import inputComponent from '@/components/common/input'
 import alertMessage from '@/components/common/alertMessage'
 import captcha from '@/components/common/captcha'
@@ -126,18 +124,19 @@ export default {
     inputComponent,
     captcha,
     buttonSubmit,
-    alertMessage
+    alertMessage,
+    headTitle,
+    arrowLeft
   }
 }
 </script>
-<style>
+<style scoped lang="less">
+  @import '~assets/less/common.less';
   .reset-password-container {
     padding-top: 3.5rem;
   }
-  .input-component {
-    border: 0;
-  }
   .button-submit {
-    margin: 1rem 1rem 0 1rem;
+    margin: 1rem;
+    padding: .4rem;
   }
 </style>
