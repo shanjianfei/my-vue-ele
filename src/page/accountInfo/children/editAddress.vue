@@ -1,19 +1,19 @@
 <template>
   <div class="edit-address-page">
-    <head-top class="header">
-      <section slot="head-goback" class="head-goback" @click="$router.go(-1)">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
-          <polyline points="12,18 4,9 12,0" style="fill:none;stroke:rgb(255,255,255);stroke-width:2"/>
-        </svg>
-      </section>
-      <span class="point-title" slot="point-title">编辑地址</span>
-      <span class="head-right" slot="head-right">编辑</span>
+    <head-top>
+      <head-title slot="head-center" headTitle="编辑地址"></head-title>
+      <arrow-left slot="head-left"></arrow-left>
+      <span class="head-right" slot="head-right" @click="edit" v-if="editShow">编辑</span>
+      <span class="head-right" slot="head-right" @click="edit" v-else>完成</span>
     </head-top>
     <div class="edit-address-container">
       <ul>
         <li class="delivery-address-li" v-for="(item, index) in deliveryAddress" :key="index">
-          <p>{{item.address}}</p>
-          <p>{{item.phone}}</p>
+          <section>
+            <p>{{item.address}}</p>
+            <p>{{item.phone}}</p>
+          </section>
+          <span v-show="!editShow" @click="deleteAddress">x</span>
         </li>
       </ul>
       <link-bar contentLeft="新增地址" contentRight="" link="/addNewAddress"></link-bar>
@@ -22,6 +22,8 @@
 </template>
 <script>
 import headTop from '@/components/head/head'
+import headTitle from '@/components/head/children/headTitle'
+import arrowLeft from '@/components/common/arrowLeft'
 import linkBar from '@/components/common/linkBar'
 import {getDeliveryAddress} from '@/service/getData'
 import {getStore} from '@/commonApi/localStorage'
@@ -29,7 +31,8 @@ export default {
   data () {
     return {
       userId: null,
-      deliveryAddress: []
+      deliveryAddress: [],
+      editShow: true
     }
   },
   mounted: function () {
@@ -44,23 +47,45 @@ export default {
           console.log(data)
           self.deliveryAddress = data
         })
+    },
+    edit: function () {
+
+      this.editShow = !this.editShow
+    },
+    deleteAddress: function () {
+
     }
   },
   components: {
     headTop,
-    linkBar
+    linkBar,
+    headTitle,
+    arrowLeft
   }
 }
 </script>
-<style>
+<style scoped lang="less">
+  @import '~assets/less/common.less';
   .edit-address-container {
     padding-top: 3.5rem;
   }
-  .delivery-address-li {
-    background-color: #FFF8C3;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    border-top: 0.03rem solid #ccc;
-    border-bottom: 0.03rem solid #ccc;
+  ul {
+    li:first-child {
+      .bgc(#FFF8C3);
+      border-top: 1px solid #ccc;
+    }
+    li {
+      .flex;
+      .bgw;
+      padding: 0.5rem;
+      border-bottom: 1px solid #ccc;
+    }
+    span {
+      font-family: Helvetica Neue,Tahoma,Arial;
+      font-size: 1.2rem;
+    }
+  }
+  a {
+    margin-top: 0.5rem;
   }
 </style>

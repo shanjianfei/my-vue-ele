@@ -1,9 +1,8 @@
 <template>
   <div class="reset-password-page">
     <head-top class="header">
-      <head-title slot="head-center" headTitle="编辑地址"></head-title>
+      <head-title slot="head-center" headTitle="重置密码"></head-title>
       <arrow-left slot="head-left"></arrow-left>
-      <span class="head-right" slot="head-right">编辑</span>
     </head-top>
     <form class="reset-password-container">
       <input-component placeholder="账号" bg="#fff" border="0.04rem solid #f1f1f1" ht="3.5rem" @inputs="getUsername"></input-component>

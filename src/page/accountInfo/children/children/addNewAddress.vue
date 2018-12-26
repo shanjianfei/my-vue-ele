@@ -1,12 +1,8 @@
 <template>
   <div class="add-new-address-page">
     <head-top class="header">
-      <section slot="head-goback" class="head-goback" @click="$router.go(-1)">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
-          <polyline points="12,18 4,9 12,0" style="fill:none;stroke:rgb(255,255,255);stroke-width:2"/>
-        </svg>
-      </section>
-      <span class="point-title" slot="point-title">新增地址</span>
+      <head-title slot="head-center" headTitle="新增地址"></head-title>
+      <arrow-left slot="head-left"></arrow-left>
     </head-top>
     <div class="add-new-address-container">
       <section class="area-input">
@@ -38,6 +34,8 @@
 </template>
 <script>
 import headTop from '@/components/head/head'
+import headTitle from '@/components/head/children/headTitle'
+import arrowLeft from '@/components/common/arrowLeft'
 import inputComponent from '@/components/common/input'
 import buttonSubmit from '@/components/common/buttonSubmit'
 import {mapState, mapMutations} from 'vuex'
@@ -58,7 +56,9 @@ export default {
   components: {
     headTop,
     inputComponent,
-    buttonSubmit
+    buttonSubmit,
+    arrowLeft,
+    headTitle
   },
   computed: mapState({
     deliveryAddress: state => state.addAddress.deliveryAddress,
