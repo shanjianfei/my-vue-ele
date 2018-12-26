@@ -8,12 +8,12 @@
     </head-top>
     <div class="edit-address-container">
       <ul>
-        <li class="delivery-address-li" v-for="(item, index) in deliveryAddress" :key="index">
+        <li v-for="(item, index) in deliveryAddress" :key="index">
           <section>
             <p>{{item.address}}</p>
             <p>{{item.phone}}</p>
           </section>
-          <span v-show="!editShow" @click="deleteAddress">x</span>
+          <span v-show="!editShow" @click="deleteAddress(item.id)">x</span>
         </li>
       </ul>
       <link-bar contentLeft="新增地址" contentRight="" link="/addNewAddress"></link-bar>
@@ -25,7 +25,7 @@ import headTop from '@/components/head/head'
 import headTitle from '@/components/head/children/headTitle'
 import arrowLeft from '@/components/common/arrowLeft'
 import linkBar from '@/components/common/linkBar'
-import {getDeliveryAddress} from '@/service/getData'
+import {getDeliveryAddress, deleteDeliveryAddress} from '@/service/getData'
 import {getStore} from '@/commonApi/localStorage'
 export default {
   data () {
@@ -49,11 +49,21 @@ export default {
         })
     },
     edit: function () {
-
       this.editShow = !this.editShow
     },
-    deleteAddress: function () {
-
+    deleteAddress: function (addressId) {
+      let self = this
+      deleteDeliveryAddress(this.userId, addressId)
+        .then(function (data) {
+          if ('status' in data && data.status === 1) {
+            for (let i = 0; i < self.deliveryAddress.length; i++) {
+              if (self.deliveryAddress[i].id === addressId) {
+                self.deliveryAddress.splice(i, 1)
+                break
+              }
+            }
+          }
+        })
     }
   },
   components: {

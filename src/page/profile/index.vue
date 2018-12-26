@@ -22,9 +22,8 @@
             </section>
           </section>
         </section>
-        <arrow-right></arrow-right>
+        <arrow-right @click.native="click"></arrow-right>
       </div>
-
       <div class="profile-item">
         <section class="profile-info">
           <router-link class="amount" to="/profile/balance">
@@ -133,7 +132,12 @@ export default {
         })
     }
   },
-  components: {headTop, arrowLeft, arrowRight, footerGuide, headTitle}
+  components: {headTop, arrowLeft, arrowRight, footerGuide, headTitle},
+  methods: {
+    click: function () {
+      this.$router.push('/accountInfo')
+    }
+  }
 }
 </script>
 <style scoped lang="less">
@@ -148,12 +152,6 @@ export default {
     .item;
   }
   .profile-page {
-    header {
-      .goback {
-        .head-left;
-        .wh(1.2rem, 1.2rem);
-      }
-    }
     .profile-container {
       padding-top: 3rem;
       .user-info {

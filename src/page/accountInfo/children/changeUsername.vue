@@ -1,12 +1,8 @@
 <template>
   <div class="change-username-page">
-    <head-top class="header">
-      <section slot="head-goback" class="head-goback" @click="$router.go(-1)">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
-          <polyline points="12,18 4,9 12,0" style="fill:none;stroke:rgb(255,255,255);stroke-width:2"/>
-        </svg>
-      </section>
-      <span class="point-title" slot="point-title">修改用户名</span>
+    <head-top>
+      <head-title slot="head-center" headTitle="修改用户名"></head-title>
+      <arrow-left slot="head-left"></arrow-left>
     </head-top>
     <div class="change-username-container">
       <input-component value="" placeholder="输入用户名" @inputs="checkValueInput"></input-component>
@@ -14,12 +10,13 @@
         <span v-if="checkName">用户名只能修改一次（5-24字符之间）</span>
         <span v-else style="color:red">用户名长度在5到24位之间</span>
       </div>
-      <!-- <div class="submit" @click="submit">确认修改</div> -->
       <button-submit text="确认修改" lh="2.5rem" bg="#3199e8" @submit="submit"></button-submit>
     </div>
   </div>
 </template>
 <script>
+import headTitle from '@/components/head/children/headTitle'
+import arrowLeft from '@/components/common/arrowLeft'
 import inputComponent from '@/components/common/input'
 import buttonSubmit from '@/components/common/buttonSubmit'
 import headTop from '@/components/head/head'
@@ -34,7 +31,9 @@ export default {
   components: {
     inputComponent,
     headTop,
-    buttonSubmit
+    buttonSubmit,
+    headTitle,
+    arrowLeft
   },
   methods: {
     checkValueInput: function (value) {
@@ -57,16 +56,17 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped lang="less">
+  @import '~assets/less/common.less';
   .change-username-container {
-    margin: 3.5rem 1rem 1rem 1rem;
+    padding: 3.5rem 1rem 1rem 1rem;
   }
   .tip {
     font-size: .65rem;
     margin-top: 1rem;
   }
   .submit {
-    background-color: #3199e8;
+    .bgc(#3199e8);
     line-height: 2.5rem;
     text-align: center;
     color: #ccc;
