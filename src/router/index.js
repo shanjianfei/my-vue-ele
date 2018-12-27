@@ -16,6 +16,7 @@ const evaluate = r => require.ensure([], require => r(require('../page/shopsGuid
 const publicity = r => require.ensure([], require => r(require('../page/shopsGuide/shopDetail/shopDescription/children/publicity')), 'publicity')
 
 const order = r => require.ensure([], require => r(require('../page/order')), 'order')
+const orderDetail = r => require.ensure([], require => r(require('../page/order/children/orderDetail')), 'orderDetail')
 
 const confirmOrder = r => require.ensure([], require => r(require('../page/confirmOrder')), 'confirmOrder')
 const chooseDeliveryAddress = r => require.ensure([], require => r(require('../page/confirmOrder/children/chooseDeliveryAddress')), 'chooseDeliveryAddress')
@@ -148,6 +149,12 @@ let router = new Router({
       path: '/order',
       name: 'order',
       component: order,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/order/orderDetail',
+      name: 'orderDetail',
+      component: orderDetail,
       meta: { requiresAuth: true }
     },
     {

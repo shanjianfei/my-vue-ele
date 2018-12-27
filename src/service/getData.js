@@ -433,3 +433,15 @@ export const getOrders = (userId, limit, offset) => {
       })
   })
 }
+
+export const getOrderDetail = (userId, orderId) => {
+  let url = 'https://elm.cangdu.org/bos/v1/users/' + userId + '/orders/' + orderId + '/snapshot'
+  return new Promise(function (resolve, reject) {
+    axios.get(url)
+      .then(function (response) {
+        if (response.status === 200) {
+          resolve(response.data)
+        }
+      })
+  })
+}

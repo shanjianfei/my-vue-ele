@@ -44,7 +44,6 @@ export default {
       let self = this
       getDeliveryAddress(userId)
         .then(function (data) {
-          console.log(data)
           self.deliveryAddress = data
         })
     },

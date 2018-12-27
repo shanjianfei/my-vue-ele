@@ -1,6 +1,6 @@
 <template>
   <div class="footer-container">
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="position:absolute;width:0;height:0">
+    <svg style="position:absolute;width:0;height:0">
       <defs>
         <symbol viewBox="0 0 40 40" id="msite"><g fill="none" fill-rule="evenodd" stroke="#666" stroke-width="2"><path d="M31.426 23.095l2.678 5.742 2.943-1.372a3.173 3.173 0 0 0 1.537-4.212l-1.339-2.871-5.819 2.713z"></path><path d="M29.074 31.161c-1.224-.49-2.404-.32-3.49.185-6.383 2.977-13.938.286-16.875-6.01-2.936-6.297-.14-13.815 6.243-16.792 5.211-2.43 11.203-1.083 14.825 2.919l-12.263 5.718c-1.596.745-2.295 2.624-1.561 4.198.734 1.574 2.625 2.246 4.22 1.503l8.422-3.928 9.953-4.641a18.78 18.78 0 0 0-.941-2.453C33.202 2.416 21.869-1.62 12.294 2.844 2.718 7.309-1.474 18.586 2.93 28.03c4.404 9.445 15.737 13.482 25.313 9.017 1.069-.499 2.067-.879 3.438-1.744 0 0-1.382-3.651-2.607-4.142z"></path></g></symbol>
 
@@ -19,28 +19,28 @@
         <symbol viewBox="0 0 38 38" id="profileActive"><defs><linearGradient id="profile.dbc5ebf_a" x1="50%" x2="50%" y1="100%" y2="0%"><stop offset="0%" stop-color="#2BAEFF"></stop><stop offset="100%" stop-color="#0095FF"></stop></linearGradient></defs><path fill="url(#profile.dbc5ebf_a)" fill-rule="evenodd" d="M10 11.833V8.999A8.999 8.999 0 0 1 19 0c4.97 0 9 4.04 9 8.999v2.834l-.013.191C27.657 16.981 23.367 21 19 21c-4.616 0-8.64-4.02-8.987-8.976L10 11.833zM0 32.675C0 26.763 10.139 22 19.027 22 27.916 22 38 26.763 38 32.757v3.312C38 37.136 37.098 38 35.997 38H2.003C.897 38 0 37.137 0 36.037v-3.362z"></path></symbol>
       </defs>
     </svg>
-    <ul class="footer-ul">
-      <router-link class="footer-li" tag="li" :to="'/shopsGuide?geohash=' + geohash">
+    <ul>
+      <router-link tag="li" :to="'/shopsGuide?geohash=' + geohash">
         <svg class="icon_style">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="$route.path.indexOf('shopsGuide') === -1? '#msite': '#msiteActive'"></use>
+          <use :xlink:href="$route.path.indexOf('shopsGuide') === -1? '#msite': '#msiteActive'"></use>
         </svg>
         <span>外卖</span>
       </router-link>
-      <router-link class="footer-li" tag="li" :to="'/search/' + geohash">
+      <router-link tag="li" :to="'/search/' + geohash">
         <svg class="icon_style">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="$route.path.indexOf('search') === -1? '#find': '#findActive'"></use>
+          <use :xlink:href="$route.path.indexOf('search') === -1? '#find': '#findActive'"></use>
         </svg>
         <span>搜索</span>
       </router-link>
-      <router-link class="footer-li" tag="li" to="/order">
+      <router-link tag="li" to="/order">
         <svg class="icon_style">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="$route.path.indexOf('order') === -1? '#order': '#orderActive'"></use>
+          <use :xlink:href="$route.path.indexOf('order') === -1? '#order': '#orderActive'"></use>
         </svg>
         <span>订单</span>
       </router-link>
-      <router-link class="footer-li" tag="li" to="/profile">
+      <router-link tag="li" to="/profile">
         <svg class="icon_style">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" :xlink:href="$route.path.indexOf('profile') === -1? '#profile': '#profileActive'"></use>
+          <use :xlink:href="$route.path.indexOf('profile') === -1? '#profile': '#profileActive'"></use>
         </svg>
         <span>我的</span>
       </router-link>
@@ -60,28 +60,27 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped lang="less">
+  @import '~assets/less/common.less';
   .footer-container {
-    position: fixed;
+    .fixed;
+    .bgw;
     bottom: 0;
     width: 100%;
+    height: 3rem;
   }
-  .footer-ul {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+  ul {
+    .flex;
+    height: 100%;
+    li {
+      .flex(@fd: column; @jc: center);
+      width: 100%;
+      span {
+        font-size: .65rem;
+      }
+    }
   }
   .icon_style {
-    height: 1.2rem;
-    width: 1.2rem;
-  }
-  .footer-li {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 3.5rem;
-    justify-content: center;
+    .wh(1rem, 1rem);
   }
 </style>

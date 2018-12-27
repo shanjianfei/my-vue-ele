@@ -41,7 +41,7 @@
         <span class="contact-left">送餐地址</span>
         <span class="contact-right">
           <router-link class="search-contact-address" to="/searchAddress" tag="div">
-            <span v-if="addAddressInfo.deliveryAddress">{{addAddressInfo.deliveryAddress.name}}</span>
+            <span v-if="deliveryAddress">{{deliveryAddress.name}}</span>
             <span v-else>小区/写字楼/学校等</span>
           </router-link>
           <input class="contact-input contact-address" type="text" name="contact-address" placeholder="详细地址（如门牌号等）" v-model="address_detail">
@@ -87,7 +87,7 @@ export default {
     data.address_detail = this.address_detail
     data.phone_bk = this.phone_bk
     data.tag = this.tag
-    this.updateDeliveryAddress(data)
+    this.updateAddressInfo(data)
     next()
   },
   mounted: function () {
@@ -99,10 +99,11 @@ export default {
     this.tag = this.addAddressInfo.tag
   },
   computed: mapState({
-    addAddressInfo: state => state.addAddress.addAddressInfo
+    addAddressInfo: state => state.addAddress.addAddressInfo,
+    deliveryAddress: state => state.addAddress.deliveryAddress
   }),
   methods: {
-    ...mapMutations(['updateDeliveryAddress']),
+    ...mapMutations(['updateDeliveryAddress', 'updateAddressInfo']),
     click: function (sex) {
       this.sex = sex
     },
@@ -120,7 +121,7 @@ export default {
         this.alertMessageShow = true
         return false
       }
-      if (!this.addAddressInfo.deliveryAddress) {
+      if (!this.deliveryAddress) {
         this.alertMessage = '请输入送餐地址'
         this.alertMessageShow = true
         return false
@@ -143,8 +144,8 @@ export default {
       }
       let self = this
       let userId = getStore('user_id')
-      let geohash = this.addAddressInfo.deliveryAddress.geohash
-      let address = this.addAddressInfo.deliveryAddress.name
+      let geohash = this.deliveryAddress.geohash
+      let address = this.deliveryAddress.name
       addDeliveryAddress(userId, address, this.address_detail, geohash, this.username, this.telNum, this.tag, this.sex, this.phone_bk, 1)
         .then(function (data) {
           self.$router.go(-1)

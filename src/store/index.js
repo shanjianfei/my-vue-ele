@@ -17,17 +17,20 @@ const shopDetail = {
 const addAddress = {
   state: {
     addAddressInfo: {
-      deliveryAddress: null,
       username: null,
       sex: 1,
       telNum: null,
       address_detail: '',
       phone_bk: '', // 备用电话
       tag: null
-    }
+    },
+    deliveryAddress: {}
   },
   mutations: {
-    updateDeliveryAddress: function (state, addAddressInfo) {
+    updateDeliveryAddress: function (state, deliveryAddress) {
+      state.deliveryAddress = deliveryAddress
+    },
+    updateAddressInfo: function (state, addAddressInfo) {
       state.addAddressInfo = addAddressInfo
     }
   }

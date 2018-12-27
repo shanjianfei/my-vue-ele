@@ -8,7 +8,7 @@
       <li v-for="(item, index) in orders" :key="index">
         <img :src="getImageUrl(item.restaurant_image_url)">
         <section>
-          <router-link to="">
+          <router-link :to="{path: '/order/orderDetail', query: {orderId: item.id}}">
             <section class="info-top">
               <section>
                 <section class="restaurant-name">
@@ -27,12 +27,13 @@
               <span>￥{{item.total_amount}}</span>
             </section>
           </router-link>
-          <div class="order-again">
+          <router-link class="order-again" :to="{path: '/shopsGuide/shopDetail', query: {id: item.restaurant_id}}">
             <span>再来一单</span>
-          </div>
+          </router-link>
         </section>
       </li>
     </ul>
+    <footer-guide></footer-guide>
   </div>
 </template>
 <script>
@@ -40,6 +41,7 @@ import headTop from '@/components/head/head'
 import headTitle from '@/components/head/children/headTitle'
 import arrowLeft from '@/components/common/arrowLeft'
 import arrowRight from '@/components/common/arrowRight'
+import footerGuide from '@/components/footer/footer'
 import {getOrders, getImageUrl} from '@/service/getData'
 import {getStore} from '@/commonApi/localStorage'
 export default {
@@ -61,13 +63,14 @@ export default {
       return getImageUrl(img)
     }
   },
-  components: {headTop, arrowLeft, headTitle, arrowRight}
+  components: {headTop, arrowLeft, headTitle, arrowRight, footerGuide}
 }
 </script>
 <style scoped lang="less">
   @import '~assets/less/common.less';
   .order-container {
     padding-top: 3rem;
+    padding-bottom: 3.5rem;
     li {
       .flex(@jc: flex-start; @ai: flex-start);
       padding: 1rem;
@@ -119,7 +122,7 @@ export default {
       justify-content: flex-end;
       margin-top: .5rem;
       span {
-        .br(.3rem);
+        .br(.2rem);
         padding: 0 .3rem;
         font-size: .75rem;
         border: 1px solid @blue;

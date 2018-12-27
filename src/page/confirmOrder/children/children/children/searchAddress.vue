@@ -29,8 +29,7 @@ import headTop from '@/components/head/head'
 import arrowLeft from '@/components/common/arrowLeft'
 import headTitle from '@/components/head/children/headTitle'
 import {searchAddress} from '@/service/getData'
-import {mapState, mapMutations} from 'vuex'
-import {deepCopy} from '@/commonApi/util'
+import {mapMutations} from 'vuex'
 export default {
   data () {
     return {
@@ -38,13 +37,8 @@ export default {
       searchResults: []
     }
   },
-  computed: mapState({
-    addAddressInfo: state => state.addAddress.addAddressInfo
-  }),
   methods: {
-    ...mapMutations({
-      chooseDeliveryAddress: 'updateDeliveryAddress'
-    }),
+    ...mapMutations(['updateDeliveryAddress']),
     search: function () {
       let self = this
       searchAddress(this.keyword, 'nearby')
@@ -53,9 +47,7 @@ export default {
         })
     },
     choose: function (item) {
-      let data = deepCopy(this.addAddressInfo)
-      data.deliveryAddress = item
-      this.chooseDeliveryAddress(data)
+      this.updateDeliveryAddress(item)
       this.$router.go(-1)
     }
   },

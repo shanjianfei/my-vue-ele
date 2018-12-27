@@ -46,7 +46,8 @@ export default {
     },
     submit: function () {
       let userInfo = JSON.parse(getStore('user'))
-      if (!this.checkName) {
+      if (!this.checkName || !this.username) {
+        this.checkName = false
         return
       }
       userInfo.username = this.username
